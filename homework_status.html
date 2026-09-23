@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homework Summary</title>
+    <style>
+        :root {
+            --bg-color: #F5F5F7;
+            --card-bg: #FFFFFF;
+            --text-primary: #1D1D1F;
+            --text-secondary: #86868B;
+            --text-tertiary: #A1A1A6;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --apple-red: #FF3B30;
+            --apple-green: #34C759;
+            --apple-orange: #FF9500;
+            --apple-blue: #007AFF;
+            --input-bg: #F2F2F7;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 50px 20px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            margin-bottom: 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-text h1 {
+            font-size: 34px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin: 0;
+            color: var(--text-primary);
+        }
+
+        /* Filters Section */
+        .filters {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 24px;
+            align-items: flex-end;
+            padding: 0 8px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex: 1;
+        }
+
+        .filter-group label.group-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        /* Shared Input Style */
+        .filter-select, .multi-select-header {
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid transparent;
+            background-color: var(--card-bg);
+            font-size: 14px;
+            color: var(--text-primary);
+            font-family: inherit;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.2s;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+            box-sizing: border-box;
+            width: 100%;
+            height: 40px;
+        }
+
+        .filter-select:hover, .multi-select-header:hover {
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+        }
+
+        .filter-select:focus {
+            background-color: var(--card-bg);
+            border-color: var(--apple-blue);
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2);
+        }
+
+        /* Segmented Control */
+        .segmented-control {
+            display: flex;
+            background-color: #E3E3E8;
+            padding: 3px;
+            border-radius: 10px;
+            height: 40px;
+            box-sizing: border-box;
+        }
+        
+        .segmented-control label {
+            flex: 1;
+            text-align: center;
+            padding: 4px 12px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: 7px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .segmented-control input[type="radio"] {
+            display: none;
+        }
+        
+        .segmented-control input[type="radio"]:checked + label {
+            background-color: var(--card-bg);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.12), 0 3px 1px rgba(0,0,0,0.04);
+            font-weight: 600;
+        }
+
+        /* Multi-select styling */
+        .multi-select-container {
+            position: relative;
+        }
+
+        .multi-select-dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            right: 0;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            z-index: 100;
+            display: none;
+            overflow: hidden;
+            padding: 6px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .multi-select-dropdown.show {
+            display: block;
+            animation: fadeIn 0.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .multi-select-option {
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--text-primary);
+            border-radius: 6px;
+            transition: background 0.15s;
+        }
+
+        .multi-select-option:hover {
+            background-color: var(--input-bg);
+        }
+
+        .multi-select-option input[type="checkbox"] {
+            accent-color: var(--apple-blue);
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .dropdown-icon {
+            font-size: 10px;
+            color: var(--text-secondary);
+        }
+
+        /* Table Section */
+        .table-container {
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04), 0 1px 4px rgba(0,0,0,0.02);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 16px 24px;
+            font-size: 14px;
+        }
+
+        th {
+            background-color: var(--card-bg);
+            color: var(--text-secondary);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        td {
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
+            transition: background-color 0.2s;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background-color: #F9F9FB;
+        }
+
+        .class-cell {
+            font-weight: 600;
+            color: var(--text-primary);
+            width: 22%;
+        }
+
+        .type-cell {
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        .hw-title {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .date-cell {
+            color: var(--text-secondary);
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+        }
+
+        /* Status & Badges */
+        .status-red {
+            color: var(--apple-red);
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .status-yellow {
+            color: var(--apple-orange);
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .status-normal {
+            color: var(--text-secondary);
+            font-weight: 400;
+            white-space: nowrap;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            min-width: 24px;
+            height: 24px;
+        }
+
+        .badge-a {
+            background-color: #E6F4EA;
+            color: #1E8E3E;
+        }
+
+        .badge-b {
+            background-color: #FEF0DB;
+            color: #B06000;
+        }
+
+        .badge-c {
+            background-color: #FFF5CC;
+            color: #997A00;
+        }
+
+        .badge-f {
+            background-color: #FFE5E5;
+            color: var(--apple-red);
+        }
+
+        .score-cell {
+            font-variant-numeric: tabular-nums;
+            color: var(--text-secondary);
+        }
+
+        .empty-state {
+            display: none;
+            padding: 60px 40px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 15px;
+        }
+
+        .refresh-time {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 8px 14px;
+            border-radius: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+
+        .time-value {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-variant-numeric: tabular-nums;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <div class="header-text">
+            <h1>Homework Summary</h1>
+        </div>
+        <div class="refresh-time">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.7"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+            <span class="time-label">Updated:</span>
+            <span class="time-value" id="refresh-time">2026-09-22 17:49</span>
+        </div>
+    </div>
+
+    <!-- Dropdown Filters -->
+    <div class="filters">
+        <div class="filter-group">
+            <label class="group-label" for="class-filter">Class</label>
+            <select id="class-filter" class="filter-select" onchange="renderTable()">
+                <option value="all">All Classes</option>
+                <!-- Populated by JS -->
+            </select>
+        </div>
+        
+        <div class="filter-group">
+            <label class="group-label">Status</label>
+            <div class="multi-select-container">
+                <div class="multi-select-header" onclick="toggleDropdown(event, 'status-dropdown')">
+                    <span id="status-header-text">All Statuses</span>
+                    <span class="dropdown-icon">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </span>
+                </div>
+                <div id="status-dropdown" class="multi-select-dropdown">
+                    <label class="multi-select-option">
+                        <input type="checkbox" class="status-checkbox" value="Submitted" checked onchange="renderTable()"> Submitted
+                    </label>
+                    <label class="multi-select-option">
+                        <input type="checkbox" class="status-checkbox" value="Not Submitted" checked onchange="renderTable()"> Not Submitted
+                    </label>
+                    <label class="multi-select-option">
+                        <input type="checkbox" class="status-checkbox" value="Taken" checked onchange="renderTable()"> Taken
+                    </label>
+                    <label class="multi-select-option">
+                        <input type="checkbox" class="status-checkbox" value="Not Taken" checked onchange="renderTable()"> Not Taken
+                    </label>
+                    <label class="multi-select-option">
+                        <input type="checkbox" class="status-checkbox" value="To be Confirmed" checked onchange="renderTable()"> To be Confirmed
+                    </label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="filter-group">
+            <label class="group-label">Timeline</label>
+            <div class="multi-select-container">
+                <div class="multi-select-header" onclick="toggleDropdown(event, 'timeline-dropdown')">
+                    <span id="timeline-header-text">All Timelines</span>
+                    <span class="dropdown-icon">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </span>
+                </div>
+                <div id="timeline-dropdown" class="multi-select-dropdown">
+                    <label class="multi-select-option">
+                        <input type="checkbox" class="timeline-checkbox" value="Missed" checked onchange="renderTable()"> Missed Deadline
+                    </label>
+                    <label class="multi-select-option">
+                        <input type="checkbox" class="timeline-checkbox" value="Next7Days" checked onchange="renderTable()"> Due in 7 Days
+                    </label>
+                    <label class="multi-select-option">
+                        <input type="checkbox" class="timeline-checkbox" value="Future" checked onchange="renderTable()"> Due after 7 Days
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="filter-group">
+            <label class="group-label">Type</label>
+            <div class="segmented-control">
+                <input type="radio" id="type-all" name="type-filter" value="all" checked onchange="renderTable()">
+                <label for="type-all">All</label>
+                
+                <input type="radio" id="type-homework" name="type-filter" value="Homework" onchange="renderTable()">
+                <label for="type-homework">Homework</label>
+                
+                <input type="radio" id="type-test" name="type-filter" value="Quiz" onchange="renderTable()">
+                <label for="type-test">Quiz</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Class</th>
+                    <th>Type</th>
+                    <th>Task</th>
+                    <th style="white-space: nowrap;">Due Date</th>
+                    <th>Status</th>
+                    <th>Grade</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+                <!-- Content will be populated by JavaScript -->
+            </tbody>
+        </table>
+        <div id="empty-state" class="empty-state">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 12px; color: var(--text-tertiary);">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg><br>
+            No matching tasks found.
+        </div>
+    </div>
+</div>
+
+<script>
+    // Original dataset populated by Python
+    const tasks = [
+    {
+        "id": "t1",
+        "class": "AP English Language & Composition (AP Electives)",
+        "type": "Homework",
+        "task": "Weekly Reading 1",
+        "due": "2026-09-10",
+        "status": "Submitted",
+        "grade": "",
+        "score": ""
+    },
+    {
+        "id": "t2",
+        "class": "AP English Language & Composition (AP Electives)",
+        "type": "Homework",
+        "task": "Rhetorical Techniques in Jonathan Edwards",
+        "due": "2026-09-10",
+        "status": "Submitted",
+        "grade": "A",
+        "score": "6/6"
+    },
+    {
+        "id": "t3",
+        "class": "AP English Language & Composition (AP Electives)",
+        "type": "Homework",
+        "task": "Weekly Reading 2",
+        "due": "2026-09-14",
+        "status": "Submitted",
+        "grade": "A",
+        "score": "6/6"
+    },
+    {
+        "id": "t4",
+        "class": "AP English Language & Composition (AP Electives)",
+        "type": "Homework",
+        "task": "Argument 1",
+        "due": "2026-09-18",
+        "status": "Submitted",
+        "grade": "",
+        "score": ""
+    },
+    {
+        "id": "t5",
+        "class": "AP English Language & Composition (AP Electives)",
+        "type": "Quiz",
+        "task": "Reading Quiz 1",
+        "due": "2026-09-18",
+        "status": "Taken",
+        "grade": "C",
+        "score": "9/12"
+    },
+    {
+        "id": "t6",
+        "class": "AP English Language & Composition (AP Electives)",
+        "type": "Homework",
+        "task": "Weekly Reading 3",
+        "due": "2026-09-20",
+        "status": "Submitted",
+        "grade": "",
+        "score": ""
+    },
+    {
+        "id": "t7",
+        "class": "Chinese Language Arts I",
+        "type": "Homework",
+        "task": "第一周随笔作业",
+        "due": "2026-09-04",
+        "status": "Submitted",
+        "grade": "",
+        "score": ""
+    },
+    {
+        "id": "t8",
+        "class": "Chinese Language Arts I",
+        "type": "Homework",
+        "task": "语文早读小测1",
+        "due": "2026-09-11",
+        "status": "Submitted",
+        "grade": "",
+        "score": ""
+    },
+    {
+        "id": "t9",
+        "class": "Chinese Language Arts I",
+        "type": "Homework",
+        "task": "第二周随笔作业",
+        "due": "2026-09-11",
+        "status": "Submitted",
+        "grade": "",
+        "score": ""
+    },
+    {
+        "id": "t10",
+        "class": "Chinese Language Arts I",
+        "type": "Homework",
+        "task": "《峨日朵雪峰之侧》与《立在地球边上放号》联读学案",
+        "due": "2026-09-17",
+        "status": "Submitted",
+        "grade": "",
+        "score": ""
+    },
+    {
+        "id": "t11",
+        "class": "Chinese Language Arts I",
+        "type": "Homework",
+        "task": "第三周批注作业",
+        "due": "2026-09-18",
+        "status": "Submitted",
+        "grade": "",
+        "score": ""
+    },
+    {
+        "id": "t12",
+        "class": "Geography I",
+        "type": "Homework",
+        "task": "Geologic Poster",
+        "due": "2026-09-26",
+        "status": "Not Submitted",
+        "grade": "",
+        "score": ""
+    },
+    {
+        "id": "t13",
+        "class": "Geography I",
+        "type": "Homework",
+        "task": "Phase of the moon observation",
+        "due": "2026-10-08",
+        "status": "Not Submitted",
+        "grade": "",
+        "score": ""
+    },
+    {
+        "id": "t14",
+        "class": "AP Microeconomics (AP Electives)",
+        "type": "Homework",
+        "task": "Hw 1 MCQs",
+        "due": "2026-09-14",
+        "status": "Submitted",
+        "grade": "A",
+        "score": "100/100"
+    },
+    {
+        "id": "t15",
+        "class": "AP Microeconomics (AP Electives)",
+        "type": "Homework",
+        "task": "HW 2&3 MCQs",
+        "due": "2026-09-17",
+        "status": "Submitted",
+        "grade": "A",
+        "score": "100/100"
+    },
+    {
+        "id": "t16",
+        "class": "AP Microeconomics (AP Electives)",
+        "type": "Homework",
+        "task": "FRQ hw1 unit 1",
+        "due": "2026-09-21",
+        "status": "Not Submitted",
+        "grade": "",
+        "score": ""
+    },
+    {
+        "id": "t17",
+        "class": "AP Microeconomics (AP Electives)",
+        "type": "Homework",
+        "task": "MCQs Hw21",
+        "due": "2026-09-23",
+        "status": "Not Submitted",
+        "grade": "",
+        "score": ""
+    },
+    {
+        "id": "t18",
+        "class": "AP Microeconomics (AP Electives)",
+        "type": "Quiz",
+        "task": "Quiz 1 unit 1",
+        "due": "2026-09-23",
+        "status": "Not Taken",
+        "grade": "",
+        "score": ""
+    },
+    {
+        "id": "t19",
+        "class": "AP Physics 1",
+        "type": "Homework",
+        "task": "NAME LIST",
+        "due": "2026-09-10",
+        "status": "Submitted",
+        "grade": "A",
+        "score": "10/10"
+    },
+    {
+        "id": "t20",
+        "class": "AP Physics 1",
+        "type": "Homework",
+        "task": "kinematics classwork1",
+        "due": "2026-09-13",
+        "status": "Submitted",
+        "grade": "A",
+        "score": "12/12"
+    },
+    {
+        "id": "t21",
+        "class": "AP Physics 1",
+        "type": "Quiz",
+        "task": "kinematics 1 quiz",
+        "due": "2026-09-16",
+        "status": "Not Taken",
+        "grade": "",
+        "score": ""
+    },
+    {
+        "id": "t22",
+        "class": "AP Physics 1",
+        "type": "Homework",
+        "task": "kinematics classwork2",
+        "due": "2026-09-23",
+        "status": "Not Submitted",
+        "grade": "",
+        "score": ""
+    },
+    {
+        "id": "t23",
+        "class": "AP Physics 1",
+        "type": "Homework",
+        "task": "Free body diagram",
+        "due": "2026-09-27",
+        "status": "Not Submitted",
+        "grade": "",
+        "score": ""
+    },
+    {
+        "id": "t24",
+        "class": "Pre AP Chemistry",
+        "type": "Homework",
+        "task": "Homework of summer holiday",
+        "due": "2026-09-07",
+        "status": "Not Submitted",
+        "grade": "",
+        "score": ""
+    },
+    {
+        "id": "t25",
+        "class": "Pre AP Chemistry",
+        "type": "Homework",
+        "task": "Poster",
+        "due": "2026-09-07",
+        "status": "Submitted",
+        "grade": "",
+        "score": ""
+    },
+    {
+        "id": "t26",
+        "class": "Pre AP Chemistry",
+        "type": "Homework",
+        "task": "Chapter 3 Homework",
+        "due": "2026-09-07",
+        "status": "Not Submitted",
+        "grade": "",
+        "score": ""
+    },
+    {
+        "id": "t27",
+        "class": "Pre AP Chemistry",
+        "type": "Homework",
+        "task": "Chapter 4 homework-1",
+        "due": "2026-09-14",
+        "status": "Submitted",
+        "grade": "A",
+        "score": "96/100"
+    },
+    {
+        "id": "t28",
+        "class": "Pre AP Chemistry",
+        "type": "Homework",
+        "task": "Chapter 4 homework-2",
+        "due": "2026-09-20",
+        "status": "Not Submitted",
+        "grade": "A",
+        "score": "94/100"
+    },
+    {
+        "id": "t29",
+        "class": "Pre AP Biology",
+        "type": "Homework",
+        "task": "Ch1.3 study guide",
+        "due": "2026-09-10",
+        "status": "Submitted",
+        "grade": "A",
+        "score": "29/30"
+    },
+    {
+        "id": "t30",
+        "class": "Pre AP Biology",
+        "type": "Quiz",
+        "task": "Pre AP Biology Quiz 1(Ch1.1-1.3)",
+        "due": "2026-09-17",
+        "status": "Taken",
+        "grade": "B",
+        "score": "17/20"
+    },
+    {
+        "id": "t31",
+        "class": "Pre AP Biology",
+        "type": "Quiz",
+        "task": "Pre AP Biology Quiz 2(Ch2.1-2.2)",
+        "due": "2026-09-21",
+        "status": "Taken",
+        "grade": "A",
+        "score": "18/20"
+    },
+    {
+        "id": "t32",
+        "class": "AP Pre- Calculus",
+        "type": "Homework",
+        "task": "Summer Holiday Homework",
+        "due": "2026-09-02",
+        "status": "Not Submitted",
+        "grade": "",
+        "score": ""
+    },
+    {
+        "id": "t33",
+        "class": "AP Pre- Calculus",
+        "type": "Homework",
+        "task": "1.1 Sets",
+        "due": "2026-09-04",
+        "status": "Submitted",
+        "grade": "A",
+        "score": "92/100"
+    },
+    {
+        "id": "t34",
+        "class": "AP Pre- Calculus",
+        "type": "Homework",
+        "task": "1.2 Simple Logic",
+        "due": "2026-09-08",
+        "status": "Submitted",
+        "grade": "A",
+        "score": "93/100"
+    },
+    {
+        "id": "t35",
+        "class": "AP Pre- Calculus",
+        "type": "Homework",
+        "task": "2.1 Function Homework",
+        "due": "2026-09-15",
+        "status": "Submitted",
+        "grade": "F",
+        "score": "50/100"
+    },
+    {
+        "id": "t36",
+        "class": "AP Pre- Calculus",
+        "type": "Homework",
+        "task": "1.3 Inequality Handout and Review",
+        "due": "2026-09-16",
+        "status": "Submitted",
+        "grade": "",
+        "score": ""
+    },
+    {
+        "id": "t37",
+        "class": "AP Pre- Calculus",
+        "type": "Quiz",
+        "task": "Chapter 1 SA",
+        "due": "2026-09-16",
+        "status": "Taken",
+        "grade": "C",
+        "score": "72/100"
+    },
+    {
+        "id": "t38",
+        "class": "AP Pre- Calculus",
+        "type": "Homework",
+        "task": "2.2 Graph of Function",
+        "due": "2026-09-18",
+        "status": "Submitted",
+        "grade": "A",
+        "score": "99/100"
+    },
+    {
+        "id": "t39",
+        "class": "AP Pre- Calculus",
+        "type": "Homework",
+        "task": "2.3.1 Odd and Even Functions",
+        "due": "2026-09-18",
+        "status": "Not Submitted",
+        "grade": "",
+        "score": ""
+    },
+    {
+        "id": "t40",
+        "class": "AP Pre- Calculus",
+        "type": "Homework",
+        "task": "2.3.2 Monototnicity of a Function",
+        "due": "2026-09-22",
+        "status": "Not Submitted",
+        "grade": "",
+        "score": ""
+    },
+    {
+        "id": "t41",
+        "class": "AP Pre- Calculus",
+        "type": "Homework",
+        "task": "Revision of Chapter 1 SA",
+        "due": "2026-09-24",
+        "status": "Not Submitted",
+        "grade": "",
+        "score": ""
+    }
+];
+
+    // App Initialization
+    document.addEventListener("DOMContentLoaded", () => {
+        if(tasks && tasks.length > 0) {
+            populateClassFilter();
+            renderTable();
+        }
+    });
+
+    function populateClassFilter() {
+        const classDropdown = document.getElementById('class-filter');
+        const uniqueClasses = [...new Set(tasks.map(t => t.class))].sort();
+        let html = '<option value="all">All Classes</option>';
+        uniqueClasses.forEach(c => {
+            html += `<option value="${c}">${c}</option>`;
+        });
+        classDropdown.innerHTML = html;
+    }
+
+    // Handle multi-select dropdown UI
+    function toggleDropdown(event, dropdownId) {
+        event.stopPropagation();
+        const target = document.getElementById(dropdownId);
+        const dropdowns = document.getElementsByClassName("multi-select-dropdown");
+        for (let i = 0; i < dropdowns.length; i++) {
+            if (dropdowns[i] !== target && dropdowns[i].classList.contains('show')) {
+                dropdowns[i].classList.remove('show');
+            }
+        }
+        if (target) {
+            target.classList.toggle('show');
+        }
+    }
+
+    // Close dropdown when clicking outside
+    window.onclick = function(event) {
+        if (!event.target.closest('.multi-select-container')) {
+            const dropdowns = document.getElementsByClassName("multi-select-dropdown");
+            for (let i = 0; i < dropdowns.length; i++) {
+                if (dropdowns[i].classList.contains('show')) {
+                    dropdowns[i].classList.remove('show');
+                }
+            }
+        }
+    }
+
+    // Core Rendering Logic
+    function renderTable() {
+        const classFilter = document.getElementById('class-filter').value;
+        const typeFilter = document.querySelector('input[name="type-filter"]:checked').value;
+        
+        const statusCheckboxes = document.querySelectorAll('.status-checkbox:checked');
+        const selectedStatuses = Array.from(statusCheckboxes).map(cb => cb.value);
+        const totalStatuses = document.querySelectorAll('.status-checkbox').length;
+        
+        const timelineCheckboxes = document.querySelectorAll('.timeline-checkbox:checked');
+        const selectedTimelines = Array.from(timelineCheckboxes).map(cb => cb.value);
+        const totalTimelines = document.querySelectorAll('.timeline-checkbox').length;
+        
+        // Update header text for Status
+        const statusHeaderText = document.getElementById('status-header-text');
+        if (selectedStatuses.length === totalStatuses) {
+            statusHeaderText.textContent = 'All Statuses';
+        } else if (selectedStatuses.length === 0) {
+            statusHeaderText.textContent = 'None Selected';
+        } else {
+            statusHeaderText.textContent = selectedStatuses.length + ' Selected';
+        }
+
+        // Update header text for Timeline
+        const timelineHeaderText = document.getElementById('timeline-header-text');
+        if (selectedTimelines.length === totalTimelines) {
+            timelineHeaderText.textContent = 'All Timelines';
+        } else if (selectedTimelines.length === 0) {
+            timelineHeaderText.textContent = 'None Selected';
+        } else {
+            timelineHeaderText.textContent = selectedTimelines.length + ' Selected';
+        }
+
+        const today = new Date();
+        today.setHours(0,0,0,0);
+        const next7Days = new Date(today);
+        next7Days.setDate(today.getDate() + 7);
+
+        // Apply filters
+        let filteredTasks = tasks.filter(t => {
+            const classMatch = (classFilter === 'all' || t.class === classFilter);
+            const typeMatch = (typeFilter === 'all' || t.type === typeFilter);
+            const statusMatch = selectedStatuses.includes(t.status);
+            
+            let timelineMatch = false;
+            if (t.due) {
+                const dueDate = new Date(t.due);
+                dueDate.setHours(0,0,0,0);
+                if (dueDate < today) {
+                    timelineMatch = selectedTimelines.includes('Missed');
+                } else if (dueDate <= next7Days) {
+                    timelineMatch = selectedTimelines.includes('Next7Days');
+                } else {
+                    timelineMatch = selectedTimelines.includes('Future');
+                }
+            } else {
+                timelineMatch = selectedTimelines.includes('Future');
+            }
+            
+            return classMatch && typeMatch && statusMatch && timelineMatch;
+        });
+
+        // Sort by Class to group them together properly
+        filteredTasks.sort((a, b) => a.class.localeCompare(b.class));
+
+        const tbody = document.getElementById('table-body');
+        tbody.innerHTML = '';
+        
+        const emptyState = document.getElementById('empty-state');
+
+        if (filteredTasks.length === 0) {
+            emptyState.style.display = 'block';
+        } else {
+            emptyState.style.display = 'none';
+
+            let lastClass = null;
+            let lastClassCell = null;
+
+            filteredTasks.forEach(t => {
+                const tr = document.createElement('tr');
+                
+                let statusHtml = '';
+                if (t.status === 'Not Submitted' || t.status === 'Not Taken') {
+                    statusHtml = `<span class="status-red">${t.status}</span>`;
+                } else if (t.status === 'To be Confirmed') {
+                    statusHtml = `<span class="status-yellow">${t.status}</span>`;
+                } else {
+                    statusHtml = `<span class="status-normal">${t.status}</span>`;
+                }
+
+                let gradeHtml = t.grade || '-';
+                if (t.grade && t.grade.toUpperCase() === 'A') {
+                    gradeHtml = `<span class="badge badge-a">A</span>`;
+                } else if (t.grade && t.grade.toUpperCase() === 'B') {
+                    gradeHtml = `<span class="badge badge-b">B</span>`;
+                } else if (t.grade && t.grade.toUpperCase() === 'C') {
+                    gradeHtml = `<span class="badge badge-c">C</span>`;
+                } else if (t.grade && t.grade.toUpperCase() === 'F') {
+                    gradeHtml = `<span class="badge badge-f">F</span>`;
+                }
+
+                // Grouping Logic
+                const showClass = (t.class !== lastClass);
+                const classCellContent = showClass ? t.class : '';
+                const classCellStyle = showClass ? '' : 'border-bottom: none;';
+                
+                if (showClass && lastClassCell) {
+                    // Restore bottom border to the previous group's final row
+                    lastClassCell.style.borderBottom = '';
+                }
+
+                tr.innerHTML = `
+                    <td class="class-cell" style="${classCellStyle}">${classCellContent}</td>
+                    <td class="type-cell">${t.type}</td>
+                    <td class="hw-title">${t.task}</td>
+                    <td class="date-cell">${t.due}</td>
+                    <td>${statusHtml}</td>
+                    <td>${gradeHtml}</td>
+                    <td class="score-cell">${t.score || '-'}</td>
+                `;
+                
+                tbody.appendChild(tr);
+
+                lastClassCell = tr.querySelector('.class-cell');
+                lastClass = t.class;
+            });
+            
+            // Ensure the very last row always has a border
+            if (lastClassCell) {
+                lastClassCell.style.borderBottom = '';
+            }
+        }
+    }
+</script>
+</body>
+</html>

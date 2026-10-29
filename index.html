@@ -155,53 +155,101 @@
             text-decoration: underline;
         }
 
-        /* Calendar Timeline */
-        .timeline {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
+        /* Real Calendar Grid Styles */
+        .calendar-card {
+            background: var(--card-bg);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-radius: var(--border-radius-lg);
+            padding: 24px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.4);
         }
-
-        .event {
-            display: flex;
-            background: #ffffff;
-            border-radius: var(--border-radius-sm);
-            padding: 16px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-            border-left: 4px solid var(--accent-blue);
+        
+        .cal-header {
+            font-size: 20px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 20px;
         }
-
-        .event.exam {
-            border-left-color: var(--warning-orange);
+        
+        .cal-grid {
+            display: grid;
+            grid-template-columns: repeat(7, minmax(0, 1fr));
+            gap: 8px;
         }
-
-        .event.trip {
-            border-left-color: var(--success-green);
-        }
-
-        .event-date {
-            min-width: 100px;
+        
+        .cal-weekday {
+            text-align: center;
+            font-size: 13px;
             font-weight: 600;
             color: var(--text-secondary);
-            font-size: 14px;
+            padding-bottom: 8px;
+        }
+        
+        .cal-day {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            border-radius: 10px;
+            min-height: 100px;
+            padding: 8px;
             display: flex;
             flex-direction: column;
+            gap: 4px;
         }
-
-        .event-date span:last-child {
-            font-size: 12px;
-            margin-top: 4px;
+        
+        .cal-day.empty {
+            background: transparent;
+            border: none;
         }
-
-        .event-details {
-            flex: 1;
-            padding-left: 16px;
-        }
-
-        .event-title {
+        
+        .cal-date {
+            font-size: 15px;
             font-weight: 600;
-            font-size: 16px;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
+            color: var(--text-primary);
+        }
+        
+        .cal-event {
+            font-size: 11px;
+            line-height: 1.3;
+            padding: 4px 6px;
+            border-radius: 6px;
+            font-weight: 500;
+            word-wrap: break-word;
+        }
+        
+        .cal-event-sub {
+            font-size: 9px;
+            opacity: 0.9;
+            display: block;
+            margin-top: 2px;
+        }
+        
+        /* Event Colors */
+        .cal-event.exam { background: var(--warning-orange); color: #fff; }
+        .cal-event.trip { background: var(--success-green); color: #fff; }
+        .cal-event.rest { background: #86868b; color: #fff; }
+        .cal-event.meet { background: #af52de; color: #fff; }
+        .cal-event.amc { background: var(--accent-blue); color: #fff; }
+        .cal-event.course { background: #ff2d55; color: #fff; }
+        .cal-event.monthly { background: #5856d6; color: #fff; }
+
+        @media (max-width: 600px) {
+            .cal-day {
+                min-height: 80px;
+                padding: 4px;
+            }
+            .cal-event {
+                font-size: 9px;
+                padding: 3px;
+            }
+            .cal-date {
+                font-size: 13px;
+            }
+            .cal-event-sub {
+                display: none; /* Hide sub-text on very small screens to save space */
+            }
         }
     </style>
 </head>
@@ -214,16 +262,16 @@
 
     <!-- Section 1: Classes -->
     <section>
-        <h2>Classes</h2>
+        <h2>学业</h2>
         <div class="classes-grid">
-            <a href="homework_status.html" class="class-link">GPA</a>
-            <a href="Mid-term Scheduels" class="class-link">Mid-Term Schedules</a>
+            <a href="#" class="class-link">GPA</a>
+            <a href="#" class="class-link">Mid-Term Schedules</a>
         </div>
     </section>
 
     <!-- Section 2: Extracurricular Activities -->
     <section>
-        <h2>课外活动 (Extracurriculars)</h2>
+        <h2>课外活动</h2>
         <div class="card table-container">
             <table>
                 <thead>
@@ -270,39 +318,108 @@
         </div>
     </section>
 
-    <!-- Section 3: Calendar -->
+    <!-- Section 3: Real Calendar -->
     <section>
-        <h2>日历 (Calendar)</h2>
-        <div class="card timeline">
-            <!-- Event 1 -->
-            <div class="event exam">
-                <div class="event-date">
-                    <span>11.3 - 11.5</span>
-                </div>
-                <div class="event-details">
-                    <div class="event-title">期中考试 (Mid-Term Exams)</div>
-                </div>
-            </div>
+        <h2>日历</h2>
+        <div class="calendar-card">
+            <div class="cal-header">11月 (November)</div>
+            <div class="cal-grid">
+                <!-- Weekdays -->
+                <div class="cal-weekday">日 (Sun)</div>
+                <div class="cal-weekday">一 (Mon)</div>
+                <div class="cal-weekday">二 (Tue)</div>
+                <div class="cal-weekday">三 (Wed)</div>
+                <div class="cal-weekday">四 (Thu)</div>
+                <div class="cal-weekday">五 (Fri)</div>
+                <div class="cal-weekday">六 (Sat)</div>
 
-            <!-- Event 2 -->
-            <div class="event trip">
-                <div class="event-date">
-                    <span>11.6 - 11.9</span>
+                <!-- Week 1 -->
+                <div class="cal-day">
+                    <div class="cal-date">1</div>
+                    <div class="cal-event course">9:00 James课</div>
                 </div>
-                <div class="event-details">
-                    <div class="event-title">南京/苏州社会实践 (Social Practice)</div>
+                <div class="cal-day"><div class="cal-date">2</div></div>
+                <div class="cal-day">
+                    <div class="cal-date">3</div>
+                    <div class="cal-event exam">期中考试</div>
                 </div>
-            </div>
+                <div class="cal-day">
+                    <div class="cal-date">4</div>
+                    <div class="cal-event exam">期中考试</div>
+                </div>
+                <div class="cal-day">
+                    <div class="cal-date">5</div>
+                    <div class="cal-event exam">期中考试</div>
+                </div>
+                <div class="cal-day">
+                    <div class="cal-date">6</div>
+                    <div class="cal-event trip">南京江苏研学</div>
+                </div>
+                <div class="cal-day">
+                    <div class="cal-date">7</div>
+                    <div class="cal-event trip">南京江苏研学</div>
+                </div>
 
-            <!-- Event 3 -->
-            <div class="event">
-                <div class="event-date">
-                    <span>11.14</span>
-                    <span>17:00–18:15</span>
+                <!-- Week 2 -->
+                <div class="cal-day">
+                    <div class="cal-date">8</div>
+                    <div class="cal-event trip">南京江苏研学</div>
                 </div>
-                <div class="event-details">
-                    <div class="event-title">AMC 考试</div>
+                <div class="cal-day">
+                    <div class="cal-date">9</div>
+                    <div class="cal-event trip">南京江苏研学</div>
                 </div>
+                <div class="cal-day">
+                    <div class="cal-date">10</div>
+                    <div class="cal-event rest">居家休息</div>
+                </div>
+                <div class="cal-day">
+                    <div class="cal-date">11</div>
+                    <div class="cal-event meet">13:00 家长会</div>
+                </div>
+                <div class="cal-day"><div class="cal-date">12</div></div>
+                <div class="cal-day"><div class="cal-date">13</div></div>
+                <div class="cal-day">
+                    <div class="cal-date">14</div>
+                    <div class="cal-event monthly">10:00 老查月会</div>
+                    <div class="cal-event amc">17:00 AMC</div>
+                </div>
+
+                <!-- Week 3 -->
+                <div class="cal-day">
+                    <div class="cal-date">15</div>
+                    <div class="cal-event course">9:00 James课</div>
+                </div>
+                <div class="cal-day"><div class="cal-date">16</div></div>
+                <div class="cal-day"><div class="cal-date">17</div></div>
+                <div class="cal-day"><div class="cal-date">18</div></div>
+                <div class="cal-day"><div class="cal-date">19</div></div>
+                <div class="cal-day"><div class="cal-date">20</div></div>
+                <div class="cal-day"><div class="cal-date">21</div></div>
+
+                <!-- Week 4 -->
+                <div class="cal-day">
+                    <div class="cal-date">22</div>
+                    <div class="cal-event course">9:00 James课</div>
+                </div>
+                <div class="cal-day"><div class="cal-date">23</div></div>
+                <div class="cal-day"><div class="cal-date">24</div></div>
+                <div class="cal-day"><div class="cal-date">25</div></div>
+                <div class="cal-day"><div class="cal-date">26</div></div>
+                <div class="cal-day"><div class="cal-date">27</div></div>
+                <div class="cal-day"><div class="cal-date">28</div></div>
+
+                <!-- Week 5 -->
+                <div class="cal-day">
+                    <div class="cal-date">29</div>
+                    <div class="cal-event course">9:00 James课</div>
+                </div>
+                <div class="cal-day"><div class="cal-date">30</div></div>
+                <div class="cal-day empty"></div>
+                <div class="cal-day empty"></div>
+                <div class="cal-day empty"></div>
+                <div class="cal-day empty"></div>
+                <div class="cal-day empty"></div>
             </div>
         </div>
     </section>

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activities Overview</title>
+    <style>
+        :root {
+            --bg-color: #f5f5f7;
+            --card-bg: rgba(255, 255, 255, 0.8);
+            --text-primary: #1d1d1f;
+            --text-secondary: #86868b;
+            --accent-blue: #0071e3;
+            --success-green: #34c759;
+            --warning-orange: #ff9f0a;
+            --border-radius-lg: 20px;
+            --border-radius-sm: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.5;
+            padding: 40px 20px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 40px;
+            font-weight: 700;
+            letter-spacing: -0.003em;
+            margin-bottom: 10px;
+        }
+
+        section {
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-left: 5px;
+        }
+
+        /* Card Styles */
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-radius: var(--border-radius-lg);
+            padding: 24px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        /* Classes Grid */
+        .classes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .class-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ffffff;
+            color: var(--accent-blue);
+            text-decoration: none;
+            padding: 20px;
+            border-radius: var(--border-radius-lg);
+            font-weight: 600;
+            font-size: 18px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .class-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Table Styles */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 14px;
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            font-size: 15px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .badge.yes {
+            background-color: rgba(52, 199, 89, 0.15);
+            color: #248a3d;
+        }
+
+        .badge.no {
+            background-color: rgba(134, 134, 139, 0.15);
+            color: var(--text-secondary);
+        }
+
+        .link-text {
+            color: var(--accent-blue);
+            text-decoration: none;
+        }
+
+        .link-text:hover {
+            text-decoration: underline;
+        }
+
+        /* Calendar Timeline */
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .event {
+            display: flex;
+            background: #ffffff;
+            border-radius: var(--border-radius-sm);
+            padding: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+            border-left: 4px solid var(--accent-blue);
+        }
+
+        .event.exam {
+            border-left-color: var(--warning-orange);
+        }
+
+        .event.trip {
+            border-left-color: var(--success-green);
+        }
+
+        .event-date {
+            min-width: 100px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 14px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .event-date span:last-child {
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .event-details {
+            flex: 1;
+            padding-left: 16px;
+        }
+
+        .event-title {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Activities Overview</h1>
+    </header>
+
+    <!-- Section 1: Classes -->
+    <section>
+        <h2>Classes</h2>
+        <div class="classes-grid">
+            <a href="#" class="class-link">GPA</a>
+            <a href="#" class="class-link">Mid-Term Schedules</a>
+        </div>
+    </section>
+
+    <!-- Section 2: Extracurricular Activities -->
+    <section>
+        <h2>课外活动 (Extracurriculars)</h2>
+        <div class="card table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>活动 (Activity)</th>
+                        <th>是否报名 (Enrolled)</th>
+                        <th>日期 (Date)</th>
+                        <th>Comments</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>AMC</td>
+                        <td><span class="badge yes">是 (Yes)</span></td>
+                        <td>11月14日 17:00–18:15</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>IEO</td>
+                        <td><span class="badge no">否 (No)</span></td>
+                        <td>待定 (TBD)</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>CNEC</td>
+                        <td><span class="badge no">否 (No)</span></td>
+                        <td>待定 (TBD)</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>康莱德 (Conrad)</td>
+                        <td><span class="badge yes">是 (Yes)</span></td>
+                        <td>待定 (TBD)</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>元培 (Yuanpei)</td>
+                        <td><span class="badge no">否 (No)</span></td>
+                        <td>12月 (Dec)</td>
+                        <td><a href="https://rwz06e4m52t.feishu.cn/share/base/form/shrcnhDuQFwWEvee2963JT5nhrg" target="_blank" class="link-text">报名链接</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Section 3: Calendar -->
+    <section>
+        <h2>日历 (Calendar)</h2>
+        <div class="card timeline">
+            <!-- Event 1 -->
+            <div class="event exam">
+                <div class="event-date">
+                    <span>11.3 - 11.5</span>
+                </div>
+                <div class="event-details">
+                    <div class="event-title">期中考试 (Mid-Term Exams)</div>
+                </div>
+            </div>
+
+            <!-- Event 2 -->
+            <div class="event trip">
+                <div class="event-date">
+                    <span>11.6 - 11.9</span>
+                </div>
+                <div class="event-details">
+                    <div class="event-title">南京/苏州社会实践 (Social Practice)</div>
+                </div>
+            </div>
+
+            <!-- Event 3 -->
+            <div class="event">
+                <div class="event-date">
+                    <span>11.14</span>
+                    <span>17:00–18:15</span>
+                </div>
+                <div class="event-details">
+                    <div class="event-title">AMC 考试</div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+</body>
+</html>

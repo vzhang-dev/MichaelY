@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>期中考试安排</title>
+    <style>
+        :root {
+            --bg-color: #F5F5F7;
+            --card-bg: #FFFFFF;
+            --text-primary: #1D1D1F;
+            --text-secondary: #86868B;
+            --accent-blue: #007AFF;
+            --border-radius: 18px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.5;
+            padding: 40px 20px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 17px;
+            color: var(--text-secondary);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .date-section h2 {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            padding-left: 8px;
+            color: var(--text-primary);
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 24px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: scale(1.01);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+        }
+
+        .exam-info {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .exam-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .exam-details {
+            font-size: 15px;
+            color: var(--text-secondary);
+            display: flex;
+            gap: 16px;
+        }
+
+        .exam-details span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .exam-time {
+            font-size: 17px;
+            font-weight: 500;
+            color: var(--accent-blue);
+            background: rgba(0, 122, 255, 0.08);
+            padding: 8px 16px;
+            border-radius: 20px;
+            text-align: right;
+            min-width: 135px;
+        }
+        
+        .location {
+            color: #1D1D1F;
+            font-weight: 500;
+        }
+
+        @media (max-width: 600px) {
+            .card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+            .exam-time {
+                align-self: flex-start;
+            }
+            .exam-details {
+                flex-direction: column;
+                gap: 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>期中考试安排</h1>
+        <p>Grade 10 • 2026-2027第一学期</p>
+    </div>
+
+    <div class="container">
+        <!-- 11月3日 -->
+        <div class="date-section">
+            <h2>11月3日（星期二）</h2>
+            
+            <div class="card">
+                <div class="exam-info">
+                    <div class="exam-title">AP 英语语言与写作</div>
+                    <div class="exam-details">
+                        <span>👨‍🏫 Tim Sun (APE1班)</span>
+                        <span class="location">📍 东区E112</span>
+                    </div>
+                </div>
+                <div class="exam-time">08:00 - 09:30</div>
+            </div>
+
+            <div class="card">
+                <div class="exam-info">
+                    <div class="exam-title">政治</div>
+                    <div class="exam-details">
+                        <span>👩‍🏫 赵梓含 (政治4班)</span>
+                        <span class="location">📍 各班教室 (Homeroom)</span>
+                    </div>
+                </div>
+                <div class="exam-time">10:30 - 11:30</div>
+            </div>
+
+            <div class="card">
+                <div class="exam-info">
+                    <div class="exam-title">化学</div>
+                    <div class="exam-details">
+                        <span>👩‍🏫 侯静菲 (化学2班)</span>
+                        <span class="location">📍 东区E107</span>
+                    </div>
+                </div>
+                <div class="exam-time">14:00 - 15:30</div>
+            </div>
+        </div>
+
+        <!-- 11月4日 -->
+        <div class="date-section">
+            <h2>11月4日（星期三）</h2>
+            
+            <div class="card">
+                <div class="exam-info">
+                    <div class="exam-title">语文 I</div>
+                    <div class="exam-details">
+                        <span>👨‍🏫 杨景轩 (语文1班)</span>
+                        <span class="location">📍 东区E106</span>
+                    </div>
+                </div>
+                <div class="exam-time">08:00 - 10:00</div>
+            </div>
+
+            <div class="card">
+                <div class="exam-info">
+                    <div class="exam-title">历史</div>
+                    <div class="exam-details">
+                        <span>👩‍🏫 赵伟含 (20班)</span>
+                        <span class="location">📍 各班教室 (Homeroom)</span>
+                    </div>
+                </div>
+                <div class="exam-time">11:00 - 12:00</div>
+            </div>
+
+            <div class="card">
+                <div class="exam-info">
+                    <div class="exam-title">生物</div>
+                    <div class="exam-details">
+                        <span>👩‍🏫 潘丹 (生物6班)</span>
+                        <span class="location">📍 各班教室 (Homeroom)</span>
+                    </div>
+                </div>
+                <div class="exam-time">14:00 - 15:30</div>
+            </div>
+        </div>
+
+        <!-- 11月5日 -->
+        <div class="date-section">
+            <h2>11月5日（星期四）</h2>
+            
+            <div class="card">
+                <div class="exam-info">
+                    <div class="exam-title">AP 预备微积分</div>
+                    <div class="exam-details">
+                        <span>👨‍🏫 曹文卓 (1班)</span>
+                        <span class="location">📍 东区E106</span>
+                    </div>
+                </div>
+                <div class="exam-time">08:00 - 09:30</div>
+            </div>
+
+            <div class="card">
+                <div class="exam-info">
+                    <div class="exam-title">AP 物理 1</div>
+                    <div class="exam-details">
+                        <span>👨‍🏫 李皓 (物理1-4班)</span>
+                        <span class="location">📍 考场待核实 (预估 E112)</span>
+                    </div>
+                </div>
+                <div class="exam-time">10:30 - 12:00</div>
+            </div>
+
+            <div class="card">
+                <div class="exam-info">
+                    <div class="exam-title">地理</div>
+                    <div class="exam-details">
+                        <span>👩‍🏫 赵燕 (地理走班2班)</span>
+                        <span class="location">📍 各班教室 (Homeroom)</span>
+                    </div>
+                </div>
+                <div class="exam-time">14:00 - 15:00</div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -133,9 +133,48 @@
                 gap: 4px;
             }
         }
+
+        /* Top-left Breadcrumb Navigation */
+        .breadcrumb-nav {
+            max-width: 980px;
+            margin: 0 auto 16px auto;
+            padding: 0 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            text-align: left;
+        }
+        .breadcrumb-nav a {
+            color: #0071e3;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: opacity 0.2s ease;
+        }
+        .breadcrumb-nav a:hover {
+            text-decoration: underline;
+            opacity: 0.85;
+        }
+        .breadcrumb-sep {
+            color: #86868b;
+            font-size: 13px;
+            user-select: none;
+        }
+        .breadcrumb-current {
+            color: #86868b;
+            font-weight: 500;
+        }
     </style>
 </head>
 <body>
+    <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+        <a href="index.html">Homepage</a>
+        <span class="breadcrumb-sep">&gt;</span>
+        <span class="breadcrumb-current">Mid-Term Schedules</span>
+    </nav>
 
     <div class="header">
         <h1>期中考试安排</h1>

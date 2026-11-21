@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>即将报名截止的竞赛提醒</title>
+    <style>
+        :root {
+            --bg-color: #f5f5f7;
+            --card-bg: rgba(255, 255, 255, 0.88);
+            --text-primary: #1d1d1f;
+            --text-secondary: #6e6e73;
+            --text-muted: #86868b;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --accent-blue: #0071e3;
+            --accent-blue-hover: #0077ed;
+
+            /* Pastel Pill Colors */
+            --red-bg: #fce8e6;
+            --red-text: #d9342b;
+            --orange-bg: #fff2e0;
+            --orange-text: #cc7000;
+            --blue-bg: #e8f2fc;
+            --blue-text: #0058b0;
+            --green-bg: #e3f5eb;
+            --green-text: #1e833f;
+            --purple-bg: #f3e8ff;
+            --purple-text: #6b21a8;
+            --gray-bg: #ebebf0;
+            --gray-text: #424245;
+
+            --radius-lg: 20px;
+            --radius-md: 14px;
+            --radius-sm: 10px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.55;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            padding: 48px 20px 80px;
+        }
+
+        .container {
+            max-width: 920px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 36px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--red-text);
+            background: var(--red-bg);
+            padding: 5px 14px;
+            border-radius: 999px;
+            margin-bottom: 12px;
+            letter-spacing: 0.02em;
+        }
+
+        h1 {
+            font-size: 38px;
+            font-weight: 700;
+            letter-spacing: -0.015em;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Controls Bar */
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .filter-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .pill-btn {
+            border: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 500;
+            padding: 7px 15px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .pill-btn:hover {
+            color: var(--text-primary);
+            background: #ffffff;
+        }
+
+        .pill-btn.active {
+            background: var(--text-primary);
+            color: #ffffff;
+            border-color: var(--text-primary);
+        }
+
+        .action-links {
+            display: flex;
+            gap: 14px;
+        }
+
+        .text-btn {
+            background: none;
+            border: none;
+            color: var(--accent-blue);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 4px 2px;
+        }
+
+        .text-btn:hover {
+            text-decoration: underline;
+        }
+
+        /* Timeline / Summary Strip */
+        .quick-overview {
+            background: var(--card-bg);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-radius: var(--radius-lg);
+            padding: 18px 24px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+        }
+
+        .overview-item {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            border-left: 3px solid var(--accent-blue);
+            padding-left: 12px;
+        }
+
+        .overview-item.urgent {
+            border-left-color: var(--red-text);
+        }
+
+        .overview-date {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .overview-item.urgent .overview-date {
+            color: var(--red-text);
+        }
+
+        .overview-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Activity Cards List */
+        .cards-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .activity-card {
+            background: var(--card-bg);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+        }
+
+        .activity-card:hover {
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.07);
+        }
+
+        .card-main {
+            padding: 24px 28px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .card-top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .title-group {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .category-badge {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 11px;
+            border-radius: 999px;
+            letter-spacing: 0.01em;
+        }
+
+        .cat-chem { background: var(--blue-bg); color: var(--blue-text); }
+        .cat-bio { background: var(--green-bg); color: var(--green-text); }
+        .cat-writing { background: var(--purple-bg); color: var(--purple-text); }
+        .cat-math { background: var(--orange-bg); color: var(--orange-text); }
+        .cat-econ { background: var(--gray-bg); color: var(--gray-text); }
+
+        .activity-title {
+            font-size: 21px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+        }
+
+        .deadline-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 6px 14px;
+            border-radius: 999px;
+            white-space: nowrap;
+        }
+
+        .deadline-urgent {
+            background: var(--red-bg);
+            color: var(--red-text);
+        }
+
+        .deadline-soon {
+            background: var(--orange-bg);
+            color: var(--orange-text);
+        }
+
+        .brief-intro {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .card-footer-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .key-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .key-meta span {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .key-meta strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .expand-trigger {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--accent-blue);
+            transition: color 0.2s ease;
+        }
+
+        .chevron {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: rgba(0, 113, 227, 0.1);
+            color: var(--accent-blue);
+            text-align: center;
+            line-height: 18px;
+            font-size: 11px;
+            transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s ease;
+        }
+
+        .activity-card.open .chevron {
+            transform: rotate(180deg);
+            background: var(--accent-blue);
+            color: #ffffff;
+        }
+
+        /* Expandable Details Drawer */
+        .details-drawer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(245, 245, 247, 0.55);
+            border-top: 0 solid rgba(0, 0, 0, 0.06);
+        }
+
+        .activity-card.open .details-drawer {
+            max-height: 1200px;
+            border-top-width: 1px;
+        }
+
+        .details-content {
+            padding: 22px 28px 26px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px;
+        }
+
+        .detail-block {
+            background: #ffffff;
+            border-radius: var(--radius-md);
+            padding: 16px 18px;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
+        }
+
+        .detail-block.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .detail-label {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .detail-body {
+            font-size: 14px;
+            color: var(--text-primary);
+            line-height: 1.65;
+        }
+
+        .detail-body ul {
+            padding-left: 18px;
+            margin-top: 4px;
+        }
+
+        .detail-body li {
+            margin-bottom: 6px;
+        }
+
+        .detail-body li:last-child {
+            margin-bottom: 0;
+        }
+
+        .alert-box {
+            background: var(--red-bg);
+            color: #9e1c15;
+            border-radius: var(--radius-sm);
+            padding: 12px 14px;
+            font-size: 13.5px;
+            line-height: 1.55;
+            margin-top: 8px;
+        }
+
+        .external-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 8px;
+            color: var(--accent-blue);
+            font-weight: 500;
+            text-decoration: none;
+            font-size: 14px;
+            word-break: break-all;
+        }
+
+        .external-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 28px 14px 60px;
+            }
+            h1 {
+                font-size: 28px;
+            }
+            .card-main {
+                padding: 18px 20px;
+            }
+            .details-content {
+                padding: 16px 20px 20px;
+            }
+            .activity-title {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="eyebrow">⏰ 竞赛报名提醒 · 备赛群二维码已发学生群</div>
+        <h1>即将报名截止的竞赛汇总</h1>
+        <p class="subtitle">按报名截止时间从近到远排列。点击任意竞赛卡片即可展开查看考试形式、组别设置、写作要求及报名链接等完整细则。</p>
+    </header>
+
+    <!-- Quick Deadline Strip -->
+    <div class="quick-overview">
+        <div class="overview-item urgent">
+            <span class="overview-date">11月24日 截止</span>
+            <span class="overview-name">1. 剑桥化学挑战 C3L6</span>
+        </div>
+        <div class="overview-item urgent">
+            <span class="overview-date">11月25日 截止</span>
+            <span class="overview-name">3. 哈佛国际评论 HIR</span>
+        </div>
+        <div class="overview-item urgent">
+            <span class="overview-date">11月25日 截止</span>
+            <span class="overview-name">4. 大师学者数学峰会</span>
+        </div>
+        <div class="overview-item">
+            <span class="overview-date">12月1日 截止</span>
+            <span class="overview-name">5. 全美经济学挑战 CNEC</span>
+        </div>
+        <div class="overview-item">
+            <span class="overview-date">12月5日 截止</span>
+            <span class="overview-name">2. Brain Bee 脑科学活动</span>
+        </div>
+    </div>
+
+    <!-- Filter & Expand Controls -->
+    <div class="toolbar">
+        <div class="filter-pills">
+            <button class="pill-btn active" onclick="filterCards('all', this)">全部 (5)</button>
+            <button class="pill-btn" onclick="filterCards('chem', this)">化学 C3L6</button>
+            <button class="pill-btn" onclick="filterCards('writing', this)">人文写作 HIR</button>
+            <button class="pill-btn" onclick="filterCards('math', this)">数学 MasterScholar</button>
+            <button class="pill-btn" onclick="filterCards('econ', this)">经济 CNEC</button>
+            <button class="pill-btn" onclick="filterCards('bio', this)">脑科学 Brain Bee</button>
+        </div>
+        <div class="action-links">
+            <button class="text-btn" onclick="toggleAll(true)">全部展开</button>
+            <button class="text-btn" onclick="toggleAll(false)">全部收起</button>
+        </div>
+    </div>
+
+    <!-- Competition Cards -->
+    <div class="cards-list" id="cardsList">
+
+        <!-- 1. C3L6 -->
+        <article class="activity-card" data-category="chem">
+            <div class="card-main" onclick="toggleCard(this)">
+                <div class="card-top-row">
+                    <div class="title-group">
+                        <span class="category-badge cat-chem">化学 · Chemistry</span>
+                        <h2 class="activity-title">1. 剑桥化学挑战（C3L6）</h2>
+                    </div>
+                    <span class="deadline-badge deadline-urgent">❗️ 报名截止：2026年11月24日</span>
+                </div>
+                <p class="brief-intro">
+                    由剑桥大学化学系和圣凯瑟琳学院共同创办，常被作为 UKChO 的前置赛事。成绩优异者将受邀参加剑桥化学集训营，跟随剑桥大学教授提升学术能力。
+                </p>
+                <div class="card-footer-row">
+                    <div class="key-meta">
+                        <span>🗓 <strong>活动时间：</strong>12月5日（周六）14:00–15:30</span>
+                        <span>⏱ <strong>时长：</strong>90 分钟</span>
+                    </div>
+                    <div class="expand-trigger">
+                        <span class="trigger-label">展开详情</span>
+                        <span class="chevron">▼</span>
+                    </div>
+                </div>
+            </div>
+            <div class="details-drawer">
+                <div class="details-content">
+                    <div class="detail-block">
+                        <div class="detail-label">比赛形式与题型</div>
+                        <div class="detail-body">
+                            <ul>
+                                <li><strong>考试时长：</strong>90 分钟</li>
+                                <li><strong>题目设置：</strong>完成 2–3 道综合性大题</li>
+                                <li><strong>赛事定位：</strong>适合作为英国化学奥林匹克（UKChO）的理想前置热身与进阶赛事</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="detail-block">
+                        <div class="detail-label">学术进阶与奖励</div>
+                        <div class="detail-body">
+                            <ul>
+                                <li><strong>创办机构：</strong>剑桥大学化学系 &amp; 圣凯瑟琳学院（St Catharine's College, Cambridge）</li>
+                                <li><strong>集训邀请：</strong>C3L6 成绩优异者将受邀参加<strong>剑桥化学集训营</strong>，跟随剑桥大学教授深入学习，提升化学学术能力。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- 3. HIR -->
+        <article class="activity-card" data-category="writing">
+            <div class="card-main" onclick="toggleCard(this)">
+                <div class="card-top-row">
+                    <div class="title-group">
+                        <span class="category-badge cat-writing">人文写作 · Humanities</span>
+                        <h2 class="activity-title">3. 哈佛国际评论学术写作挑战（HIR）</h2>
+                    </div>
+                    <span class="deadline-badge deadline-urgent">❗️ 报名截止：2026年11月25日</span>
+                </div>
+                <p class="brief-intro">
+                    《哈佛国际评论》创刊 45 年，供稿人包括哈佛教授、43 位国家元首及 11 位诺贝尔奖得主。参赛者需围绕国际事务相关议题提交一篇 800–1,200 英文单词的短篇学术分析文章。
+                </p>
+                <div class="card-footer-row">
+                    <div class="key-meta">
+                        <span>📝 <strong>投稿截止：</strong>2027年1月2日</span>
+                        <span>🎤 <strong>线上答辩：</strong>2027年2月5日</span>
+                    </div>
+                    <div class="expand-trigger">
+                        <span class="trigger-label">展开详情</span>
+                        <span class="chevron">▼</span>
+                    </div>
+                </div>
+            </div>
+            <div class="details-drawer">
+                <div class="details-content">
+                    <div class="detail-block">
+                        <div class="detail-label">一、比赛内容与 2026 赛季主题（三选一）</div>
+                        <div class="detail-body">
+                            <p>提交一篇 <strong>800–1,200 英文单词</strong>的短篇学术分析文章（不含图表、数据表及作者声明）：</p>
+                            <ul>
+                                <li><strong>主题 A：</strong>数字时代的全球文化（Global Culture in the Digital Era）</li>
+                                <li><strong>主题 B：</strong>多极世界中的安全（Security in a Multipolar World）</li>
+                                <li><strong>主题 C：</strong>技术、创新与权力（Technology, Innovation, and Power）</li>
+                            </ul>
+                            <p style="margin-top:8px; color: var(--text-secondary); font-size: 13px;">
+                                * 延伸领域：农业、商业、网络安全、国防、教育、能源与环境、金融、公共卫生、科技、太空、贸易、交通运输等官方认可领域。
+                            </p>
+                        </div>
+                    </div>
+                    <div class="detail-block">
+                        <div class="detail-label">二、写作规范与引用要求</div>
+                        <div class="detail-body">
+                            <ul>
+                                <li><strong>选题与论证：</strong>拒绝情绪化立场评论，须基于证据、数据和文献展开论证；应聚焦“未被充分关注的全球性议题”，而非追逐热点。</li>
+                                <li><strong>引用与格式：</strong>在线来源须使用超链接嵌入；书籍等非数字来源遵循 <strong>AP Style</strong>；<strong>严禁使用脚注</strong>，所有引用需融入正文或以括号/尾注形式呈现。提交文件必须为 <strong>PDF</strong>。</li>
+                            </ul>
+                            <div class="alert-box">
+                                <strong>⚠️ 对 AI 工具零容忍：</strong>禁止使用 ChatGPT、Claude 等工具生成文本、改写段落或构思论点。所有稿件经多重 AI 检测器筛查，“高 AI 生成分数”将直接取消资格；答辩日评委会还将追问细节以验证真实熟悉度。
+                            </div>
+                        </div>
+                    </div>
+                    <div class="detail-block full-width">
+                        <div class="detail-label">三、关键时间节点与官网链接</div>
+                        <div class="detail-body">
+                            <ul>
+                                <li><strong>报名截止：</strong>2026.11.25 ｜ <strong>投稿截止：</strong>2027.01.02 ｜ <strong>线上答辩：</strong>2027.02.05</li>
+                            </ul>
+                            <a class="external-link" href="https://harvardinternationalreview.com/contest" target="_blank" rel="noopener noreferrer">
+                                🔗 官方网站：https://harvardinternationalreview.com/contest ↗
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- 4. MasterScholar Math Contest -->
+        <article class="activity-card" data-category="math">
+            <div class="card-main" onclick="toggleCard(this)">
+                <div class="card-top-row">
+                    <div class="title-group">
+                        <span class="category-badge cat-math">数学 · Mathematics</span>
+                        <h2 class="activity-title">4. 2027 MasterScholar Math Contest 大师学者峰会</h2>
+                    </div>
+                    <span class="deadline-badge deadline-urgent">❗️ 报名截止：2026年11月25日</span>
+                </div>
+                <p class="brief-intro">
+                    为希望赴美参加 DMM 杜克数学峰会的中国区域学生提供选拔机会。中国赛综合排名前三的学校代表队将获邀赴美参加决赛。
+                </p>
+                <div class="card-footer-row">
+                    <div class="key-meta">
+                        <span>🗓 <strong>日程安排：</strong>2026年12月第一个周末</span>
+                        <span>👥 <strong>参赛对象：</strong>9–12年级（学校团队6人起）</span>
+                    </div>
+                    <div class="expand-trigger">
+                        <span class="trigger-label">展开详情</span>
+                        <span class="chevron">▼</span>
+                    </div>
+                </div>
+            </div>
+            <div class="details-drawer">
+                <div class="details-content">
+                    <div class="detail-block">
+                        <div class="detail-label">比赛内容与形式</div>
+                        <div class="detail-body">
+                            <ul>
+                                <li><strong>答题语言：</strong>英文</li>
+                                <li><strong>答题时长：</strong>75 分钟</li>
+                                <li><strong>题目形式：</strong>10 道英文填空题</li>
+                                <li><strong>参与要求：</strong>学校 9–12 年级在读学生</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="detail-block">
+                        <div class="detail-label">组队规则与晋级机制</div>
+                        <div class="detail-body">
+                            <ul>
+                                <li><strong>参赛方式：</strong>仅接受学校团队报名，6 人起校园选拔，学生个人完成答题</li>
+                                <li><strong>校队成绩：</strong>根据每所学校排名前 6 名学生的平均成绩决定代表队晋级资格</li>
+                                <li><strong>后续赛程：</strong>晋级学校以代表队形式参加中国赛（含个人与团队结合环节，考察数学能力、解题策略与团队协作）；中国赛综合排名前三的学校代表队赴美参加 DMM 决赛。</li>
+                                <li><strong>报名周期：</strong>2026年10月26日 – 2026年11月25日</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- 5. CNEC -->
+        <article class="activity-card" data-category="econ">
+            <div class="card-main" onclick="toggleCard(this)">
+                <div class="card-top-row">
+                    <div class="title-group">
+                        <span class="category-badge cat-econ">经济 · Economics</span>
+                        <h2 class="activity-title">5. 全美经济学挑战（CNEC）</h2>
+                    </div>
+                    <span class="deadline-badge deadline-soon">⏰ 报名截止：2026年12月1日</span>
+                </div>
+                <p class="brief-intro">
+                    中国区唯一通往 NEC 全球站的经济学素养研习活动，学术标准互认机构 CEE 拥有 77 年学术沉淀、累计影响超 500 万全球青少年，是目前国内参与人数最多的经济学活动。
+                </p>
+                <div class="card-footer-row">
+                    <div class="key-meta">
+                        <span>💻 <strong>初级站：</strong>2026年12月12日或13日（线上）</span>
+                        <span>🏆 <strong>中国站：</strong>2027年2月或3月</span>
+                    </div>
+                    <div class="expand-trigger">
+                        <span class="trigger-label">展开详情</span>
+                        <span class="chevron">▼</span>
+                    </div>
+                </div>
+            </div>
+            <div class="details-drawer">
+                <div class="details-content">
+                    <div class="detail-block">
+                        <div class="detail-label">组别设置（难度：Pre &lt; DR &lt; AS）</div>
+                        <div class="detail-body">
+                            <ul>
+                                <li><strong>Pre 组（入门组）：</strong>2–4 人组队 或 个人参与</li>
+                                <li><strong>DR 组（初级组）：</strong>4 人 / 队</li>
+                                <li><strong>AS 组（高级组）：</strong>4 人 / 队</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="detail-block">
+                        <div class="detail-label">关键日期与报名通道</div>
+                        <div class="detail-body">
+                            <ul>
+                                <li><strong>报名截止：</strong>2026年12月1日</li>
+                                <li><strong>初级站：</strong>2026年12月12日或13日（线上答题）</li>
+                                <li><strong>中国站：</strong>2027年2月或3月</li>
+                            </ul>
+                            <a class="external-link" href="https://www.webloom.cn/api/s/CNEC_2027" target="_blank" rel="noopener noreferrer">
+                                🔗 报名链接：https://www.webloom.cn/api/s/CNEC_2027 ↗
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- 2. Brain Bee -->
+        <article class="activity-card" data-category="bio">
+            <div class="card-main" onclick="toggleCard(this)">
+                <div class="card-top-row">
+                    <div class="title-group">
+                        <span class="category-badge cat-bio">脑科学 · Neuroscience</span>
+                        <h2 class="activity-title">2. 2027年 Brain Bee 🧠 脑科学地区活动</h2>
+                    </div>
+                    <span class="deadline-badge deadline-soon">⏰ 报名截止：2026年12月5日</span>
+                </div>
+                <p class="brief-intro">
+                    围绕与大脑相关的基础知识（大脑结构、大脑功能、大脑疾病等），划定知识大纲并鼓励学生探究式学习，采用“地区 – 全国 – 国际”三级晋级模式。
+                </p>
+                <div class="card-footer-row">
+                    <div class="key-meta">
+                        <span>🗓 <strong>地区活动：</strong>2027年1月9日（周六）10:00–11:30</span>
+                        <span>🎓 <strong>参与对象：</strong>9–12年级学生（Brain Bee组）</span>
+                    </div>
+                    <div class="expand-trigger">
+                        <span class="trigger-label">展开详情</span>
+                        <span class="chevron">▼</span>
+                    </div>
+                </div>
+            </div>
+            <div class="details-drawer">
+                <div class="details-content">
+                    <div class="detail-block">
+                        <div class="detail-label">考察内容与知识大纲</div>
+                        <div class="detail-body">
+                            <ul>
+                                <li><strong>参与对象：</strong>9–12 年级学生参加 Brain Bee 组</li>
+                                <li><strong>核心考察：</strong>围绕与大脑相关的基础知识，主要包括<strong>大脑结构、大脑功能、大脑疾病</strong>等</li>
+                                <li><strong>备赛方式：</strong>活动划定知识大纲，鼓励学生开展探究式学习</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="detail-block">
+                        <div class="detail-label">地区活动形式与试卷规格</div>
+                        <div class="detail-body">
+                            <ul>
+                                <li><strong>晋级体系：</strong>地区 – 全国 – 国际 三级模式</li>
+                                <li><strong>考试形式：</strong>全国统一命题，闭卷笔试</li>
+                                <li><strong>题型与题量：</strong>由选择题、填空题两种题型构成，Brain Bee 组（9–12年级）<strong>共 80 题</strong></li>
+                                <li><strong>试题语言：</strong>中文命题，专业术语在试题中均用<strong>中英文双语标出</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+    </div>
+</div>
+
+<script>
+    function toggleCard(cardMainEl) {
+        const card = cardMainEl.closest('.activity-card');
+        const isOpen = card.classList.toggle('open');
+        const label = card.querySelector('.trigger-label');
+        if (label) {
+            label.textContent = isOpen ? '收起详情' : '展开详情';
+        }
+    }
+
+    function toggleAll(expand) {
+        document.querySelectorAll('.activity-card').forEach(card => {
+            if (card.style.display === 'none') return;
+            card.classList.toggle('open', expand);
+            const label = card.querySelector('.trigger-label');
+            if (label) {
+                label.textContent = expand ? '收起详情' : '展开详情';
+            }
+        });
+    }
+
+    function filterCards(category, btnEl) {
+        document.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('active'));
+        btnEl.classList.add('active');
+
+        document.querySelectorAll('.activity-card').forEach(card => {
+            if (category === 'all' || card.dataset.category === category) {
+                card.style.display = '';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

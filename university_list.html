@@ -108,7 +108,7 @@
             color: #fff;
         }
 
-        /* Sticky Filter Panel */
+        /* Filter Panel (non-sticky so it never blocks view while scrolling, with collapse/hide support) */
         .filter-panel {
             background: rgba(255, 255, 255, 0.9);
             backdrop-filter: saturate(180%) blur(20px);
@@ -118,9 +118,45 @@
             padding: 18px 22px;
             margin-bottom: 20px;
             box-shadow: var(--shadow-sm);
-            position: sticky;
-            top: 12px;
-            z-index: 50;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .filter-panel.collapsed .filter-groups {
+            display: none;
+        }
+
+        .filter-panel.collapsed .filter-top-row {
+            margin-bottom: 0;
+        }
+
+        .filter-panel.hidden {
+            display: none;
+        }
+
+        .filter-right-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn-collapse-filter {
+            padding: 5px 12px;
+            border-radius: 999px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-subtle);
+            color: var(--text-secondary);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .btn-collapse-filter:hover {
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+            background: #fff;
         }
 
         .filter-top-row {
@@ -646,6 +682,7 @@
             <p>基于【三士渡】学校介绍手卡提取 · 涵盖 36 所全美综合性大学 & 5 所顶尖文理学院 + 2027 Fall 申请季 DDL 速查表</p>
         </div>
         <div class="header-actions">
+            <button class="btn-action" id="toggleFilterPanelBtn" onclick="toggleFilterPanel()">隐藏筛选栏</button>
             <button class="btn-action" id="toggleViewBtn" onclick="toggleDDLSection()">查看 2027 Fall 申请季 DDL 速查总表 (含UC系)</button>
             <button class="btn-action primary" id="expandAllBtn" onclick="toggleExpandAll()">展开全部详情</button>
         </div>
@@ -659,8 +696,11 @@
                 <input type="text" id="searchInput" placeholder="输入大学中/英文名、缩写(如 MIT, JHU, CMU, UIUC)、城市或专业关键词搜索..." oninput="handleSearch()">
                 <button class="clear-search" id="clearSearchBtn" onclick="clearSearch()">✕</button>
             </div>
-            <div class="stats-summary" id="statsSummary">
-                当前显示 <strong>41</strong> / 41 所院校（点击任意学校行可展开/收起详细手卡内容）
+            <div class="filter-right-meta">
+                <div class="stats-summary" id="statsSummary">
+                    当前显示 <strong>41</strong> / 41 所院校（点击任意学校行可展开/收起详细手卡内容）
+                </div>
+                <button class="btn-collapse-filter" id="collapseFilterBtn" onclick="toggleFilterCollapse()">收起筛选项 ▲</button>
             </div>
         </div>
 
@@ -985,6 +1025,20 @@ function renderDDLTable() {
             <td style="font-size:12px; color:var(--text-muted);">${r['本页备注']}</td>
         </tr>
     `).join('');
+}
+
+function toggleFilterCollapse() {
+    const panel = document.getElementById('mainFilterPanel');
+    const btn = document.getElementById('collapseFilterBtn');
+    const isCollapsed = panel.classList.toggle('collapsed');
+    btn.textContent = isCollapsed ? '展开筛选项 ▼' : '收起筛选项 ▲';
+}
+
+function toggleFilterPanel() {
+    const panel = document.getElementById('mainFilterPanel');
+    const btn = document.getElementById('toggleFilterPanelBtn');
+    const isHidden = panel.classList.toggle('hidden');
+    btn.textContent = isHidden ? '显示筛选栏' : '隐藏筛选栏';
 }
 
 function toggleDDLSection() {

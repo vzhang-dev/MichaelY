@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2027 U.S. News 美国大学介绍手卡汇总</title>
+    <style>
+        :root {
+            --bg-page: #f5f5f7;
+            --bg-card: #ffffff;
+            --bg-subtle: #f8f8fa;
+            --text-primary: #1d1d1f;
+            --text-secondary: #515154;
+            --text-muted: #86868b;
+            --border-color: #e5e5ea;
+            --accent-blue: #0066cc;
+            --accent-blue-bg: #eef6ff;
+            --accent-purple: #5e5ce6;
+            --accent-purple-bg: #f2f1ff;
+            --accent-green: #1d7d3f;
+            --accent-green-bg: #eaf7ee;
+            --accent-amber: #b25000;
+            --accent-amber-bg: #fff5eb;
+            --accent-red: #c93400;
+            --accent-red-bg: #ffefeb;
+            --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.07);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-primary);
+            line-height: 1.55;
+            -webkit-font-smoothing: antialiased;
+            padding: 32px 20px 64px;
+        }
+
+        .container {
+            max-width: 1380px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .title-block h1 {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+        }
+
+        .title-block p {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn-action {
+            padding: 8px 15px;
+            border-radius: 999px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.18s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-action:hover {
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+        }
+
+        .btn-action.primary {
+            background: var(--text-primary);
+            color: #fff;
+            border-color: var(--text-primary);
+        }
+
+        .btn-action.primary:hover {
+            background: #333336;
+            color: #fff;
+        }
+
+        /* Sticky Filter Panel */
+        .filter-panel {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 18px 22px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 12px;
+            z-index: 50;
+        }
+
+        .filter-top-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            min-width: 280px;
+            max-width: 520px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 36px 10px 38px;
+            font-size: 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            background: var(--bg-subtle);
+            color: var(--text-primary);
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .search-box input:focus {
+            background: #fff;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.12);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 14px;
+            pointer-events: none;
+        }
+
+        .clear-search {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 16px;
+            cursor: pointer;
+            display: none;
+        }
+
+        .stats-summary {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .stats-summary strong {
+            color: var(--accent-blue);
+            font-weight: 700;
+        }
+
+        .filter-groups {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .filter-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-right: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .chip {
+            padding: 5px 13px;
+            border-radius: 999px;
+            border: 1px solid var(--border-color);
+            background: #fff;
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            user-select: none;
+        }
+
+        .chip:hover:not(.active) {
+            background: var(--bg-subtle);
+            border-color: #d2d2d7;
+        }
+
+        .chip.active {
+            background: var(--text-primary);
+            color: #fff;
+            border-color: var(--text-primary);
+        }
+
+        .divider-v {
+            width: 1px;
+            height: 20px;
+            background: var(--border-color);
+        }
+
+        /* School Cards List (Table-like Grid Header + Expandable Rows) */
+        .list-header {
+            display: grid;
+            grid-template-columns: 74px 96px 1.6fr 0.9fr 0.85fr 1.05fr 0.7fr 0.9fr 2.1fr 86px;
+            gap: 12px;
+            padding: 12px 20px;
+            background: #ebebf0;
+            border-radius: var(--radius-md);
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .school-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            margin-bottom: 10px;
+            box-shadow: var(--shadow-sm);
+            transition: box-shadow 0.2s ease, border-color 0.2s ease;
+            overflow: hidden;
+        }
+
+        .school-card:hover {
+            box-shadow: var(--shadow-md);
+            border-color: #d2d2d7;
+        }
+
+        .school-card.expanded {
+            border-color: var(--accent-blue);
+            box-shadow: 0 8px 24px rgba(0, 102, 204, 0.09);
+        }
+
+        .card-summary {
+            display: grid;
+            grid-template-columns: 74px 96px 1.6fr 0.9fr 0.85fr 1.05fr 0.7fr 0.9fr 2.1fr 86px;
+            gap: 12px;
+            padding: 16px 20px;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        /* Rank Badge */
+        .rank-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 52px;
+            padding: 6px 10px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 16px;
+            background: var(--bg-subtle);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .rank-badge.top10 {
+            background: linear-gradient(135deg, #1d1d1f 0%, #3a3a3c 100%);
+            color: #fff;
+            border: none;
+        }
+
+        /* Category Badge */
+        .cat-badge {
+            display: inline-block;
+            padding: 4px 9px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .cat-univ {
+            background: var(--accent-blue-bg);
+            color: var(--accent-blue);
+        }
+
+        .cat-lac {
+            background: var(--accent-purple-bg);
+            color: var(--accent-purple);
+        }
+
+        /* University Name Cell */
+        .univ-name-zh {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.3;
+        }
+
+        .univ-name-en {
+            font-size: 11.5px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-top: 2px;
+            letter-spacing: 0.01em;
+        }
+
+        .univ-tagline {
+            font-size: 12px;
+            color: var(--accent-blue);
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        /* Key Info Cells */
+        .cell-main {
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .cell-sub {
+            font-size: 11.5px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .early-pill {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            background: var(--accent-amber-bg);
+            color: var(--accent-amber);
+        }
+
+        /* Rounds Timeline Pills inside Summary */
+        .rounds-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .round-chip {
+            display: inline-flex;
+            flex-direction: column;
+            padding: 5px 9px;
+            border-radius: 8px;
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-color);
+            font-size: 11.5px;
+            line-height: 1.35;
+            min-width: 108px;
+        }
+
+        .round-chip-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 6px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .round-type-tag {
+            font-size: 10px;
+            padding: 1px 5px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .bind-yes {
+            background: var(--accent-red-bg);
+            color: var(--accent-red);
+        }
+
+        .bind-no {
+            background: var(--accent-green-bg);
+            color: var(--accent-green);
+        }
+
+        .bind-res {
+            background: var(--accent-amber-bg);
+            color: var(--accent-amber);
+        }
+
+        .round-ddl {
+            font-family: "SF Mono", Menlo, monospace;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--accent-blue);
+            margin-top: 2px;
+        }
+
+        .round-rel {
+            font-size: 10.5px;
+            color: var(--text-muted);
+        }
+
+        /* Expand Button */
+        .expand-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            padding: 6px 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-subtle);
+            color: var(--text-secondary);
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.15s;
+        }
+
+        .school-card.expanded .expand-btn {
+            background: var(--accent-blue);
+            color: #fff;
+            border-color: var(--accent-blue);
+        }
+
+        .chevron {
+            display: inline-block;
+            transition: transform 0.2s ease;
+            font-size: 10px;
+        }
+
+        .school-card.expanded .chevron {
+            transform: rotate(180deg);
+        }
+
+        /* Hidden Details Drawer */
+        .card-details {
+            display: none;
+            padding: 0 22px 22px;
+            border-top: 1px solid var(--border-color);
+            background: #fbfbfd;
+        }
+
+        .school-card.expanded .card-details {
+            display: block;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-top: 16px;
+        }
+
+        .detail-box {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 14px 16px;
+        }
+
+        .detail-box h4 {
+            font-size: 12.5px;
+            font-weight: 700;
+            color: var(--accent-blue);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px dashed #ececf2;
+            padding-bottom: 6px;
+        }
+
+        .detail-box p, .detail-box li {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .detail-box ul {
+            padding-left: 16px;
+        }
+
+        .detail-box li {
+            margin-bottom: 4px;
+        }
+
+        .detail-kv {
+            margin-bottom: 6px;
+            font-size: 13px;
+        }
+
+        .detail-kv strong {
+            color: var(--text-primary);
+        }
+
+        /* DDL Quick Reference Section */
+        .ddl-section {
+            display: none;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin-top: 16px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .ddl-section.visible {
+            display: block;
+        }
+
+        .ddl-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 14px;
+            font-size: 13.5px;
+        }
+
+        .ddl-table th, .ddl-table td {
+            padding: 11px 14px;
+            border-bottom: 1px solid var(--border-color);
+            text-align: left;
+        }
+
+        .ddl-table th {
+            background: var(--bg-subtle);
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .ddl-table tr:hover td {
+            background: #f9f9fc;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            border: 1px dashed var(--border-color);
+            color: var(--text-muted);
+            display: none;
+        }
+
+        @media (max-width: 1180px) {
+            .list-header {
+                display: none;
+            }
+            .card-summary {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            .details-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 720px) {
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Top-left Breadcrumb Navigation */
+        .breadcrumb-nav {
+            margin: 0 0 16px 0;
+            padding: 0 2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            text-align: left;
+        }
+        .breadcrumb-nav a {
+            color: #0071e3;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: opacity 0.2s ease;
+        }
+        .breadcrumb-nav a:hover {
+            text-decoration: underline;
+            opacity: 0.85;
+        }
+        .breadcrumb-sep {
+            color: #86868b;
+            font-size: 13px;
+            user-select: none;
+        }
+        .breadcrumb-current {
+            color: #86868b;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+        <a href="index.html">← Back to Index</a>
+        <span class="breadcrumb-sep">&gt;</span>
+        <span class="breadcrumb-current">2027 U.S. News 美国大学介绍手卡汇总</span>
+    </nav>
+    <div class="page-header">
+        <div class="title-block">
+            <h1>2027 U.S. News 美国大学介绍手卡汇总</h1>
+            <p>基于【三士渡】学校介绍手卡提取 · 涵盖 36 所全美综合性大学 & 5 所顶尖文理学院 + 2027 Fall 申请季 DDL 速查表</p>
+        </div>
+        <div class="header-actions">
+            <button class="btn-action" id="toggleViewBtn" onclick="toggleDDLSection()">查看 2027 Fall 申请季 DDL 速查总表 (含UC系)</button>
+            <button class="btn-action primary" id="expandAllBtn" onclick="toggleExpandAll()">展开全部详情</button>
+        </div>
+    </div>
+
+    <!-- Top Filter & Search Bar -->
+    <div class="filter-panel" id="mainFilterPanel">
+        <div class="filter-top-row">
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" placeholder="输入大学中/英文名、缩写(如 MIT, JHU, CMU, UIUC)、城市或专业关键词搜索..." oninput="handleSearch()">
+                <button class="clear-search" id="clearSearchBtn" onclick="clearSearch()">✕</button>
+            </div>
+            <div class="stats-summary" id="statsSummary">
+                当前显示 <strong>41</strong> / 41 所院校（点击任意学校行可展开/收起详细手卡内容）
+            </div>
+        </div>
+
+        <div class="filter-groups">
+            <div class="filter-group" id="catFilterGroup">
+                <span class="filter-label">院校类别</span>
+                <div class="chip active" data-cat="all" onclick="setCatFilter('all')">全部 (41)</div>
+                <div class="chip" data-cat="综合性大学" onclick="setCatFilter('综合性大学')">综合性大学 (36)</div>
+                <div class="chip" data-cat="文理学院" onclick="setCatFilter('文理学院')">文理学院 (5)</div>
+            </div>
+
+            <div class="divider-v"></div>
+
+            <div class="filter-group" id="rankFilterGroup">
+                <span class="filter-label">U.S. News 排名</span>
+                <div class="chip active" data-rank="all" onclick="setRankFilter('all')">全部排名</div>
+                <div class="chip" data-rank="1-10" onclick="setRankFilter('1-10')">Top 1–10</div>
+                <div class="chip" data-rank="11-20" onclick="setRankFilter('11-20')">Top 11–20</div>
+                <div class="chip" data-rank="21-30" onclick="setRankFilter('21-30')">Top 21–30</div>
+                <div class="chip" data-rank="31+" onclick="setRankFilter('31+')">Top 31–40</div>
+            </div>
+
+            <div class="divider-v"></div>
+
+            <div class="filter-group" id="earlyFilterGroup">
+                <span class="filter-label">早申轮次</span>
+                <div class="chip active" data-early="all" onclick="setEarlyFilter('all')">全部</div>
+                <div class="chip" data-early="ED" onclick="setEarlyFilter('ED')">含 ED</div>
+                <div class="chip" data-early="EA" onclick="setEarlyFilter('EA')">含非限制 EA</div>
+                <div class="chip" data-early="REA" onclick="setEarlyFilter('REA')">REA / SCEA</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main School Cards View -->
+    <div id="cardsView">
+        <div class="list-header">
+            <div>排名</div>
+            <div>类别</div>
+            <div>大学名称（中/英文 & 定位）</div>
+            <div>地点 & 性质</div>
+            <div>学制</div>
+            <div>本科入口</div>
+            <div>早申轮次</div>
+            <div>年学费 (美元)</div>
+            <div>EA / ED / REA / RD 时间轴与放榜</div>
+            <div style="text-align:center;">详细手卡</div>
+        </div>
+
+        <div id="schoolListContainer"></div>
+        <div class="empty-state" id="emptyState">
+            <h3>未找到匹配的院校</h3>
+            <p style="margin-top:6px;">请尝试清空搜索词或切换顶部的排名/类别筛选条件。</p>
+        </div>
+    </div>
+
+    <!-- DDL Quick Reference Table View (Pages 42-44) -->
+    <div class="ddl-section" id="ddlSection">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+            <div>
+                <h2 style="font-size:20px;">2027 Fall · 申请季 DDL 速查总表（PDF 第 42–44 页）</h2>
+                <p style="font-size:13px; color:var(--text-muted); margin-top:4px;">2027秋季入学｜表中 9–12 月指 2026 年，1–2 月指 2027 年（包含加州大学伯克利、UCLA、UCSD、UCI、UCD 等 41 校）</p>
+            </div>
+            <button class="btn-action" onclick="toggleDDLSection()">返回学校介绍手卡列表</button>
+        </div>
+        <table class="ddl-table">
+            <thead>
+                <tr>
+                    <th>学校</th>
+                    <th>ED1 (绑定)</th>
+                    <th>EA (非绑定)</th>
+                    <th>REA / SCEA (限制性早申)</th>
+                    <th>ED2 (绑定)</th>
+                    <th>RD / 统一申请</th>
+                    <th>备注说明</th>
+                </tr>
+            </thead>
+            <tbody id="ddlTableBody"></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+const SCHOOLS = [{"页码": "1", "排名": "#1", "排名数值": "1", "院校类别": "综合性大学", "榜单标签": "2027 U.S.NEWS 全美综合大学", "中文校名": "麻省理工学院", "英文校名": "MASSACHUSETTS INSTITUTE OF TECHNOLOGY", "学校定位与特色": "理工与人文共同基础 · 本科研究与实践", "地点": "剑桥", "地点说明": "城市/地区", "学校性质": "私立研究型大学", "学校性质说明": "本科高等教育", "学制": "Semester (学期制)", "本科入口": "统一本科申请 (详见专业选择与转换)", "早申轮次": "EA", "年学费_美元": "$66,720", "学费说明": "2026-27；不含食宿", "本科专业概览_体系": "理工与人文社科共同基础", "本科专业概览_领域": "人文社科、理学与工程", "本科专业概览_代表项目": "计算机、经济、生物工程", "专业选择与转换": "统一本科录取，不按主修分别招生。通常在大一结束时确定主修。", "本科教学与学习机会": "数理与人文通识共同构成本科基础；UROP提供参与导师研究的渠道。", "校园生活": "剑桥城市校园，邻近波士顿；宿舍社群、学生社团与创新活动丰富", "申请信息_概览": "非限制性EA·无ED", "申请轮次与截止日期": "EA: 2026.11.01 / 12月中旬放榜 / 非绑定 | RA: 2027.01.04 / 3月中旬放榜 / 非绑定", "申请材料": "MIT自有系统·MIT短文与活动列表；两封教师推荐信 · 成绩单与学校报告；SAT/ACT·适用时英语成绩", "标化考试要求与数据": "【2025录取交分者】SAT/ACT必交；SAT数学中间50%：780-800；ACT中间50%：34-36；允许自报；入学核验官方分数", "申请特别提醒": "EA可并行其他非绑定申请；仍须遵守另一校早申限制；建议数理与人文教师各一封；EA最晚可参加11月考试", "abbr": "MIT", "rank_int": 1, "rank_bucket": "1-10", "rounds_parsed": [{"name": "EA", "ddl": "2026.11.01", "release": "12月中旬放榜", "binding": "非绑定"}, {"name": "RA", "ddl": "2027.01.04", "release": "3月中旬放榜", "binding": "非绑定"}]}, {"页码": "2", "排名": "#2", "排名数值": "2", "院校类别": "综合性大学", "榜单标签": "2027 U.S.NEWS 全美综合大学", "中文校名": "普林斯顿大学", "英文校名": "PRINCETON UNIVERSITY", "学校定位与特色": "独立研究导向 · 文理与工程并行", "地点": "普林斯顿", "地点说明": "城市/地区", "学校性质": "私立研究型大学", "学校性质说明": "本科高等教育", "学制": "Semester (学期制)", "本科入口": "统一本科申请 (详见专业选择与转换)", "早申轮次": "SCEA", "年学费_美元": "$68,140", "学费说明": "2026-27；不含食宿", "本科专业概览_体系": "文理与工程两类学位路径", "本科专业概览_领域": "人文社科、自然科学与工程", "本科专业概览_代表项目": "公共国际事务、计算机", "专业选择与转换": "统一招生，可填A.B.、B.S.E.或未定意向；申请意向不锁定后续学位与专业路径。", "本科教学与学习机会": "本科重视独立研究与毕业论文；通识、专业课程与导师指导结合。", "校园生活": "普林斯顿大学城，以住宿学院组织生活；学生社团、艺术与体育活动丰富", "申请信息_概览": "限制性SCEA·非绑定", "申请轮次与截止日期": "SCEA: 2026.11.01 / 12月中旬放榜 / 限制性 | RD: 2027.01.01 / 3月下旬放榜 / 非绑定", "申请材料": "Common App·普林斯顿补充文书；两封教师推荐信·成绩单与学校材料；英文Graded Written Paper及教师批注", "标化考试要求与数据": "【2025入学交分者】SAT/ACT 非强制；SAT 中间50%：1490-1560；ACT中间50%：34-35；本轮可选；后续年度另核政策", "申请特别提醒": "SCEA限制其他美国私立早申；公立非绑定等按官网例外；须交英文评分写作样本；部分艺术材料另有提交规则", "abbr": "Princeton", "rank_int": 2, "rank_bucket": "1-10", "rounds_parsed": [{"name": "SCEA", "ddl": "2026.11.01", "release": "12月中旬放榜", "binding": "限制性"}, {"name": "RD", "ddl": "2027.01.01", "release": "3月下旬放榜", "binding": "非绑定"}]}, {"页码": "3", "排名": "#3", "排名数值": "3", "院校类别": "综合性大学", "榜单标签": "2027 U.S.NEWS 全美综合大学", "中文校名": "哈佛大学", "英文校名": "HARVARD UNIVERSITY", "学校定位与特色": "广博文理探索·多学科学习与研究", "地点": "剑桥", "地点说明": "城市/地区", "学校性质": "私立研究型大学", "学校性质说明": "本科高等教育", "学制": "Semester (学期制)", "本科入口": "统一本科申请 (详见专业选择与转换)", "早申轮次": "REA", "年学费_美元": "$62,226", "学费说明": "2026-27；不含食宿", "本科专业概览_体系": "Harvard College本科体系", "本科专业概览_领域": "人文社科、理学与工程", "本科专业概览_代表项目": "经济、政府学、生物工程", "专业选择与转换": "统一申请Harvard College；入学后探索，通常大二确定主修。", "本科教学与学习机会": "通识课程与专业集中学习结合；可结合研究、跨学科课程规划学习。", "校园生活": "剑桥城市校园，共享波士顿资源；高年级学生以House住宿社群为中心", "申请信息_概览": "限制性REA·无ED", "申请轮次与截止日期": "REA: 2026.11.01 / 12月中旬放榜 / 限制性 | RD: 2027.01.01 / 3月末放榜 / 非绑定", "申请材料": "Common App·Harvard补充问题；两封教师推荐信·成绩单与学校报告；顾问材料·SAT/ACT成绩", "标化考试要求与数据": "【2024入学交分者】SAT/ACT必交；SAT数学中间50%：770-800；ACT中间50%：34-36；考试确有障碍可依规申请替代", "申请特别提醒": "REA限制其他私立早申；公立非绑定等有规定例外；考试确有障碍可依规替代；国际申请不另设语言考试要求", "abbr": "Harvard", "rank_int": 3, "rank_bucket": "1-10", "rounds_parsed": [{"name": "REA", "ddl": "2026.11.01", "release": "12月中旬放榜", "binding": "限制性"}, {"name": "RD", "ddl": "2027.01.01", "release": "3月末放榜", "binding": "非绑定"}]}, {"页码": "4", "排名": "#4", "排名数值": "4", "院校类别": "综合性大学", "榜单标签": "2027 U.S.NEWS 全美综合大学", "中文校名": "耶鲁大学", "英文校名": "YALE UNIVERSITY", "学校定位与特色": "文理通识·住宿学院与跨学科学习", "地点": "纽黑文", "地点说明": "城市/地区", "学校性质": "私立研究型大学", "学校性质说明": "本科高等教育", "学制": "Semester (学期制)", "本科入口": "统一本科申请 (详见专业选择与转换)", "早申轮次": "SCEA", "年学费_美元": "$72,500", "学费说明": "2026-27；不含食宿", "本科专业概览_体系": "Yale College本科体系", "本科专业概览_领域": "人文社科、理学与工程", "本科专业概览_代表项目": "政治科学、历史、工程", "专业选择与转换": "统一申请Yale College；依先修及专业规则申报主修。", "本科教学与学习机会": "分布式通识与专业学习并行；住宿学院与研讨课程构成本科体验。", "校园生活": "纽黑文城市校园，采用住宿学院制；社团、艺术与公共服务活动丰富", "申请信息_概览": "限制性SCEA·无ED", "申请轮次与截止日期": "SCEA: 2026.11.01 / 12月中旬放榜 / 限制性 | RD: 2027.01.02 / 3月下旬放榜 / 非绑定", "申请材料": "Common App等平台·Yale补充文书；教师及学校推荐·成绩单与学校材料；SAT/ACT·适用时英语成绩", "标化考试要求与数据": "【2027入学政策】SAT/ACT 必交；本轮不接受AP/IB替代；英语主授满两年可依规免语言；可自报，入学须官方送分", "申请特别提醒": "SCEA限制其他私立早申；公立非绑定等例外按官网核对；艺术或研究补充材料为可选；英语主授不足两年须交语言分", "abbr": "Yale", "rank_int": 4, "rank_bucket": "1-10", "rounds_parsed": [{"name": "SCEA", "ddl": "2026.11.01", "release": "12月中旬放榜", "binding": "限制性"}, {"name": "RD", "ddl": "2027.01.02", "release": "3月下旬放榜", "binding": "非绑定"}]}, {"页码": "5", "排名": "#5", "排名数值": "5", "院校类别": "综合性大学", "榜单标签": "2027 U.S.NEWS 全美综合大学·并列", "中文校名": "加州理工学院", "英文校名": "CALIFORNIA INSTITUTE OF TECHNOLOGY", "学校定位与特色": "共同数理核心 ·小规模研究型本科", "地点": "帕萨迪纳", "地点说明": "城市/地区", "学校性质": "私立研究型大学", "学校性质说明": "本科高等教育", "学制": "Quarter (学季制)", "本科入口": "统一本科申请 (详见专业选择与转换)", "早申轮次": "REA", "年学费_美元": "$68,574", "学费说明": "2026-27；不含食宿", "本科专业概览_体系": "科学与工程为共同底座", "本科专业概览_领域": "理工、经济与政治科学等", "本科专业概览_代表项目": "物理、计算机、生物工程", "专业选择与转换": "统一申请，先完成共同基础；大一后选择option，仍须修数理核心。", "本科教学与学习机会": "共同核心覆盖数理、生物与人文；SURF支持本科生参与暑期研究。", "校园生活": "帕萨迪纳小型校园，采用House社群；学生传统、社团与科研活动交织", "申请信息_概览": "限制性REA·无ED", "申请轮次与截止日期": "REA: 2026.11.01 / 12月中旬放榜 / 限制性 | RD: 2027.01.04 / 3月中旬放榜 / 非绑定", "申请材料": "申请平台·Caltech补充文书；学校报告·成绩单与推荐信；SAT/ACT·AP/IB报告 · 适用时语言成绩", "标化考试要求与数据": "【2027分项分档】SAT/ACT必交；SAT 分项A档：780-800；ACT 分项A档：35-36；按分项审阅；允许跨次拼分", "申请特别提醒": "REA通常限制其他EA或ED；公立非绑定等有规定例外；须报告已参加AP与IB；另核数理课程准备要求", "abbr": "Caltech CIT", "rank_int": 5, "rank_bucket": "1-10", "rounds_parsed": [{"name": "REA", "ddl": "2026.11.01", "release": "12月中旬放榜", "binding": "限制性"}, {"name": "RD", "ddl": "2027.01.04", "release": "3月中旬放榜", "binding": "非绑定"}]}, {"页码": "6", "排名": "#5", "排名数值": "5", "院校类别": "综合性大学", "榜单标签": "2027 U.S.NEWS 全美综合大学·并列", "中文校名": "斯坦福大学", "英文校名": "STANFORD UNIVERSITY", "学校定位与特色": "跨学科探索·研究与创新资源", "地点": "斯坦福", "地点说明": "城市/地区", "学校性质": "私立研究型大学", "学校性质说明": "本科高等教育", "学制": "Quarter (学季制)", "本科入口": "统一本科申请 (详见专业选择与转换)", "早申轮次": "REA", "年学费_美元": "$67,731", "学费说明": "2026-27；不含食宿", "本科专业概览_体系": "文理与工程等本科路径", "本科专业概览_领域": "人文社科、理学与工程", "本科专业概览_代表项目": "计算机、经济、生物工程", "专业选择与转换": "申请大学整体，不按专业录取；入学后探索，通常大二末确定主修。", "本科教学与学习机会": "通识、写作与专业学习共同推进；本科研究与跨学科学习渠道丰富。", "校园生活": "大型住宿校园，自行车文化鲜明；湾区研究机构与创业资源密集", "申请信息_概览": "限制性REA·非绑定", "申请轮次与截止日期": "REA: 2026.11.01 / 12月中旬放榜 / 限制性 | RD: 2027.01.05 / 4月初放榜 / 非绑定", "申请材料": "Common App·斯坦福补充问题与个人陈述；成绩单与学校报告·2封教师推荐信；年中成绩报告", "标化考试要求与数据": "【2025新生交分者】SAT/ACT必交；SAT中间50%：1520-1570；ACT中间50%：34-36；可自报、可拼分；无最低分", "申请特别提醒": "REA限制其他私立早申；公立非绑定等有规定例外；艺术补充材料有更早节点；须按艺术材料日程另行规划", "abbr": "Stanford", "rank_int": 5, "rank_bucket": "1-10", "rounds_parsed": [{"name": "REA", "ddl": "2026.11.01", "release": "12月中旬放榜", "binding": "限制性"}, {"name": "RD", "ddl": "2027.01.05", "release": "4月初放榜", "binding": "非绑定"}]}, {"页码": "7", "排名": "#7", "排名数值": "7", "院校类别": "综合性大学", "榜单标签": "2027 U.S.NEWS 全美综合大学", "中文校名": "宾夕法尼亚大学", "英文校名": "UNIVERSITY OF PENNSYLVANIA", "学校定位与特色": "四院本科路径 · 跨院选课与联合项目", "地点": "费城", "地点说明": "城市/地区", "学校性质": "私立研究型大学", "学校性质说明": "本科高等教育", "学制": "Semester (学期制)", "本科入口": "按学院申请 (详见专业选择与转换)", "早申轮次": "ED", "年学费_美元": "$65,670", "学费说明": "2026-27；不含食宿", "本科专业概览_体系": "四所本科学院与跨院项目", "本科专业概览_领域": "文理、工程、商科与护理", "本科专业概览_代表项目": "金融、生物工程、政治经济", "专业选择与转换": "申请时选择本科学院或联合项目；跨学院转入及双学位有额外要求。", "本科教学与学习机会": "文理通识与专业训练结合；跨院选课与联合学位按规则开放。", "校园生活": "费城城市校园，社区与机构资源丰富；学院社群、职业与学生组织活跃", "申请信息_概览": "绑定ED·按本科学院申请", "申请轮次与截止日期": "ED: 2026.11.01 / 12月放榜 / 绑定 | RD: 2027.01.05 / 4月放榜 / 非绑定", "申请材料": "Common App / Coalition·宾大补充文书；成绩单与学校报告·两封推荐信；年中成绩报告·ED协议（如适用）", "标化考试要求与数据": "【2026入学交分者】SAT/ACT必交；SAT 中间50%：1440-1550；ACT中间50%：33-35；特殊困难可申请考试豁免", "申请特别提醒": "ED只可向一所大学承诺；录取后须撤回其他申请；联合学位项目有额外要求；按学院及项目补充问题准备", "abbr": "UPenn Penn Wharton", "rank_int": 7, "rank_bucket": "1-10", "rounds_parsed": [{"name": "ED", "ddl": "2026.11.01", "release": "12月放榜", "binding": "绑定"}, {"name": "RD", "ddl": "2027.01.05", "release": "4月放榜", "binding": "非绑定"}]}, {"页码": "8", "排名": "#8", "排名数值": "8", "院校类别": "综合性大学", "榜单标签": "2027 U.S.NEWS 全美综合大学", "中文校名": "杜克大学", "英文校名": "DUKE UNIVERSITY", "学校定位与特色": "文理与工程并行·跨学科研究实践", "地点": "达勒姆", "地点说明": "城市/地区", "学校性质": "私立研究型大学", "学校性质说明": "本科高等教育", "学制": "Semester (学期制)", "本科入口": "按学院申请 (详见专业选择与转换)", "早申轮次": "ED", "年学费_美元": "$73,740", "学费说明": "2026-27；不含食宿", "本科专业概览_体系": "Trinity文理与Pratt工程", "本科专业概览_领域": "文理、工程与公共政策", "本科专业概览_代表项目": "公共政策、生物医学工程", "专业选择与转换": "申请先选Trinity文理或Pratt工程；主修、辅修与证书依规则组合。", "本科教学与学习机会": "通识、研究与实践项目相结合；本科可参与跨学科团队研究。", "校园生活": "达勒姆校园，学生社团与体育活跃；社区服务是本科生活的重要部分", "申请信息_概览": "一轮绑定ED·无ED II", "申请轮次与截止日期": "ED: 2026.11.02 / 12月中旬放榜 / 绑定 | RD: 2027.01.04 / 春季放榜 / 非绑定", "申请材料": "Common App·Duke补充文书；两封教师推荐信·成绩单与学校材料；ED协议及一季度成绩·适用时语言证明", "标化考试要求与数据": "【2024录取交分者】SAT/ACT 非强制；SAT 中间50%：1510-1560；ACT中间50%：34-35；本轮不交SAT/ACT亦可申请", "申请特别提醒": "ED只可向一所大学承诺；录取后须撤回其他申请；ED须补交高三第一季度成绩；按所申学院核对课程准备", "abbr": "Duke", "rank_int": 8, "rank_bucket": "1-10", "rounds_parsed": [{"name": "ED", "ddl": "2026.11.02", "release": "12月中旬放榜", "binding": "绑定"}, {"name": "RD", "ddl": "2027.01.04", "release": "春季放榜", "binding": "非绑定"}]}, {"页码": "9", "排名": "#9", "排名数值": "9", "院校类别": "综合性大学", "榜单标签": "2027 U.S.NEWS 全美综合大学·并列", "中文校名": "约翰霍普金斯大学", "英文校名": "JOHNS HOPKINS UNIVERSITY", "学校定位与特色": "文理与工程结合·本科研究资源", "地点": "巴尔的摩", "地点说明": "城市/地区", "学校性质": "私立研究型大学", "学校性质说明": "本科高等教育", "学制": "Semester (学期制)", "本科入口": "统一本科申请 (详见专业选择与转换)", "早申轮次": "ED I/ ED II", "年学费_美元": "$68,670", "学费说明": "2026-27；不含食宿", "本科专业概览_体系": "Krieger文理与Whiting工程", "本科专业概览_领域": "文理、工程与生命科学", "本科专业概览_代表项目": "公共卫生、生物医学工程", "专业选择与转换": "本科通常统一录取，入学后定主修；生物医学工程为单独审核的例外。", "本科教学与学习机会": "研究型本科重视方法与实验；本科生可申请导师研究和实践项目。", "校园生活": "Homewood 红砖校园，城市资源丰富；学生组织、科研与社区实践密集", "申请信息_概览": "两轮绑定ED·BME单独审核", "申请轮次与截止日期": "ED I: 2026.11.01 / 12月11日放榜 / 绑定 | ED II: 2027.01.02 / 2月12日放榜 / 绑定 | RD: 2027.01.02 / 3月24日放榜 / 非绑定", "申请材料": "Common App / Coalition · Hopkins补充文书；成绩单与学校报告 · 两封教师推荐信；年中成绩·ED协议·国际生资金认证", "标化考试要求与数据": "【2025新生交分者】SAT/ACT必交；SAT 中间50%：1530-1570；ACT中间50%：35；无官方最低分，采用整体审阅", "申请特别提醒": "BME须填第一志愿；ED录取大学却未获BME者；可依规拒绝入学并解除ED；须按时通知，且放弃该届席位", "abbr": "JHU Hopkins", "rank_int": 9, "rank_bucket": "1-10", "rounds_parsed": [{"name": "ED I", "ddl": "2026.11.01", "release": "12月11日放榜", "binding": "绑定"}, {"name": "ED II", "ddl": "2027.01.02", "release": "2月12日放榜", "binding": "绑定"}, {"name": "RD", "ddl": "2027.01.02", "release": "3月24日放榜", "binding": "非绑定"}]}, {"页码": "10", "排名": "#9", "排名数值": "9", "院校类别": "综合性大学", "榜单标签": "2027 U.S.NEWS 全美综合大学·并列", "中文校名": "西北大学", "英文校名": "NORTHWESTERN UNIVERSITY", "学校定位与特色": "六院本科体系·学季制与跨院学习", "地点": "埃文斯顿", "地点说明": "城市/地区", "学校性质": "私立研究型大学", "学校性质说明": "本科高等教育", "学制": "Quarter (学季制)", "本科入口": "按学院申请 (详见专业选择与转换)", "早申轮次": "ED", "年学费_美元": "$71,802", "学费说明": "2026-27；不含食宿", "本科专业概览_体系": "六所本科学院分院申请", "本科专业概览_领域": "文理、工程、传播与艺术等", "本科专业概览_代表项目": "新闻、经济、工业工程", "专业选择与转换": "申请时选择本科学院；跨院转入、双学位依项目审核。", "本科教学与学习机会": "学季制配合文理与专业训练；可按规则组合主修、辅修及证书。", "校园生活": "湖滨校园，可通勤前往芝加哥；Big Ten 体育与住宿学院社群", "申请信息_概览": "绑定ED·无EA", "申请轮次与截止日期": "ED: 2026.11.01 / 12月放榜 / 绑定 | RD: 2027.01.04 / 3月放榜 / 非绑定", "申请材料": "Common App/Coalition·西北补充短文；成绩单与学校报告·一封教师推荐信；年中成绩报告·ED协议（如适用）", "标化考试要求与数据": "【2024入学交分者】SAT/ACT 非强制；SAT 中间50%：1510-1560；ACT中间50%：34-35；可自报，入学须官方送分", "申请特别提醒": "ED只可向一所大学承诺；录取后须撤回其他申请；音乐等项目另有材料要求；特殊项目须核对独立申请表", "abbr": "NU Northwestern", "rank_int": 9, "rank_bucket": "1-10", "rounds_parsed": [{"name": "ED", "ddl": "2026.11.01", "release": "12月放榜", "binding": "绑定"}, {"name": "RD", "ddl": "2027.01.04", "release": "3月放榜", "binding": "非绑定"}]}, {"页码": "11", "排名": "#9", "排名数值": "9", "院校类别": "综合性大学", "榜单标签": "2027 U.S.NEWS 全美综合大学·并列", "中文校名": "芝加哥大学", "英文校名": "UNIVERSITY OF CHICAGO", "学校定位与特色": "核心课程与论证训练 · 住宿社群生活", "地点": "芝加哥·海德公园", "地点说明": "城市/地区", "学校性质": "私立研究型大学", "学校性质说明": "本科高等教育", "学制": "Quarter (学季制)", "本科入口": "统一本科申请 (详见专业选择与转换)", "早申轮次": "EA+ED", "年学费_美元": "$75,960", "学费说明": "2026-27；不含食宿", "本科专业概览_体系": "本科统一College体系", "本科专业概览_领域": "人文社科、理学与分子工程", "本科专业概览_代表项目": "经济、社会学、分子工程", "专业选择与转换": "统一申请本科，不按主修分别录取；入学后探索，依专业规则申报主修。", "本科教学与学习机会": "核心课程强调阅读、论证与讨论；专业课程结合研究方法和实践。", "校园生活": "48个House住宿社群，重视社区归属；海德公园兼具校园氛围与城市资源", "申请信息_概览": "EA与两轮ED·SSEN另核资格", "申请轮次与截止日期": "ED I: 2026.11.02 / 12月中旬放榜 / 绑定 | EA: 2026.11.02 / 12月中旬放榜 / 非绑定 | ED II: 2027.01.04 / 2月中旬放榜 / 绑定 | RD: 2027.01.04 / 3月末放榜 / 非绑定", "申请材料": "Common App/Coalition·芝加哥补充文书；两封学科教师推荐信 · 成绩单与学校报告；年中成绩报告·适用时英语证明", "标化考试要求与数据": "【2023入学交分者】SAT/ACT 非强制；No Harm：仅有利时审阅；SAT 中间50%：1510-1560；无最低分；可依校规自报成绩", "申请特别提醒": "SSEN/EDO限高中毕业年级；须完成指定夏校或合作项目；9月1日-10月15日递交；绑定；完整申请后三周内通知", "abbr": "UChicago", "rank_int": 9, "rank_bucket": "1-10", "rounds_parsed": [{"name": "ED I", "ddl": "2026.11.02", "release": "12月中旬放榜", "binding": "绑定"}, {"name": "EA", "ddl": "2026.11.02", "release": "12月中旬放榜", "binding": "非绑定"}, {"name": "ED II", "ddl": "2027.01.04", "release": "2月中旬放榜", "binding": "绑定"}, {"name": "RD", "ddl": "2027.01.04", "release": "3月末放榜", "binding": "非绑定"}]}, {"页码": "12", "排名": "#12", "排名数值": "12", "院校类别": "综合性大学", "榜单标签": "2027 U.S.NEWS 全美综合大学·并列", "中文校名": "哥伦比亚大学", "英文校名": "COLUMBIA UNIVERSITY", "学校定位与特色": "核心课程传统 · 纽约城市学习资源", "地点": "纽约·曼哈顿", "地点说明": "城市/地区", "学校性质": "私立研究型大学", "学校性质说明": "本科高等教育", "学制": "Semester (学期制)", "本科入口": "按学院申请 (详见专业选择与转换)", "早申轮次": "ED", "年学费_美元": "$72,800", "学费说明": "2026-27；不含食宿", "本科专业概览_体系": "Columbia College/工程学院", "本科专业概览_领域": "人文社科、理学与工程", "本科专业概览_代表项目": "经济、政治科学、工程", "专业选择与转换": "申请时选择文理学院或工程学院；入学后依学院与专业规则定主修。", "本科教学与学习机会": "文理学院核心课程强调共同阅读；工程学院结合专业训练与通识要求。", "校园生活": "曼哈顿城市校园，文化资源集中；校园社团与纽约城市生活紧密相连", "申请信息_概览": "一轮绑定ED·无EA", "申请轮次与截止日期": "ED: 2026.11.01 / 12月中旬放榜 / 绑定 | RD: 2027.01.01 / 4月1日前放榜 / 非绑定", "申请材料": "Common App/Coalition·Columbia补充文书；成绩单与学校报告·教师推荐信；年中成绩·ED协议（如适用）·必要英语证明", "标化考试要求与数据": "【2025入学交分者】SAT/ACT 非强制；SAT 中间50%：1510-1560；ACT中间50%：34-36；本轮不交SAT/ACT亦可申请", "申请特别提醒": "ED只可向一所大学承诺；录取后须撤回其他申请；文理与工程须选对应入口；作品等补充材料按专业核对", "abbr": "Columbia", "rank_int": 12, "rank_bucket": "11-20", "rounds_parsed": [{"name": "ED", "ddl": "2026.11.01", "release": "12月中旬放榜", "binding": "绑定"}, {"name": "RD", "ddl": "2027.01.01", "release": "4月1日前放榜", "binding": "非绑定"}]}, {"页码": "13", "排名": "#12", "排名数值": "12", "院校类别": "综合性大学", "榜单标签": "2027 U.S.NEWS 全美综合大学·并列", "中文校名": "达特茅斯学院", "英文校名": "DARTMOUTH COLLEGE", "学校定位与特色": "文理本科与D-Plan·小镇研究社群", "地点": "汉诺威", "地点说明": "城市/地区", "学校性质": "私立研究型大学", "学校性质说明": "本科高等教育", "学制": "Quarter (学季制)", "本科入口": "统一本科申请 (详见专业选择与转换)", "早申轮次": "ED", "年学费_美元": "$71,697", "学费说明": "2026-27；不含食宿", "本科专业概览_体系": "文理本科与工程衔接路径", "本科专业概览_领域": "人文社科、理学与工程科学", "本科专业概览_代表项目": "经济、政府学、工程科学", "专业选择与转换": "统一申请本科，入学后确定主修；工程AB与专业BE学位须分别规划。", "本科教学与学习机会": "D-Plan安排学习学期与校外经历；小班课程与本科研究相结合。", "校园生活": "Hanover小镇校园，户外活动丰富；住宿、学生社团与校园传统联系紧密", "申请信息_概览": "一轮绑定ED·无EA", "申请轮次与截止日期": "ED: 2026.11.01 / 12月中旬放榜 / 绑定 | RD: 2027.01.01 / 3月末/4月初放榜 / 非绑定", "申请材料": "Common App·Dartmouth补充文书；成绩单与学校材料·教师及顾问推荐；可交同伴推荐·ED协议（如适用）", "标化考试要求与数据": "【2027入学政策】学术测试必交；美国高中须交SAT /ACT；境外另认可3门AP、IB等；按高中所在地与学制选考试", "申请特别提醒": "境外高中另认可AP或IB等；须符合所用考试的具体条件；美国高中仍须交SAT或ACT；同伴推荐可补充个人视角", "abbr": "Dartmouth", "rank_int": 12, "rank_bucket": "11-20", "rounds_parsed": [{"name": "ED", "ddl": "2026.11.01", "release": "12月中旬放榜", "binding": "绑定"}, {"name": "RD", "ddl": "2027.01.01", "release": "3月末", "binding": "4月初放榜"}]}, {"页码": "14", "排名": "#14", "排名数值": "14", "院校类别": "综合性大学", "榜单标签": "2027 U.S.NEWS 全美综合大学·并列", "中文校名": "卡内基梅隆大学", "英文校名": "CARNEGIE MELLON UNIVERSITY", "学校定位与特色": "计算与工程基础 · 艺术及跨学科项目", "地点": "匹兹堡", "地点说明": "城市/地区", "学校性质": "私立研究型大学", "学校性质说明": "本科高等教育", "学制": "Semester (学期制)", "本科入口": "按学院申请 (详见专业选择与转换)", "早申轮次": "ED", "年学费_美元": "$69,702", "学费说明": "2026-27；不含食宿", "本科专业概览_体系": "计算、工程、商科与艺术并行", "本科专业概览_领域": "计算机、工程、商科与文理", "本科专业概览_代表项目": "计算机、设计、决策科学", "专业选择与转换": "申请选择学院及本科项目；跨学院转入须满足对应准入条件。", "本科教学与学习机会": "技术、定量方法与项目实践结合；跨学科项目按学院及项目规则开放。", "校园生活": "匹兹堡城市校园，社团和艺术资源丰富；科技、设计与人文社群交流频繁", "申请信息_概览": "一轮绑定ED·无EA", "申请轮次与截止日期": "ED: 2026.11.02 / 12月15日前放榜 / 绑定 | RD: 2027.01.04 / 4月1日前放榜 / 非绑定", "申请材料": "Common App·CMU三道短答；成绩单与学校材料 ·顾问及教师推荐；所申学院要求的学术测试·英语材料", "标化考试要求与数据": "【2027入学政策】测试政策按学院区分；SCS须SAT/ACT；其余按学院；理工商科等可交AP/1B等；CFA艺术学院可选，另核作品", "申请特别提醒": "SCS与其他学院测试规则不同；艺术学院另核作品集或试镜；部分艺术项目不开放ED；须逐项查所申项目截止日期", "abbr": "CMU", "rank_int": 14, "rank_bucket": "11-20", "rounds_parsed": [{"name": "ED", "ddl": "2026.11.02", "release": "12月15日前放榜", "binding": "绑定"}, {"name": "RD", "ddl": "2027.01.04", "release": "4月1日前放榜", "binding": "非绑定"}]}, {"页码": "15", "排名": "#14", "排名数值": "14", "院校类别": "综合性大学", "榜单标签": "2027 U.S.NEWS 全美综合大学·并列", "中文校名": "康奈尔大学", "英文校名": "CORNELL UNIVERSITY", "学校定位与特色": "多学院专业路径·研究与实践结合", "地点": "伊萨卡", "地点说明": "城市/地区", "学校性质": "私立研究型大学", "学校性质说明": "本科高等教育", "学制": "Semester (学期制)", "本科入口": "按学院申请 (详见专业选择与转换)", "早申轮次": "ED", "年学费_美元": "$73,946", "学费说明": "2026-27；不含食宿", "本科专业概览_体系": "多学院、多专业申请入口", "本科专业概览_领域": "文理、工程、商科与农学等", "本科专业概览_代表项目": "劳动关系、公共政策、工程", "专业选择与转换": "申请时选择学院及对应专业；跨学院转入与专业申报依各院规则。", "本科教学与学习机会": "专业学院训练与研究资源结合；不同学院有各自的通识与毕业要求。", "校园生活": "伊萨卡峡谷湖区，住宿校园特色鲜明；学院文化、科研与户外生活并重", "申请信息_概览": "绑定ED·按学院设置要求", "申请轮次与截止日期": "ED: 2026.11.01 / 12月放榜 / 绑定 | RD: 2027.01.02 / 3月末放榜 / 非绑定", "申请材料": "Common App·康奈尔学院专属补充文书；成绩单与学校报告·两封教师推荐信；年中成绩报告·ED协议（如适用）", "标化考试要求与数据": "【2024入学交分者】SAT/ACT必交；SAT 中间50%：1510-1560；ACT中间50%：33-35；可自报，SAT/ACT可拼分", "申请特别提醒": "申请须选定学院及对应路径；各学院补充要求有区别；建筑艺术等另核作品或程序；ED录取后须撤回其他申请", "abbr": "Cornell", "rank_int": 14, "rank_bucket": "11-20", "rounds_parsed": [{"name": "ED", "ddl": "2026.11.01", "release": "12月放榜", "binding": "绑定"}, {"name": "RD", "ddl": "2027.01.02", "release": "3月末放榜", "binding": "非绑定"}]}, {"页码": "16", "排名": "#16", "排名数值": "16", "院校类别": "综合性大学", "榜单标签": "2027 U.S.NEWS 全美综合大学·并列", "中文校名": "布朗大学", "英文校名": "BROWN UNIVERSITY", "学校定位与特色": "开放课程体系·自主规划本科路径", "地点": "普罗维登斯", "地点说明": "城市/地区", "学校性质": "私立研究型大学", "学校性质说明": "本科高等教育", "学制": "Semester (学期制)", "本科入口": "统一本科申请 (详见专业选择与转换)", "早申轮次": "ED", "年学费_美元": "$74,568", "学费说明": "2026-27；不含食宿", "本科专业概览_体系": "开放课程下的本科探索", "本科专业概览_领域": "人文社科、理学与工程", "本科专业概览_代表项目": "教育研究、经济、工程", "专业选择与转换": "不按填写的学术兴趣分专业录取；入学后确定concentration及学位路径。", "本科教学与学习机会": "开放课程给予较大学习规划空间；学生仍须完成专业与写作等要求。", "校园生活": "普罗维登斯校园，学生自主文化鲜明；社团、艺术与社区参与机会丰富", "申请信息_概览": "一轮绑定ED·无ED II", "申请轮次与截止日期": "ED: 2026.11.01 / 12月中旬放榜 / 绑定 | RD: 2027.01.05 / 3月下旬放榜 / 非绑定", "申请材料": "Common App·Brown补充文书；成绩单与学校材料·推荐信及ED协议；SAT/ACT·可按要求提交视频介绍", "标化考试要求与数据": "【2026录取交分者】SAT/ACT必交；SAT中间50%：1470-1550；ACT 中间50%：34-36；SAT/ACT可自报；入学须核验", "申请特别提醒": "ED录取须履行绑定承诺；不与另一份ED同时承诺；PLME与双学位有额外要求；视频介绍按学校说明提交", "abbr": "Brown", "rank_int": 16, "rank_bucket": "11-20", "rounds_parsed": [{"name": "ED", "ddl": "2026.11.01", "release": "12月中旬放榜", "binding": "绑定"}, {"name": "RD", "ddl": "2027.01.05", "release": "3月下旬放榜", "binding": "非绑定"}]}, {"页码": "17", "排名": "#16", "排名数值": "16", "院校类别": "综合性大学", "榜单标签": "2027 U.S.NEWS 全美综合大学·并列", "中文校名": "莱斯大学", "英文校名": "RICE UNIVERSITY", "学校定位与特色": "住宿学院制·文理工程与本科研究", "地点": "休斯敦", "地点说明": "城市/地区", "学校性质": "私立研究型大学", "学校性质说明": "本科高等教育", "学制": "Semester (学期制)", "本科入口": "按学术领域申请 (详见专业选择与转换)", "早申轮次": "ED I/ED II", "年学费_美元": "$71,140", "学费说明": "2026-27；不含食宿", "本科专业概览_体系": "文理、工程及建筑等路径", "本科专业概览_领域": "文理、工程、建筑与音乐", "本科专业概览_代表项目": "生物工程、经济、建筑", "专业选择与转换": "申请表明学术兴趣，入学后可探索；建筑、音乐有专门申请要求。", "本科教学与学习机会": "课程结合专业基础与实践研究；本科研究与住宿学院生活相互补充。", "校园生活": "休斯敦城市校园，采用住宿学院制；跨专业住宿社群构成重要生活圈", "申请信息_概览": "ED I/ED II·无EA", "申请轮次与截止日期": "ED I: 2026.11.01 / 12月中旬放榜 / 绑定 | ED II: 2027.01.04 / 1月下旬放榜 / 绑定 | RD: 2027.01.04 / 4月1日前放榜 / 非绑定", "申请材料": "Common App·Rice补充文书；两封教师推荐信·成绩单与学校材料；国际资金表及证明·ED协议（如适用）", "标化考试要求与数据": "【2025缴定金交分者】建议提交SAT/ACT；SAT 中间50%：1510-1560；ACT中间50%：34-36；未交SAT/ACT仍可申请", "申请特别提醒": "建筑须另交作品集；音乐不参加普通ED轮次；音乐申请采用12月1日节点；ED录取须撤回其他申请", "abbr": "Rice", "rank_int": 16, "rank_bucket": "11-20", "rounds_parsed": [{"name": "ED I", "ddl": "2026.11.01", "release": "12月中旬放榜", "binding": "绑定"}, {"name": "ED II", "ddl": "2027.01.04", "release": "1月下旬放榜", "binding": "绑定"}, {"name": "RD", "ddl": "2027.01.04", "release": "4月1日前放榜", "binding": "非绑定"}]}, {"页码": "18", "排名": "#16", "排名数值": "16", "院校类别": "综合性大学", "榜单标签": "2027 U.S.NEWS 全美综合大学·并列", "中文校名": "范德堡大学", "英文校名": "VANDERBILT UNIVERSITY", "学校定位与特色": "四院本科体系·Immersion实践学习", "地点": "纳什维尔", "地点说明": "城市/地区", "学校性质": "私立研究型大学", "学校性质说明": "本科高等教育", "学制": "Semester (学期制)", "本科入口": "按学院申请 (详见专业选择与转换)", "早申轮次": "ED I/ED II", "年学费_美元": "$69,822", "学费说明": "2026-27；不含食宿", "本科专业概览_体系": "四所本科学院多路径", "本科专业概览_领域": "文理、工程、教育与音乐", "本科专业概览_代表项目": "人类与组织发展、工程", "专业选择与转换": "申请选择本科学院；跨院转入、双主修与专业依规则安排。", "本科教学与学习机会": "Immersion强调指导下的深入学习；专业课程可结合研究与实践经历。", "校园生活": "纳什维尔城市校园；大一以Commons；住宿社群起步，社团与体育活动丰富", "申请信息_概览": "两轮绑定ED·无EA", "申请轮次与截止日期": "ED I: 2026.11.01 / 12月中旬放榜 / 绑定 | ED II: 2027.01.01 / 2月中旬放榜 / 绑定 | RD: 2027.01.01 / 3月下旬放榜 / 非绑定", "申请材料": "Common App等平台·Vanderbilt补充内容；成绩单与学校报告·推荐信及顾问材料；ED协议（如适用）·适用时语言证明", "标化考试要求与数据": "【2026入学交分者】SAT/ACT 非强制；SAT阅读中间50%：730-760；ACT中间50%：34-35；本轮不交SAT/ACT亦可申请", "申请特别提醒": "ED1与ED II均有绑定承诺；音乐学院须另核试镜要求；奖学金申请另有12月1日节点；不等同于普通录取申请截止", "abbr": "Vanderbilt Vandy", "rank_int": 16, "rank_bucket": "11-20", "rounds_parsed": [{"name": "ED I", "ddl": "2026.11.01", "release": "12月中旬放榜", "binding": "绑定"}, {"name": "ED II", "ddl": "2027.01.01", "release": "2月中旬放榜", "binding": "绑定"}, {"name": "RD", "ddl": "2027.01.01", "release": "3月下旬放榜", "binding": "非绑定"}]}, {"页码": "19", "排名": "#16", "排名数值": "16", "院校类别": "综合性大学", "榜单标签": "2027 U.S.NEWS 全美综合大学·并列", "中文校名": "圣路易斯华盛顿大学", "英文校名": "WASHINGTON UNIVERSITY IN ST. LOUIS", "学校定位与特色": "多学院本科体系·研究与设计实践", "地点": "圣路易斯", "地点说明": "城市/地区", "学校性质": "私立研究型大学", "学校性质说明": "本科高等教育", "学制": "Semester (学期制)", "本科入口": "按学院申请 (详见专业选择与转换)", "早申轮次": "EA +ED", "年学费_美元": "$71,310", "学费说明": "2026-27；不含食宿", "本科专业概览_体系": "文理、工程、商科与设计", "本科专业概览_领域": "文理、工程、商科与艺术", "本科专业概览_代表项目": "心理、建筑、生物医学工程", "专业选择与转换": "申请时选择本科division；入学后依学院规则定专业或组合学习。", "本科教学与学习机会": "本科可在学院之间组合课程；研究、设计与实践因项目而异。", "校园生活": "圣路易斯校园，住宿与社团生活丰富；可参与社区服务、文化和体育活动", "申请信息_概览": "2027新增EA·同时保留两轮ED", "申请轮次与截止日期": "EA: 2026.11.02 / 12月23日前放榜 / 非绑定 | ED I: 2026.11.02 / 12月11日前放榜 / 绑定 | ED II: 2027.01.04 / 2月12日前放榜 / 绑定 | RD: 2027.01.04 / 4月1日前放榜 / 非绑定", "申请材料": "Common App等平台·WashU申请材料；成绩单与学校报告·教师及顾问推荐；英语证明·ED协议（如适用）", "标化考试要求与数据": "【2026新生交分者】SAT/ACT 非强制；SAT 中间50%：1510-1550；ACT中间50%：33-35；本轮不交SAT/ACT亦可申请", "申请特别提醒": "EA与ED1均在11月截止；ED录取须履行绑定承诺；艺术或建筑另核作品集；特殊项目有各自补充要求", "abbr": "WashU WUSTL", "rank_int": 16, "rank_bucket": "11-20", "rounds_parsed": [{"name": "EA", "ddl": "2026.11.02", "release": "12月23日前放榜", "binding": "非绑定"}, {"name": "ED I", "ddl": "2026.11.02", "release": "12月11日前放榜", "binding": "绑定"}, {"name": "ED II", "ddl": "2027.01.04", "release": "2月12日前放榜", "binding": "绑定"}, {"name": "RD", "ddl": "2027.01.04", "release": "4月1日前放榜", "binding": "非绑定"}]}, {"页码": "20", "排名": "#20", "排名数值": "20", "院校类别": "综合性大学", "榜单标签": "2027 U.S.NEWS 全美综合大学·并列", "中文校名": "圣母大学", "英文校名": "UNIVERSITY OF NOTRE DAME", "学校定位与特色": "博雅教育与专业训练·住宿社群传统", "地点": "圣母市", "地点说明": "城市/地区", "学校性质": "私立研究型大学", "学校性质说明": "本科高等教育", "学制": "Semester (学期制)", "本科入口": "按学院意向申请 (详见专业选择与转换)", "早申轮次": "REA", "年学费_美元": "$69,280", "学费说明": "2026-27；不含食宿", "本科专业概览_体系": "博雅基础与专业学院结合", "本科专业概览_领域": "文理、工程、商科与建筑", "本科专业概览_代表项目": "经济、政治科学、建筑", "专业选择与转换": "申请表达学院及学术兴趣；专业与学院路径须满足对应要求。", "本科教学与学习机会": "文理教育、研究与公共服务结合；本科可依项目参加实践及海外学习。", "校园生活": "天主教传统鲜明，重服务与共同体；住宿社群与体育活动是生活的重要部分", "申请信息_概览": "限制性REA·非绑定", "申请轮次与截止日期": "REA: 2026.11.01 / 12月中旬放榜 / 限制性 | RD: 2027.01.04 / 春季放榜 / 非绑定", "申请材料": "Common App等平台·Notre Dame补充文书；成绩单与学校材料·推荐信；REA支持材料11/15·适用时英语成绩", "标化考试要求与数据": "【2026入学交分者】SAT/ACT 非强制；SAT 中间50%：1460-1540；ACT中间50%：33-35；本轮不交SAT/ACT亦可申请", "申请特别提醒": "REA可兼其他非绑定早申；不得同时申请其他学校ED；支持材料可晚于申请截止；须按官网材料日程提交", "abbr": "ND Notre Dame", "rank_int": 20, "rank_bucket": "11-20", "rounds_parsed": [{"name": "REA", "ddl": "2026.11.01", "release": "12月中旬放榜", "binding": "限制性"}, {"name": "RD", "ddl": "2027.01.04", "release": "春季放榜", "binding": "非绑定"}]}, {"页码": "21", "排名": "#23", "排名数值": "23", "院校类别": "综合性大学", "榜单标签": "2027 U.S.NEWS 全美综合大学·并列", "中文校名": "埃默里大学", "英文校名": "EMORY UNIVERSITY", "学校定位与特色": "双学院本科入口·文理与专业衔接", "地点": "亚特兰大等", "地点说明": "城市/地区", "学校性质": "私立研究型大学", "学校性质说明": "本科高等教育", "学制": "Semester (学期制)", "本科入口": "双学院入口 (详见专业选择与转换)", "早申轮次": "ED I/ED II", "年学费_美元": "$70,300", "学费说明": "2026-27；不含食宿", "本科专业概览_体系": "Emory与Oxford两个入口", "本科专业概览_领域": "文理、商科与护理等", "本科专业概览_代表项目": "生物、经济、商科", "专业选择与转换": "可申请Emory、Oxford或同时申请；Oxford前两年后衔接亚特兰大项目。", "本科教学与学习机会": "前期文理学习与后续专业衔接；研究与实践机会按学院及项目开放。", "校园生活": "Emory位于亚特兰大，城市资源丰富；Oxford为独立的小型住宿校园", "申请信息_概览": "两轮绑定ED·两个入学入口", "申请轮次与截止日期": "ED I: 2026.11.01 / 12月15日前放榜 / 绑定 | ED II: 2027.01.01 / 2月15日前放榜 / 绑定 | RD: 2027.01.01 / 4月1日前放榜 / 非绑定", "申请材料": "Common App·Emory补充文书；两封教师推荐信·成绩单与学校材料；国际资金认证与英语证明·可选InitialView", "标化考试要求与数据": "【2026录取交分者】SAT/ACT 非强制；Emory SAT: 1500-1550；ACT：34-35（中间50%）；以上为Emory College数据", "申请特别提醒": "可同时申请Emory与Oxford；大陆申请者强烈建议InitialView；学者项目另核11月15日节点；两学院有不同校园与成绩画像", "abbr": "Emory", "rank_int": 23, "rank_bucket": "21-30", "rounds_parsed": [{"name": "ED I", "ddl": "2026.11.01", "release": "12月15日前放榜", "binding": "绑定"}, {"name": "ED II", "ddl": "2027.01.01", "release": "2月15日前放榜", "binding": "绑定"}, {"name": "RD", "ddl": "2027.01.01", "release": "4月1日前放榜", "binding": "非绑定"}]}, {"页码": "22", "排名": "#23", "排名数值": "23", "院校类别": "综合性大学", "榜单标签": "2027 U.S.NEWS 全美综合大学·并列", "中文校名": "乔治城大学", "英文校名": "GEORGETOWN UNIVERSITY", "学校定位与特色": "博雅核心与国际视野·华盛顿实践资源", "地点": "华盛顿特区", "地点说明": "城市/地区", "学校性质": "私立研究型大学", "学校性质说明": "本科高等教育", "学制": "Semester (学期制)", "本科入口": "按学院申请 (详见专业选择与转换)", "早申轮次": "EA", "年学费_美元": "$74,520", "学费说明": "2026-27；不含食宿", "本科专业概览_体系": "文理与专业school分院", "本科专业概览_领域": "文理、国际事务、商科与健康", "本科专业概览_代表项目": "国际政治、公共政策、生物", "专业选择与转换": "申请时选择本科school；公共政策等路径另有阶段衔接规则。", "本科教学与学习机会": "博雅核心与专业学院课程结合；可结合华盛顿资源参加研究与实践。", "校园生活": "华盛顿特区校园，公共机构资源集中；服务、社团与城市实习机会丰富", "申请信息_概览": "有限制的非绑定EA", "申请轮次与截止日期": "EA: 2026.11.01 / 12月15日前放榜 / 非绑定 | RD: 2027.01.01 / 4月1日前放榜 / 非绑定", "申请材料": "Common App·Georgetown补充文书；学校及教师推荐·高中成绩及课程证明；官方SAT/ACT·校友面试", "标化考试要求与数据": "【2027入学政策】SAT/ACT 必交；不接受跨次拼分；须提交官方考试成绩；非英语授课者建议另交语言分", "申请特别提醒": "EA不得并行其他学校ED；可兼符合规则的非绑定EA；校友面试按学校安排完成；不得用自行拼分替代整次成绩", "abbr": "Georgetown", "rank_int": 23, "rank_bucket": "21-30", "rounds_parsed": [{"name": "EA", "ddl": "2026.11.01", "release": "12月15日前放榜", "binding": "非绑定"}, {"name": "RD", "ddl": "2027.01.01", "release": "4月1日前放榜", "binding": "非绑定"}]}, {"页码": "23", "排名": "#25", "排名数值": "25", "院校类别": "综合性大学", "榜单标签": "2027 U.S.NEWS 全美综合大学", "中文校名": "密歇根大学安娜堡分校", "英文校名": "UNIVERSITY OF MICHIGAN-ANN ARBOR", "学校定位与特色": "多学院研究型本科 · 大学城学习生活", "地点": "安娜堡", "地点说明": "城市/地区", "学校性质": "公立研究型大学", "学校性质说明": "本科高等教育", "学制": "Semester (学期制)", "本科入口": "按学院申请 (详见专业选择与转换)", "早申轮次": "ED /EA", "年学费_美元": "$67,096", "学费说明": "2026-27/LSA低年级", "本科专业概览_体系": "多学院、大型公立本科体系", "本科专业概览_领域": "文理、工程、商科与艺术等", "本科专业概览_代表项目": "统计、工程、公共政策", "专业选择与转换": "申请按school或college选择入口；商科、公共政策等项目另核准入规则。", "本科教学与学习机会": "大型研究型大学提供多类课程；本科研究与跨学科学习依学院安排。", "校园生活": "安娜堡大学城，社团与体育活动活跃；校园规模较大，学生生活选择丰富", "申请信息_概览": "绑定ED+非绑定EA", "申请轮次与截止日期": "ED: 2026.11.01 / 12月24日前放榜 / 绑定 | EA: 2026.11.01 / 1月29日前放榜 / 非绑定 | RD: 2027.02.01 / 4月2日前放榜 / 非绑定", "申请材料": "Common App·Michigan补充文书；成绩单与学校报告·教师推荐信；必要英语证明 · ED协议（如适用）", "标化考试要求与数据": "【2027入学政策】SAT/ACT 非强制；IELTS约7，单项6.5及以上；语言豁免按地区及学制审阅；提示：IB本身不自动豁免", "申请特别提醒": "音乐戏剧舞蹈仅RD，12月1日；传统双学位须用EA或RD；优先录取亦须用EA或RD；IBE双学位可用ED", "abbr": "UMich Michigan", "rank_int": 25, "rank_bucket": "21-30", "rounds_parsed": [{"name": "ED", "ddl": "2026.11.01", "release": "12月24日前放榜", "binding": "绑定"}, {"name": "EA", "ddl": "2026.11.01", "release": "1月29日前放榜", "binding": "非绑定"}, {"name": "RD", "ddl": "2027.02.01", "release": "4月2日前放榜", "binding": "非绑定"}]}, {"页码": "24", "排名": "#26", "排名数值": "26", "院校类别": "综合性大学", "榜单标签": "2027 U.S.NEWS 全美综合大学", "中文校名": "弗吉尼亚大学", "英文校名": "UNIVERSITY OF VIRGINIA", "学校定位与特色": "文理与专业学院·荣誉制度与学生自治", "地点": "夏洛茨维尔", "地点说明": "城市/地区", "学校性质": "公立研究型大学", "学校性质说明": "本科高等教育", "学制": "Semester (学期制)", "本科入口": "按学院申请 (详见专业选择与转换)", "早申轮次": "ED /EA", "年学费_美元": "$57,432", "学费说明": "2026-27/文理新生", "本科专业概览_体系": "文理与专业学院多入口", "本科专业概览_领域": "文理、工程、商科与建筑等", "本科专业概览_代表项目": "政治、商科、工程", "专业选择与转换": "新生按学院申请，入学后申报专业；部分专业另有校内申请或先修要求。", "本科教学与学习机会": "通识教育、专业训练与研究结合；不同学院的课程与毕业要求有区别。", "校园生活": "草坪与学术村是历史校园核心；荣誉制度、学生自治与校友传统", "申请信息_概览": "ED /EA/RD·ED与EA同日截止", "申请轮次与截止日期": "ED: 2026.11.01 / 12月15日前放榜 / 绑定 | EA: 2026.11.01 / 2月15日前放榜 / 非绑定 | RD: 2027.01.05 / 4月1日前放榜 / 非绑定", "申请材料": "Common App·申请学院选择·UVA申请内容；成绩单与学校报告·1封教师推荐信；年中成绩报告", "标化考试要求与数据": "【2024入学交分者】SAT/ACT 非强制；SAT 中间50%：1410-1520；ACT中间50%：32-35；可拼分；无最低分数线", "申请特别提醒": "ED与EA同日截止但承诺不同；ED录取通常须撤其他申请；建筑艺术等补充材料另核；不要将EA误作绑定录取", "abbr": "UVA Virginia", "rank_int": 26, "rank_bucket": "21-30", "rounds_parsed": [{"name": "ED", "ddl": "2026.11.01", "release": "12月15日前放榜", "binding": "绑定"}, {"name": "EA", "ddl": "2026.11.01", "release": "2月15日前放榜", "binding": "非绑定"}, {"name": "RD", "ddl": "2027.01.05", "release": "4月1日前放榜", "binding": "非绑定"}]}, {"页码": "25", "排名": "#27", "排名数值": "27", "院校类别": "综合性大学", "榜单标签": "2027 U.S.NEWS 全美综合大学·并列", "中文校名": "北卡罗来纳大学教堂山分校", "英文校名": "UNIVERSITY OF NORTH CAROLINA AT CHAPEL HILL", "学校定位与特色": "公共研究型本科 · 文理与专业学院衔接", "地点": "教堂山", "地点说明": "城市/地区", "学校性质": "公立研究型大学", "学校性质说明": "本科高等教育", "学制": "Semester (学期制)", "本科入口": "本科与项目分层 (详见专业选择与转换)", "早申轮次": "EA", "年学费_美元": "$47,472", "学费说明": "2026-27；不含食宿", "本科专业概览_体系": "文理基础与专业学院衔接", "本科专业概览_领域": "文理、商科、传播与公共健康", "本科专业概览_代表项目": "公共政策、生物、商科", "专业选择与转换": "一般本科录取后再确定主修；部分专业学院或项目需后续申请。", "本科教学与学习机会": "公共研究型大学结合通识与研究；专业项目按规定衔接实践训练。", "校园生活": "教堂山大学城，校园与社区联系紧密；学生社团、体育与服务活动丰富", "申请信息_概览": "非绑定EA·国际生通知较晚", "申请轮次与截止日期": "EA: 2026.10.15 / 2月15日前放榜 / 非绑定 | RD: 2027.01.15 / 3月31日放榜 / 非绑定", "申请材料": "Common App·UNC补充短答；成绩单·课程及活动记录与学校材料；一封核心学科教师推荐信", "标化考试要求与数据": "【2027入学政策】SAT/ACT 有条件可选；加权GPA≥2.8可不交；连续四年英语授课可依规免；建议：先核对学校成绩口径", "申请特别提醒": "州外及国际EA通知较晚；最晚2月15日，不套州内日期；非4分制成绩按学校规则评估；部分专业另有后续准入要求", "abbr": "UNC Chapel Hill", "rank_int": 27, "rank_bucket": "21-30", "rounds_parsed": [{"name": "EA", "ddl": "2026.10.15", "release": "2月15日前放榜", "binding": "非绑定"}, {"name": "RD", "ddl": "2027.01.15", "release": "3月31日放榜", "binding": "非绑定"}]}, {"页码": "26", "排名": "#27", "排名数值": "27", "院校类别": "综合性大学", "榜单标签": "2027 U.S.NEWS 全美综合大学·并列", "中文校名": "南加州大学", "英文校名": "UNIVERSITY OF SOUTHERN CALIFORNIA", "学校定位与特色": "专业学院与城市资源·跨学科学习", "地点": "洛杉矶", "地点说明": "城市/地区", "学校性质": "私立研究型大学", "学校性质说明": "本科高等教育", "学制": "Semester (学期制)", "本科入口": "按专业申请 (详见专业选择与转换)", "早申轮次": "ED /EA", "年学费_美元": "$75,384", "学费说明": "2026-27；不含食宿", "本科专业概览_体系": "Dornsife与多个专业学院", "本科专业概览_领域": "文理、工程、商科与艺术等", "本科专业概览_代表项目": "电影、商科、工程", "专业选择与转换": "申请填写第一志愿及可选第二志愿；不同学院专业的补充要求有所不同。", "本科教学与学习机会": "文理通识与专业学院资源结合；项目学习、研究与实践因专业而异。", "校园生活": "洛杉矶城市校园，文化与行业资源广；学生社团、校友网络与体育活动活跃", "申请信息_概览": "2027多数专业开放ED及EA", "申请轮次与截止日期": "ED: 2026.11.01 / 12月中旬放榜 / 绑定 | EA: 2026.11.01 / 1月下旬放榜 / 非绑定 | RD: 2027.01.10 / 4月1日前放榜 / 非绑定", "申请材料": "Common App·USC补充文书；高中成绩及课程证明·一封推荐信；Mid-Year Report ·英语及资金证明", "标化考试要求与数据": "【2026入学交分者】SAT/ACT 非强制；SAT 中间50%：1470-1540；ACT中间50%：32-35；如提交须官方送分，可拼分", "申请特别提醒": "表演艺术仅RD，12月1日；WBB只参加11月1日早申；ED若录至非第一志愿专业；依校方规则可解除绑定", "abbr": "USC", "rank_int": 27, "rank_bucket": "21-30", "rounds_parsed": [{"name": "ED", "ddl": "2026.11.01", "release": "12月中旬放榜", "binding": "绑定"}, {"name": "EA", "ddl": "2026.11.01", "release": "1月下旬放榜", "binding": "非绑定"}, {"name": "RD", "ddl": "2027.01.10", "release": "4月1日前放榜", "binding": "非绑定"}]}, {"页码": "27", "排名": "#29", "排名数值": "29", "院校类别": "综合性大学", "榜单标签": "2027 U.S.NEWS 全美综合大学·并列", "中文校名": "佐治亚理工学院", "英文校名": "GEORGIA INSTITUTE OF TECHNOLOGY", "学校定位与特色": "工程与计算基础·研究及合作教育", "地点": "亚特兰大", "地点说明": "城市/地区", "学校性质": "公立研究型大学", "学校性质说明": "本科高等教育", "学制": "Semester (学期制)", "本科入口": "填报意向专业 (详见专业选择与转换)", "早申轮次": "EA1/EA2", "年学费_美元": "$35,610", "学费说明": "2026-27/国际新生", "本科专业概览_体系": "工程、计算与文理等学院", "本科专业概览_领域": "工程、计算、理学与商科等", "本科专业概览_代表项目": "计算机、工业工程、公共政策", "专业选择与转换": "申请填报意向专业，入学后依规确认；转专业须满足学校及项目准入要求。", "本科教学与学习机会": "技术、定量学习与项目实践结合；可按项目参加研究与Co-op合作教育。", "校园生活": "亚特兰大城市校园，科技社群活跃；学生社团、创新项目与体育活动丰富", "申请信息_概览": "EA1/EA2·按地区选择轮次", "申请轮次与截止日期": "EA1: 2026.10.15 / 12月上旬放榜 / 非绑定 | EA2: 2026.11.02 / 1月下旬放榜 / 非绑定 | RD: 2027.01.06 / 3月中旬放榜 / 非绑定", "申请材料": "Common App · Georgia Tech申请材料；9-12年级课程与9-11年级成绩；SAT/ ACT ·门户要求的国际支持文件", "标化考试要求与数据": "【2025入学交分者】SAT/ACT必交；SAT 中间50%：1370-1530；ACT中间50%：31-35；可自报，入学须官方送分", "申请特别提醒": "EA1限符合条件的佐治亚生；州外及国际申请通常用EA2；EA2文件须于11月16日前交；考试自报截止为12月8日", "abbr": "Georgia Tech GT Gatech", "rank_int": 29, "rank_bucket": "21-30", "rounds_parsed": [{"name": "EA1", "ddl": "2026.10.15", "release": "12月上旬放榜", "binding": "非绑定"}, {"name": "EA2", "ddl": "2026.11.02", "release": "1月下旬放榜", "binding": "非绑定"}, {"name": "RD", "ddl": "2027.01.06", "release": "3月中旬放榜", "binding": "非绑定"}]}, {"页码": "28", "排名": "#31", "排名数值": "31", "院校类别": "综合性大学", "榜单标签": "2027 U.S.NEWS 全美综合大学·并列", "中文校名": "波士顿学院", "英文校名": "BOSTON COLLEGE", "学校定位与特色": "耶稣会通识教育·四年制专业学院", "地点": "栗树山", "地点说明": "城市/地区", "学校性质": "私立研究型大学", "学校性质说明": "本科高等教育", "学制": "Semester (学期制)", "本科入口": "按学院申请 (详见专业选择与转换)", "早申轮次": "ED I/ED II", "年学费_美元": "$75,070", "学费说明": "2026-27；不含食宿", "本科专业概览_体系": "四年制本科分学院申请", "本科专业概览_领域": "文理、商科、教育与护理", "本科专业概览_代表项目": "经济、金融、教育", "专业选择与转换": "申请时选择本科学院；专业申报及跨学院转入依各院规定。", "本科教学与学习机会": "耶稣会通识重视探究与社会责任；核心课程与专业学习相结合。", "校园生活": "Chestnut Hill校园连接波士顿资源；住宿、服务活动与体育传统鲜明", "申请信息_概览": "ED I/ED II绑定申请", "申请轮次与截止日期": "ED I: 2026.11.01 / 12月15日前放榜 / 绑定 | ED II: 2027.01.04 / 2月15日前放榜 / 绑定 | RD: 2027.01.04 / 4月1日前放榜 / 非绑定", "申请材料": "Common App·BC补充文书；成绩单与学校材料·教师及顾问推荐；期中材料·ED协议（如适用）", "标化考试要求与数据": "【2027入学政策】SAT/ACT 非强制；IELTS建议7.5及以上；SAT阅读≥650可免语言考试；提示：选择提交后不可撤回", "申请特别提醒": "ED1与ED II均有绑定承诺；不可同时持另一份ED承诺；选学院前核对学术路径；艺术补充材料依项目要求", "abbr": "BC", "rank_int": 31, "rank_bucket": "31+", "rounds_parsed": [{"name": "ED I", "ddl": "2026.11.01", "release": "12月15日前放榜", "binding": "绑定"}, {"name": "ED II", "ddl": "2027.01.04", "release": "2月15日前放榜", "binding": "绑定"}, {"name": "RD", "ddl": "2027.01.04", "release": "4月1日前放榜", "binding": "非绑定"}]}, {"页码": "29", "排名": "#31", "排名数值": "31", "院校类别": "综合性大学", "榜单标签": "2027 U.S.NEWS 全美综合大学·并列", "中文校名": "纽约大学", "英文校名": "NEW YORK UNIVERSITY", "学校定位与特色": "多学院与全球校区·城市学习资源", "地点": "纽约市", "地点说明": "城市/地区", "学校性质": "私立研究型大学", "学校性质说明": "本科高等教育", "学制": "Semester (学期制)", "本科入口": "按校区学院申请 (详见专业选择与转换)", "早申轮次": "ED I/ED II", "年学费_美元": "$68,576", "学费说明": "2026-27/CAS预估", "本科专业概览_体系": "多学院、跨校区本科体系", "本科专业概览_领域": "文理、商科、工程与艺术等", "本科专业概览_代表项目": "经济、商科、电影与工程", "专业选择与转换": "申请明确校区、学院与项目；跨学院转入及双专业须符合具体规定。", "本科教学与学习机会": "文理核心与专业课程因学院而异；可结合城市及全球学习资源规划经历。", "校园生活": "纽约城市校园与城市生活紧密相连；学院和校区选择影响日常学习体验", "申请信息_概览": "两轮ED·按校区与项目申请", "申请轮次与截止日期": "ED I: 2026.11.01 / 12月15日放榜 / 绑定 | ED II: 2027.01.01 / 2月15日放榜 / 绑定 | RD: 2027.01.05 / 4月1日放榜 / 非绑定", "申请材料": "Common App·NYU补充内容与推荐信；STARS自报课程成绩·中学成绩与学校材料；可选学术测试·ED协议（如适用）", "标化考试要求与数据": "【2027入学政策】SAT/ACT 非强制；可选政策至2027-28申请季；IELTS竞争性参考7.5及以上；全英文课程满三年可依规免", "申请特别提醒": "先明确校区学院与项目；艺术类须另核作品或试镜；ED承诺须结合实际录取方案；学杂费因学院和项目而不同", "abbr": "NYU", "rank_int": 31, "rank_bucket": "31+", "rounds_parsed": [{"name": "ED I", "ddl": "2026.11.01", "release": "12月15日放榜", "binding": "绑定"}, {"name": "ED II", "ddl": "2027.01.01", "release": "2月15日放榜", "binding": "绑定"}, {"name": "RD", "ddl": "2027.01.05", "release": "4月1日放榜", "binding": "非绑定"}]}, {"页码": "30", "排名": "#31", "排名数值": "31", "院校类别": "综合性大学", "榜单标签": "2027 U.S.NEWS 全美综合大学·并列", "中文校名": "塔夫茨大学", "英文校名": "TUFTS UNIVERSITY", "学校定位与特色": "文理工程与美术·公民参与和实践", "地点": "梅德福德等", "地点说明": "城市/地区", "学校性质": "私立研究型大学", "学校性质说明": "本科高等教育", "学制": "Semester (学期制)", "本科入口": "按学院申请 (详见专业选择与转换)", "早申轮次": "ED I/ED II", "年学费_美元": "$74,862", "学费说明": "2026-27；不含食宿", "本科专业概览_体系": "文理、工程与SMFA艺术", "本科专业概览_领域": "文理、工程与美术", "本科专业概览_代表项目": "国际关系、生物医学工程", "专业选择与转换": "申请时区分文理、工程或SMFA；双学位及第二主修须依项目规则。", "本科教学与学习机会": "博雅课程、工程与艺术路径并行；研究、实践与公民参与可结合规划。", "校园生活": "Medford/Somerville近郊校园；兼具住宿社群与波士顿城市资源", "申请信息_概览": "ED I/ED II·无通用EA", "申请轮次与截止日期": "ED I: 2026.11.02 / 12月中旬放榜 / 绑定 | ED II: 2027.01.04 / 2月初放榜 / 绑定 | RD: 2027.01.04 / 4月1日前放榜 / 非绑定", "申请材料": "Common App或其他平台·Tufts补充文书；成绩单与学校报告 · 推荐信；ED协议（如适用）", "标化考试要求与数据": "【2025录取交分者】SAT/ACT 非强制；SAT数学中间50%：740-790；ACT中间50%：33-35；本轮不交SAT/ACT亦可申请", "申请特别提醒": "ED1与ED II均有绑定承诺；SMFA作品集另有要求；双学位项目须分別满足条件；第二主修不等于独立入学项目", "abbr": "Tufts", "rank_int": 31, "rank_bucket": "31+", "rounds_parsed": [{"name": "ED I", "ddl": "2026.11.02", "release": "12月中旬放榜", "binding": "绑定"}, {"name": "ED II", "ddl": "2027.01.04", "release": "2月初放榜", "binding": "绑定"}, {"name": "RD", "ddl": "2027.01.04", "release": "4月1日前放榜", "binding": "非绑定"}]}, {"页码": "31", "排名": "#34", "排名数值": "34", "院校类别": "综合性大学", "榜单标签": "2027 U.S.NEWS 全美综合大学·并列", "中文校名": "波士顿大学", "英文校名": "BOSTON UNIVERSITY", "学校定位与特色": "BU Hub通识·城市研究与专业学习", "地点": "波士顿", "地点说明": "城市/地区", "学校性质": "私立研究型大学", "学校性质说明": "本科高等教育", "学制": "Semester (学期制)", "本科入口": "按学院项目申请 (详见专业选择与转换)", "早申轮次": "ED I/ED II", "年学费_美元": "$73,024", "学费说明": "2026-27；不含食宿", "本科专业概览_体系": "多学院与专业项目并行", "本科专业概览_领域": "文理、商科、工程与艺术等", "本科专业概览_代表项目": "传播、生物医学工程、商科", "专业选择与转换": "申请选择学院及本科项目；跨学院转入与双学位须符合各院要求。", "本科教学与学习机会": "BU Hub通识连接不同学科；本科研究与城市实践提供学习机会。", "校园生活": "Charles River沿岸城市校园；波士顿文化、社团与实习资源丰富", "申请信息_概览": "两轮ED·本轮无EA", "申请轮次与截止日期": "ED I: 2026.11.02 / 12月14日放榜 / 绑定 | ED II: 2027.01.05 / 2月8日放榜 / 绑定 | RD: 2027.01.05 / 3月下旬放榜 / 非绑定", "申请材料": "Common App·BU补充文书；高中成绩及课程证明·学校及顾问材料；一封教师评价·英语及资金材料", "标化考试要求与数据": "【2025入学交分者】SAT/ACT 非强制；提交者均分：SAT约1465；ACT约32（2025入学）；本轮可选；英语证明另行审查", "申请特别提醒": "ED1与ED II均有绑定承诺；艺术类项目另核作品或试镜；部分奖项另有12月1日节点；须核对目标奖项是否适用", "abbr": "BU", "rank_int": 34, "rank_bucket": "31+", "rounds_parsed": [{"name": "ED I", "ddl": "2026.11.02", "release": "12月14日放榜", "binding": "绑定"}, {"name": "ED II", "ddl": "2027.01.05", "release": "2月8日放榜", "binding": "绑定"}, {"name": "RD", "ddl": "2027.01.05", "release": "3月下旬放榜", "binding": "非绑定"}]}, {"页码": "32", "排名": "#34", "排名数值": "34", "院校类别": "综合性大学", "榜单标签": "2027 U.S.NEWS 全美综合大学并列", "中文校名": "得克萨斯大学奥斯汀分校", "英文校名": "THE UNIVERSITY OF TEXAS AT AUSTIN", "学校定位与特色": "大型公立研究型本科 · 多学院专业路径", "地点": "奥斯汀", "地点说明": "城市/地区", "学校性质": "公立研究型大学", "学校性质说明": "本科高等教育", "学制": "Semester (学期制)", "本科入口": "按专业申请 (详见专业选择与转换)", "早申轮次": "EA", "年学费_美元": "$42,554起", "学费说明": "2026-27；不含食宿", "本科专业概览_体系": "大型公立、多学院本科体系", "本科专业概览_领域": "文理、工程、商科与艺术等", "本科专业概览_代表项目": "工程、商科、传播", "专业选择与转换": "申请填报第一、第二志愿专业；热门专业转入须满足校内审核要求。", "本科教学与学习机会": "专业学院训练与研究资源结合；可通过研究、项目及实习拓展学习。", "校园生活": "奥斯汀州府城市与大学校园相连；学生组织、艺术与体育活动丰富", "申请信息_概览": "国际生也可申请非绑定EA", "申请轮次与截止日期": "EA: 2026.10.15 / 1月15日前通知 / 非绑定 | RD: 2026.12.01 / 2月15日前放榜 / 非绑定", "申请材料": "Common App·UT补充内容；成绩单·顾问与学校材料；SAT/ACT/CLT ·英语证明及专业材料", "标化考试要求与数据": "【2027入学政策】SAT/ACT/CLT必交；不拼分，按最高单次成绩；IELTS最低6.5；须按要求提交官方考试成绩", "申请特别提醒": "EA申请与材料截止分开；EA材料10月22日前提交；RD材料12月10日前提交；国际生亦可选择非绑定EA", "abbr": "UT Austin", "rank_int": 34, "rank_bucket": "31+", "rounds_parsed": [{"name": "EA", "ddl": "2026.10.15", "release": "1月15日前通知", "binding": "非绑定"}, {"name": "RD", "ddl": "2026.12.01", "release": "2月15日前放榜", "binding": "非绑定"}]}, {"页码": "33", "排名": "#34", "排名数值": "34", "院校类别": "综合性大学", "榜单标签": "2027 U.S.NEWS 全美综合大学·并列", "中文校名": "佛罗里达大学", "英文校名": "UNIVERSITY OF FLORIDA", "学校定位与特色": "综合公立本科·研究与专业探索", "地点": "盖恩斯维尔", "地点说明": "城市/地区", "学校性质": "公立研究型大学", "学校性质说明": "本科高等教育", "学制": "Semester (学期制)", "本科入口": "填报意向专业 (详见专业选择与转换)", "早申轮次": "ED /EA", "年学费_美元": "$34,620", "学费说明": "2026-27/州外估算", "本科专业概览_体系": "综合公立与专业学院并行", "本科专业概览_领域": "文理、工程、商科与农学等", "本科专业概览_代表项目": "生物、工程、商科", "专业选择与转换": "申请填写专业意向，入学后规划；须依所选项目要求完成课程与进度。", "本科教学与学习机会": "研究型大学提供多学科探索资源；本科研究与实践按项目要求展开。", "校园生活": "Gainesville大学城，大型公立校园；学生社团、研究与体育活动丰富", "申请信息_概览": "新设ED+非绑定EA", "申请轮次与截止日期": "ED: 2026.10.15 / 12月11日放榜 / 绑定 | EA: 2026.11.01 / 1月22日放榜 / 非绑定 | RD: 2027.01.15 / 3月19日放榜 / 非绑定", "申请材料": "Common App·国际成绩单与英文翻译；NACES逐课程认证含GPA·STARS依条件；SAT /ACT/CLT·认证须赶上材料截止", "标化考试要求与数据": "【2025入学交分者】SAT/ACT/CLT必交；SAT 中间50%：1330-1490；ACT 中间50%：29-33；提示：三种学术测试任选其一", "申请特别提醒": "申请后还有独立材料截止；ED材料10月22日前提交；EA材料11月8日前提交；须完成成绩申报及考试材料", "abbr": "UF Florida", "rank_int": 34, "rank_bucket": "31+", "rounds_parsed": [{"name": "ED", "ddl": "2026.10.15", "release": "12月11日放榜", "binding": "绑定"}, {"name": "EA", "ddl": "2026.11.01", "release": "1月22日放榜", "binding": "非绑定"}, {"name": "RD", "ddl": "2027.01.15", "release": "3月19日放榜", "binding": "非绑定"}]}, {"页码": "34", "排名": "#34", "排名数值": "34", "院校类别": "综合性大学", "榜单标签": "2027 U.S.NEWS 全美综合大学·并列", "中文校名": "伊利诺伊大学香槟分校", "英文校名": "UNIVERSITY OF ILLINOIS URBANA-CHAMPAIGN", "学校定位与特色": "多学院按专业审阅 · 研究型大学资源", "地点": "厄巴纳一香槟", "地点说明": "城市/地区", "学校性质": "公立研究型大学", "学校性质说明": "本科高等教育", "学制": "Semester (学期制)", "本科入口": "按专业申请 (详见专业选择与转换)", "早申轮次": "EA", "年学费_美元": "$42,248起", "学费说明": "2026-27；不含食宿", "本科专业概览_体系": "多学院、按专业审阅", "本科专业概览_领域": "文理、工程、商科与教育等", "本科专业概览_代表项目": "工程、计算机、心理", "专业选择与转换": "按第一志愿专业审阅，可选第二志愿；跨专业转入难度与准入条件有区别。", "本科教学与学习机会": "专业课程与研究方法训练结合；可依学院规则参加跨学科学习。", "校园生活": "Urbana-Champaign双城大学校园；大型公立大学的社团与体育资源丰富", "申请信息_概览": "非绑定EA·按专业审阅", "申请轮次与截止日期": "EA: 2026.11.01 / 1月29日放榜 / 非绑定 | RD: 2027.01.05 / 2月26日放榜 / 非绑定", "申请材料": "Common App或myIllini·专业相关短文；按要求报送成绩及学业记录；国际生英语能力证明", "标化考试要求与数据": "【近三年录取交分者】SAT/ACT 非强制；SAT 中间50%：1440-1540；ACT中间50%：31-35；本轮可选；英语证明另行审查", "申请特别提醒": "EA支持材料11月7日前交；RD支持材料1月11日前交；部分专业不开放第二志愿；专业转入要求不能预设宽松", "abbr": "UIUC Illinois", "rank_int": 34, "rank_bucket": "31+", "rounds_parsed": [{"name": "EA", "ddl": "2026.11.01", "release": "1月29日放榜", "binding": "非绑定"}, {"name": "RD", "ddl": "2027.01.05", "release": "2月26日放榜", "binding": "非绑定"}]}, {"页码": "35", "排名": "#34", "排名数值": "34", "院校类别": "综合性大学", "榜单标签": "2027 U.S.NEWS 全美综合大学·并列", "中文校名": "威斯康星大学麦迪逊分校", "英文校名": "UNIVERSITY OF WISCONSIN-MADISON", "学校定位与特色": "研究与专业训练 · 湖畔大学城生活", "地点": "麦迪逊", "地点说明": "城市/地区", "学校性质": "公立研究型大学", "学校性质说明": "本科高等教育", "学制": "Semester (学期制)", "本科入口": "按学院专业路径 (详见专业选择与转换)", "早申轮次": "EA", "年学费_美元": "$45,232起", "学费说明": "2026-27国际基础", "本科专业概览_体系": "大型公立与多专业学院", "本科专业概览_领域": "文理、工程、商科与教育等", "本科专业概览_代表项目": "经济、生命科学、工程", "专业选择与转换": "申请按学院及意向专业选择路径；部分项目另设校内准入或进度要求。", "本科教学与学习机会": "通识与专业训练结合研究实践；本科生可按项目参加导师研究。", "校园生活": "Madison州府大学城、湖畔校园；社团、公共服务和体育活动丰富", "申请信息_概览": "非绑定EA·无ED", "申请轮次与截止日期": "EA: 2026.11.01 / 1月31日前放榜 / 非绑定 | RD: 2027.01.15 / 3月31日前放榜 / 非绑定", "申请材料": "Common App等平台·Wisconsin补充文书；成绩单与学校材料·推荐信；申请平台相关材料 · 国际英语证明", "标化考试要求与数据": "【2027入学政策】SAT/ACT 非强制；如提交，须官方送分且不拼分；英语成绩须在两年内；四年主要英语授课可依规免", "申请特别提醒": "EA支持材料11月9日前交；RD支持材料1月22日前交；申请须按时完整提交；音乐舞蹈等另核试镜要求", "abbr": "UW Madison Wisconsin", "rank_int": 34, "rank_bucket": "31+", "rounds_parsed": [{"name": "EA", "ddl": "2026.11.01", "release": "1月31日前放榜", "binding": "非绑定"}, {"name": "RD", "ddl": "2027.01.15", "release": "3月31日前放榜", "binding": "非绑定"}]}, {"页码": "36", "排名": "#34", "排名数值": "34", "院校类别": "综合性大学", "榜单标签": "2027 U.S.NEWS 全美综合大学·并列", "中文校名": "维克森林大学", "英文校名": "WAKE FOREST UNIVERSITY", "学校定位与特色": "博雅课程与专业学习·公共服务传统", "地点": "温斯顿塞勒姆", "地点说明": "城市/地区", "学校性质": "私立研究型大学", "学校性质说明": "本科高等教育", "学制": "Semester (学期制)", "本科入口": "统一本科探索 (详见专业选择与转换)", "早申轮次": "EA+ED", "年学费_美元": "$71,894", "学费说明": "2026-27；不含食宿", "本科专业概览_体系": "博雅本科与专业学习衔接", "本科专业概览_领域": "文理、商科与综合工程", "本科专业概览_代表项目": "社会学、统计、工程", "专业选择与转换": "本科先修博雅课程，再确定主修；商学院等项目另有校内申请。", "本科教学与学习机会": "小班课程结合方法与专业训练；可按项目参加研究、实践及海外学习。", "校园生活": "Winston-Salem校园，住宿社群鲜明；Pro Humanitate传统强调公共服务", "申请信息_概览": "两轮ED·EA仅第一代大学生", "申请轮次与截止日期": "ED I: 2026.11.15 / 滚动通知 / 绑定 | EA*: 2026.11.15 / 1月15日前放榜 / 非绑定 | ED II: 2027.01.01 / 2月15日前放榜 / 绑定 | RD: 2027.01.01 / 4月初放榜 / 非绑定", "申请材料": "Common App或其他平台 · 申请文书；成绩单与学校材料·顾问及教师推荐；ED协议（如适用）·国际资金及英语证明", "标化考试要求与数据": "【2027入学政策】SAT/ACT 非强制；长期实行标化可选政策；接受IELTS等，语言成绩不拼分；英语主授满三年可依规免", "申请特别提醒": "EA仅面向第一代大学生；其他申请人可考虑ED或RD；ED1录取采用滚动通知；须提前准备国际生资金证明", "abbr": "WFU Wake Forest", "rank_int": 34, "rank_bucket": "31+", "rounds_parsed": [{"name": "ED I", "ddl": "2026.11.15", "release": "滚动通知", "binding": "绑定"}, {"name": "EA*", "ddl": "2026.11.15", "release": "1月15日前放榜", "binding": "非绑定"}, {"name": "ED II", "ddl": "2027.01.01", "release": "2月15日前放榜", "binding": "绑定"}, {"name": "RD", "ddl": "2027.01.01", "release": "4月初放榜", "binding": "非绑定"}]}, {"页码": "37", "排名": "#3", "排名数值": "3", "院校类别": "文理学院", "榜单标签": "2027 U.S.NEWS 全美文理学院（并列）", "中文校名": "斯沃斯莫尔学院", "英文校名": "SWARTHMORE COLLEGE", "学校定位与特色": "文理与工程并行·荣誉项目与三校联盟", "地点": "宾夕法尼亚州", "地点说明": "Swarthmore", "学校性质": "私立文理学院", "学校性质说明": "本科教育为核心", "学制": "Semester (学期制)", "本科入口": "统一本科申请 (入学后探索专业)", "早申轮次": "ED I/ED II", "年学费_美元": "$72,722", "学费说明": "2026-27；不含食宿", "本科专业概览_体系": "文理学院，兼设工程本科", "本科专业概览_领域": "人文、社会科学、自然科学与工程", "本科专业概览_代表项目": "经济、政治学、工程", "专业选择与转换": "统一本科申请，无须提前锁定专业；入学后探索课程，再确定专业方向。", "本科教学与学习机会": "荣誉项目重研讨、导师合作与自主研究；以校外专家笔试、口试评估学习成果。", "校园生活": "费城近郊的植物园式住宿校园；三校联盟与费城资源拓展学习体验", "申请信息_概览": "两轮绑定ED·无EA", "申请轮次与截止日期": "ED I: 2026.11.15 / 12月中旬放榜 / 绑定 | ED II: 2027.01.04 / 2月中旬放榜 / 绑定 | RD: 2027.01.04 / 4月1日前放榜 / 非绑定", "申请材料": "Common App/Coalition·两篇短答·ED协议（适用）；两封教师推荐·顾问推荐与学校材料；年中成绩 · 境外就读者另交语言或视频", "标化考试要求与数据": "【2027入学政策】SAT/ACT 非强制；SAT可拼分，ACT不拼分；可自报；入学核验所用成绩；不交成绩不受不利影响", "申请特别提醒": "境外就读者须三选一；校方视频/语言分/面试视频；交分选项提交后不可更改；InitialView/Vericant均接受", "abbr": "Swarthmore", "rank_int": 3, "rank_bucket": "1-10", "rounds_parsed": [{"name": "ED I", "ddl": "2026.11.15", "release": "12月中旬放榜", "binding": "绑定"}, {"name": "ED II", "ddl": "2027.01.04", "release": "2月中旬放榜", "binding": "绑定"}, {"name": "RD", "ddl": "2027.01.04", "release": "4月1日前放榜", "binding": "非绑定"}]}, {"页码": "38", "排名": "#3", "排名数值": "3", "院校类别": "文理学院", "榜单标签": "2027 U.S.NEWS 全美文理学院（并列）", "中文校名": "克莱蒙特·麦肯纳学院", "英文校名": "CLAREMONT MCKENNA COLLEGE", "学校定位与特色": "经济与公共事务导向 · 五校联盟与实践学习", "地点": "加利福尼亚州", "地点说明": "Claremont", "学校性质": "私立文理学院", "学校性质说明": "本科教育为核心", "学制": "Semester (学期制)", "本科入口": "统一本科申请 (入学后探索专业)", "早申轮次": "ED I/ED II", "年学费_美元": "$75,300", "学费说明": "2026-27；不含食宿", "本科专业概览_体系": "重视经济与公共事务的文理学院", "本科专业概览_领域": "社会科学、人文与综合科学", "本科专业概览_代表项目": "经济、政府、心理科学", "专业选择与转换": "统一本科申请，入学后探索专业；通常在大二阶段申报专业。", "本科教学与学习机会": "研究所与导师合作连接课堂与实践；公共讨论、演讲与实习资源丰富。", "校园生活": "南加州克莱蒙特的住宿校园；五校联盟共享选课与校园资源", "申请信息_概览": "两轮绑定ED·无EA", "申请轮次与截止日期": "ED I: 2026.11.01 / 12月15日前放榜 / 绑定 | ED II: 2027.01.10 / 2月15日前放榜 / 绑定 | RD: 2027.01.10 / 4月1日前放榜 / 非绑定", "申请材料": "Common App/Coalition·两篇短文·ED协议（适用）；一封教师推荐 · 顾问推荐与学校报告；高中及年中成绩·适用英语证明", "标化考试要求与数据": "【2027入学政策】SAT/ACT 非强制；2027可选；2028入学恢复必交；可自报，SAT/ACT均可拼分；英语证明按语言及授课背景核对", "申请特别提醒": "面试强烈建议，并非普遍必交；两分钟视频不替代第三方面试；交分选项7天内可改一次；非英语母语者建议第三方面试", "abbr": "CMC Claremont McKenna", "rank_int": 3, "rank_bucket": "1-10", "rounds_parsed": [{"name": "ED I", "ddl": "2026.11.01", "release": "12月15日前放榜", "binding": "绑定"}, {"name": "ED II", "ddl": "2027.01.10", "release": "2月15日前放榜", "binding": "绑定"}, {"name": "RD", "ddl": "2027.01.10", "release": "4月1日前放榜", "binding": "非绑定"}]}, {"页码": "39", "排名": "#3", "排名数值": "3", "院校类别": "文理学院", "榜单标签": "2027 U.S.NEWS 全美文理学院（并列）", "中文校名": "鲍登学院", "英文校名": "BOWDOIN COLLEGE", "学校定位与特色": "博雅教育与公共精神·住宿社群与海岸资源", "地点": "缅因州", "地点说明": "Brunswick", "学校性质": "私立文理学院", "学校性质说明": "本科教育为核心", "学制": "Semester (学期制)", "本科入口": "统一本科申请 (入学后探索专业)", "早申轮次": "ED I/ ED II", "年学费_美元": "$74,268", "学费说明": "2026-27；不含食宿", "本科专业概览_体系": "以本科为核心文理学院", "本科专业概览_领域": "人文、社会科学、自然科学与跨学科", "本科专业概览_代表项目": "政府与法律、经济、生物", "专业选择与转换": "统一本科申请，先修通识并探索学科；大二春季学期申报专业。", "本科教学与学习机会": "通识与一年级研讨课拓展学术基础；本科研究与海岸研究资源结合。", "校园生活": "缅因州小镇住宿校园，邻近海岸；社团、户外与海岸研究活动丰富", "申请信息_概览": "两轮绑定ED·无EA", "申请轮次与截止日期": "ED I: 2026.11.15 / 12月中旬放榜 / 绑定 | ED II: 2027.01.05 / 2月上旬放榜 / 绑定 | RD: 2027.01.05 / 3月中旬放榜 / 非绑定", "申请材料": "Common App/Coalition·成绩单与学校报告；教师、顾问及其他推荐各一封；ED I首阶段/ED II、RD年中成绩·ED协议", "标化考试要求与数据": "【2027入学政策】SAT/ACT 非强制；可自报，SAT及ACT均可拼分；英语能力测试成绩亦为可选；入学前核验提交的成绩", "申请特别提醒": "补充短文与面试均为可选；艺术ED II/RD截止：1月13日；视频ED1截止：11月24日；ED II/RD视频截止：1月20日", "abbr": "Bowdoin", "rank_int": 3, "rank_bucket": "1-10", "rounds_parsed": [{"name": "ED I", "ddl": "2026.11.15", "release": "12月中旬放榜", "binding": "绑定"}, {"name": "ED II", "ddl": "2027.01.05", "release": "2月上旬放榜", "binding": "绑定"}, {"name": "RD", "ddl": "2027.01.05", "release": "3月中旬放榜", "binding": "非绑定"}]}, {"页码": "40", "排名": "#16", "排名数值": "16", "院校类别": "文理学院", "榜单标签": "2027 U.S.NEWS 全美文理学院（并列）", "中文校名": "卡尔顿学院", "英文校名": "CARLETON COLLEGE", "学校定位与特色": "短学期集中学习·本科研究与综合项目", "地点": "明尼苏达州", "地点说明": "Northfield", "学校性质": "私立文理学院", "学校性质说明": "本科教育为核心", "学制": "Trimester (每年三个学期)", "本科入口": "统一本科申请 (入学后探索专业)", "早申轮次": "ED I/ ED II", "年学费_美元": "$75,186", "学费说明": "2026-27；不含食宿", "本科专业概览_体系": "以本科为核心的文理学院", "本科专业概览_领域": "人文、社会科学、自然科学与计算", "本科专业概览_代表项目": "计算机、经济、地质学", "专业选择与转换": "统一本科申请，入学后探索学科；大二春季学期确定专业。", "本科教学与学习机会": "每年三个短学期，强调集中学习；毕业专业综合项目连接研究与表达。", "校园生活": "诺斯菲尔德大学城的住宿校园；社团、户外活动与同伴社群活跃", "申请信息_概览": "两轮绑定ED·无EA", "申请轮次与截止日期": "ED I: 2026.11.15 / 12月15日放榜 / 绑定 | ED II: 2027.01.15 / 2月15日放榜 / 绑定 | RD: 2027.01.15 / 4月1日前放榜 / 非绑定", "申请材料": "Common App/Coalition·ED协议（适用）；两封学科教师推荐·顾问推荐与报告；高中成绩及高三阶段成绩·适用语言分", "标化考试要求与数据": "【2027入学政策】SAT/ACT长期可选；申请时可自报SAT /ACT；非英语主授者须核对语言要求；接受托福、雅思及多邻国", "申请特别提醒": "申请不收申请费；ED I交分截止：11月20日；ED II/RD交分截止：1月20日；艺术作品集可选，面试非必需", "abbr": "Carleton", "rank_int": 16, "rank_bucket": "11-20", "rounds_parsed": [{"name": "ED I", "ddl": "2026.11.15", "release": "12月15日放榜", "binding": "绑定"}, {"name": "ED II", "ddl": "2027.01.15", "release": "2月15日放榜", "binding": "绑定"}, {"name": "RD", "ddl": "2027.01.15", "release": "4月1日前放榜", "binding": "非绑定"}]}, {"页码": "41", "排名": "#19", "排名数值": "19", "院校类别": "文理学院", "榜单标签": "2027 U.S.NEWS 全美文理学院（并列）", "中文校名": "明德学院", "英文校名": "MIDDLEBURY COLLEGE", "学校定位与特色": "语言与国际视野·冬季学期与文理探索", "地点": "佛蒙特州", "地点说明": "Middlebury", "学校性质": "私立文理学院", "学校性质说明": "本科教育为核心", "学制": "4-1-4 (含1月冬季学期)", "本科入口": "统一本科申请 (入学后探索专业)", "早申轮次": "ED I/ ED II", "年学费_美元": "$72,924", "学费说明": "2026-27；不含食宿", "本科专业概览_体系": "以本科为核心文理学院", "本科专业概览_领域": "语言、人文、社会科学与自然科学", "本科专业概览_代表项目": "语言、国际研究、环境研究", "专业选择与转换": "统一本科申请，先探索再确定专业；最迟在大二结束前申报专业。", "本科教学与学习机会": "4-1-4学制含1月冬季学期；语言、海外学习与跨学科项目丰富。", "校园生活": "佛蒙特州小镇的住宿校园；社团、体育与户外活动丰富", "申请信息_概览": "两轮绑定ED·无EA", "申请轮次与截止日期": "ED I: 2026.11.02 / 12月中旬放榜 / 绑定 | ED II: 2027.01.04 / 2月中旬放榜 / 绑定 | RD: 2027.01.04 / 3月下旬放榜 / 非绑定", "申请材料": "Common App/Coalition·主文书·ED协议（适用）；两封教师推荐 · 顾问推荐与学校报告；高中成绩·高三阶段成绩·适用英语证明", "标化考试要求与数据": "【2027入学政策】SAT/ACT 非强制；可自报，ACT科学非必交；按母语及授课经历核语言要求；IELTS建议7.0,DET建议130", "申请特别提醒": "不另设必写补充文书；9月/2月入学共用申请节点；ED II年中成绩原则上1月15日；RD年中成绩原则上2月15日", "abbr": "Middlebury", "rank_int": 19, "rank_bucket": "11-20", "rounds_parsed": [{"name": "ED I", "ddl": "2026.11.02", "release": "12月中旬放榜", "binding": "绑定"}, {"name": "ED II", "ddl": "2027.01.04", "release": "2月中旬放榜", "binding": "绑定"}, {"name": "RD", "ddl": "2027.01.04", "release": "3月下旬放榜", "binding": "非绑定"}]}];
+const DDL_ROWS = [{"页码": "42", "学校": "普林斯顿大学", "ED1": "-", "EA": "-", "REA/SCEA": "11/01 SCEA", "ED2": "-", "RD/统一申请": "01/01", "本页备注": "芝加哥SSEN/EDO：9/1-10/15；限符合资格的夏校/合作项目学生。 达特茅斯RD按官网主时间线1/1；部分官网页面仍写1/2，建议提前完成。"}, {"页码": "42", "学校": "麻省理工学院", "ED1": "-", "EA": "11/01", "REA/SCEA": "-", "ED2": "-", "RD/统一申请": "01/04", "本页备注": "芝加哥SSEN/EDO：9/1-10/15；限符合资格的夏校/合作项目学生。 达特茅斯RD按官网主时间线1/1；部分官网页面仍写1/2，建议提前完成。"}, {"页码": "42", "学校": "哈佛大学", "ED1": "-", "EA": "-", "REA/SCEA": "11/01 REA", "ED2": "-", "RD/统一申请": "01/01", "本页备注": "芝加哥SSEN/EDO：9/1-10/15；限符合资格的夏校/合作项目学生。 达特茅斯RD按官网主时间线1/1；部分官网页面仍写1/2，建议提前完成。"}, {"页码": "42", "学校": "耶鲁大学", "ED1": "-", "EA": "-", "REA/SCEA": "11/01 SCEA", "ED2": "-", "RD/统一申请": "01/02", "本页备注": "芝加哥SSEN/EDO：9/1-10/15；限符合资格的夏校/合作项目学生。 达特茅斯RD按官网主时间线1/1；部分官网页面仍写1/2，建议提前完成。"}, {"页码": "42", "学校": "斯坦福大学", "ED1": "-", "EA": "-", "REA/SCEA": "11/01 REA", "ED2": "-", "RD/统一申请": "01/05", "本页备注": "芝加哥SSEN/EDO：9/1-10/15；限符合资格的夏校/合作项目学生。 达特茅斯RD按官网主时间线1/1；部分官网页面仍写1/2，建议提前完成。"}, {"页码": "42", "学校": "芝加哥大学", "ED1": "11/02", "EA": "11/02", "REA/SCEA": "-", "ED2": "01/04", "RD/统一申请": "01/04", "本页备注": "芝加哥SSEN/EDO：9/1-10/15；限符合资格的夏校/合作项目学生。 达特茅斯RD按官网主时间线1/1；部分官网页面仍写1/2，建议提前完成。"}, {"页码": "42", "学校": "宾夕法尼亚大学", "ED1": "11/01", "EA": "-", "REA/SCEA": "-", "ED2": "-", "RD/统一申请": "01/05", "本页备注": "芝加哥SSEN/EDO：9/1-10/15；限符合资格的夏校/合作项目学生。 达特茅斯RD按官网主时间线1/1；部分官网页面仍写1/2，建议提前完成。"}, {"页码": "42", "学校": "西北大学", "ED1": "11/01", "EA": "-", "REA/SCEA": "-", "ED2": "-", "RD/统一申请": "01/04", "本页备注": "芝加哥SSEN/EDO：9/1-10/15；限符合资格的夏校/合作项目学生。 达特茅斯RD按官网主时间线1/1；部分官网页面仍写1/2，建议提前完成。"}, {"页码": "42", "学校": "杜克大学", "ED1": "11/02", "EA": "-", "REA/SCEA": "-", "ED2": "-", "RD/统一申请": "01/04", "本页备注": "芝加哥SSEN/EDO：9/1-10/15；限符合资格的夏校/合作项目学生。 达特茅斯RD按官网主时间线1/1；部分官网页面仍写1/2，建议提前完成。"}, {"页码": "42", "学校": "约翰霍普金斯大学", "ED1": "11/01", "EA": "-", "REA/SCEA": "-", "ED2": "01/02", "RD/统一申请": "01/02", "本页备注": "芝加哥SSEN/EDO：9/1-10/15；限符合资格的夏校/合作项目学生。 达特茅斯RD按官网主时间线1/1；部分官网页面仍写1/2，建议提前完成。"}, {"页码": "42", "学校": "加州理工学院", "ED1": "-", "EA": "-", "REA/SCEA": "11/01 REA", "ED2": "-", "RD/统一申请": "01/04", "本页备注": "芝加哥SSEN/EDO：9/1-10/15；限符合资格的夏校/合作项目学生。 达特茅斯RD按官网主时间线1/1；部分官网页面仍写1/2，建议提前完成。"}, {"页码": "42", "学校": "康奈尔大学", "ED1": "11/01", "EA": "-", "REA/SCEA": "-", "ED2": "-", "RD/统一申请": "01/02", "本页备注": "芝加哥SSEN/EDO：9/1-10/15；限符合资格的夏校/合作项目学生。 达特茅斯RD按官网主时间线1/1；部分官网页面仍写1/2，建议提前完成。"}, {"页码": "42", "学校": "达特茅斯学院", "ED1": "11/01", "EA": "-", "REA/SCEA": "-", "ED2": "-", "RD/统一申请": "01/01", "本页备注": "芝加哥SSEN/EDO：9/1-10/15；限符合资格的夏校/合作项目学生。 达特茅斯RD按官网主时间线1/1；部分官网页面仍写1/2，建议提前完成。"}, {"页码": "42", "学校": "布朗大学", "ED1": "11/01", "EA": "-", "REA/SCEA": "-", "ED2": "-", "RD/统一申请": "01/05", "本页备注": "芝加哥SSEN/EDO：9/1-10/15；限符合资格的夏校/合作项目学生。 达特茅斯RD按官网主时间线1/1；部分官网页面仍写1/2，建议提前完成。"}, {"页码": "43", "学校": "哥伦比亚大学", "ED1": "11/01", "EA": "-", "REA/SCEA": "-", "ED2": "-", "RD/统一申请": "01/01", "本页备注": "加州大学系统：11/30统一申请截止，不设EA或ED。 乔治城EA限制并行他校ED。 南加州大学：表演艺术专业常规申请12/1截止；世界商业学士项目仅11/1早申。"}, {"页码": "43", "学校": "加州大学伯克利分校", "ED1": "-", "EA": "-", "REA/SCEA": "-", "ED2": "-", "RD/统一申请": "11/30", "本页备注": "加州大学系统：11/30统一申请截止，不设EA或ED。 乔治城EA限制并行他校ED。 南加州大学：表演艺术专业常规申请12/1截止；世界商业学士项目仅11/1早申。"}, {"页码": "43", "学校": "范德堡大学", "ED1": "11/01", "EA": "-", "REA/SCEA": "-", "ED2": "01/01", "RD/统一申请": "01/01", "本页备注": "加州大学系统：11/30统一申请截止，不设EA或ED。 乔治城EA限制并行他校ED。 南加州大学：表演艺术专业常规申请12/1截止；世界商业学士项目仅11/1早申。"}, {"页码": "43", "学校": "莱斯大学", "ED1": "11/01", "EA": "-", "REA/SCEA": "-", "ED2": "01/04", "RD/统一申请": "01/04", "本页备注": "加州大学系统：11/30统一申请截止，不设EA或ED。 乔治城EA限制并行他校ED。 南加州大学：表演艺术专业常规申请12/1截止；世界商业学士项目仅11/1早申。"}, {"页码": "43", "学校": "加州大学洛杉矶分校", "ED1": "-", "EA": "-", "REA/SCEA": "-", "ED2": "-", "RD/统一申请": "11/30", "本页备注": "加州大学系统：11/30统一申请截止，不设EA或ED。 乔治城EA限制并行他校ED。 南加州大学：表演艺术专业常规申请12/1截止；世界商业学士项目仅11/1早申。"}, {"页码": "43", "学校": "圣母大学", "ED1": "-", "EA": "-", "REA/SCEA": "11/01 REA", "ED2": "-", "RD/统一申请": "01/04", "本页备注": "加州大学系统：11/30统一申请截止，不设EA或ED。 乔治城EA限制并行他校ED。 南加州大学：表演艺术专业常规申请12/1截止；世界商业学士项目仅11/1早申。"}, {"页码": "43", "学校": "圣路易斯华盛顿大学", "ED1": "11/02", "EA": "11/02", "REA/SCEA": "-", "ED2": "01/04", "RD/统一申请": "01/04", "本页备注": "加州大学系统：11/30统一申请截止，不设EA或ED。 乔治城EA限制并行他校ED。 南加州大学：表演艺术专业常规申请12/1截止；世界商业学士项目仅11/1早申。"}, {"页码": "43", "学校": "密歇根大学安娜堡分校", "ED1": "11/01", "EA": "11/01", "REA/SCEA": "-", "ED2": "-", "RD/统一申请": "02/01", "本页备注": "加州大学系统：11/30统一申请截止，不设EA或ED。 乔治城EA限制并行他校ED。 南加州大学：表演艺术专业常规申请12/1截止；世界商业学士项目仅11/1早申。"}, {"页码": "43", "学校": "卡内基梅隆大学", "ED1": "11/02", "EA": "-", "REA/SCEA": "-", "ED2": "-", "RD/统一申请": "01/04", "本页备注": "加州大学系统：11/30统一申请截止，不设EA或ED。 乔治城EA限制并行他校ED。 南加州大学：表演艺术专业常规申请12/1截止；世界商业学士项目仅11/1早申。"}, {"页码": "43", "学校": "埃默里大学", "ED1": "11/01", "EA": "-", "REA/SCEA": "-", "ED2": "01/01", "RD/统一申请": "01/01", "本页备注": "加州大学系统：11/30统一申请截止，不设EA或ED。 乔治城EA限制并行他校ED。 南加州大学：表演艺术专业常规申请12/1截止；世界商业学士项目仅11/1早申。"}, {"页码": "43", "学校": "乔治城大学", "ED1": "-", "EA": "11/01", "REA/SCEA": "-", "ED2": "-", "RD/统一申请": "01/01", "本页备注": "加州大学系统：11/30统一申请截止，不设EA或ED。 乔治城EA限制并行他校ED。 南加州大学：表演艺术专业常规申请12/1截止；世界商业学士项目仅11/1早申。"}, {"页码": "43", "学校": "弗吉尼亚大学", "ED1": "11/01", "EA": "11/01", "REA/SCEA": "-", "ED2": "-", "RD/统一申请": "01/05", "本页备注": "加州大学系统：11/30统一申请截止，不设EA或ED。 乔治城EA限制并行他校ED。 南加州大学：表演艺术专业常规申请12/1截止；世界商业学士项目仅11/1早申。"}, {"页码": "43", "学校": "北卡罗来纳大学教堂山分校", "ED1": "-", "EA": "10/15", "REA/SCEA": "-", "ED2": "-", "RD/统一申请": "01/15", "本页备注": "加州大学系统：11/30统一申请截止，不设EA或ED。 乔治城EA限制并行他校ED。 南加州大学：表演艺术专业常规申请12/1截止；世界商业学士项目仅11/1早申。"}, {"页码": "43", "学校": "南加州大学", "ED1": "11/01", "EA": "11/01", "REA/SCEA": "-", "ED2": "-", "RD/统一申请": "01/10", "本页备注": "加州大学系统：11/30统一申请截止，不设EA或ED。 乔治城EA限制并行他校ED。 南加州大学：表演艺术专业常规申请12/1截止；世界商业学士项目仅11/1早申。"}, {"页码": "44", "学校": "加州大学圣迭戈分校", "ED1": "-", "EA": "-", "REA/SCEA": "-", "ED2": "-", "RD/统一申请": "11/30", "本页备注": "加州大学系统：11/30统一申请截止，不设EA或ED。 佐治亚理工学院：EA1限符合条件的佐治亚学生；EA2适用非佐治亚学生（含国际生）。 *维克森林EA仅面向第一代大学生。"}, {"页码": "44", "学校": "佛罗里达大学", "ED1": "10/15", "EA": "11/01", "REA/SCEA": "-", "ED2": "-", "RD/统一申请": "01/15", "本页备注": "加州大学系统：11/30统一申请截止，不设EA或ED。 佐治亚理工学院：EA1限符合条件的佐治亚学生；EA2适用非佐治亚学生（含国际生）。 *维克森林EA仅面向第一代大学生。"}, {"页码": "44", "学校": "得克萨斯大学奥斯汀分校", "ED1": "-", "EA": "10/15", "REA/SCEA": "-", "ED2": "-", "RD/统一申请": "12/01", "本页备注": "加州大学系统：11/30统一申请截止，不设EA或ED。 佐治亚理工学院：EA1限符合条件的佐治亚学生；EA2适用非佐治亚学生（含国际生）。 *维克森林EA仅面向第一代大学生。"}, {"页码": "44", "学校": "纽约大学", "ED1": "11/01", "EA": "-", "REA/SCEA": "-", "ED2": "01/01", "RD/统一申请": "01/05", "本页备注": "加州大学系统：11/30统一申请截止，不设EA或ED。 佐治亚理工学院：EA1限符合条件的佐治亚学生；EA2适用非佐治亚学生（含国际生）。 *维克森林EA仅面向第一代大学生。"}, {"页码": "44", "学校": "佐治亚理工学院", "ED1": "-", "EA": "EA1 10/15 / EA2 11/01", "REA/SCEA": "-", "ED2": "-", "RD/统一申请": "01/06", "本页备注": "加州大学系统：11/30统一申请截止，不设EA或ED。 佐治亚理工学院：EA1限符合条件的佐治亚学生；EA2适用非佐治亚学生（含国际生）。 *维克森林EA仅面向第一代大学生。"}, {"页码": "44", "学校": "加州大学欧文分校", "ED1": "-", "EA": "-", "REA/SCEA": "-", "ED2": "-", "RD/统一申请": "11/30", "本页备注": "加州大学系统：11/30统一申请截止，不设EA或ED。 佐治亚理工学院：EA1限符合条件的佐治亚学生；EA2适用非佐治亚学生（含国际生）。 *维克森林EA仅面向第一代大学生。"}, {"页码": "44", "学校": "加州大学戴维斯分校", "ED1": "-", "EA": "-", "REA/SCEA": "-", "ED2": "-", "RD/统一申请": "11/30", "本页备注": "加州大学系统：11/30统一申请截止，不设EA或ED。 佐治亚理工学院：EA1限符合条件的佐治亚学生；EA2适用非佐治亚学生（含国际生）。 *维克森林EA仅面向第一代大学生。"}, {"页码": "44", "学校": "塔夫茨大学", "ED1": "11/02", "EA": "-", "REA/SCEA": "-", "ED2": "01/04", "RD/统一申请": "01/04", "本页备注": "加州大学系统：11/30统一申请截止，不设EA或ED。 佐治亚理工学院：EA1限符合条件的佐治亚学生；EA2适用非佐治亚学生（含国际生）。 *维克森林EA仅面向第一代大学生。"}, {"页码": "44", "学校": "波士顿学院", "ED1": "11/01", "EA": "-", "REA/SCEA": "-", "ED2": "01/04", "RD/统一申请": "01/04", "本页备注": "加州大学系统：11/30统一申请截止，不设EA或ED。 佐治亚理工学院：EA1限符合条件的佐治亚学生；EA2适用非佐治亚学生（含国际生）。 *维克森林EA仅面向第一代大学生。"}, {"页码": "44", "学校": "威斯康星大学麦迪逊分校", "ED1": "-", "EA": "11/01", "REA/SCEA": "-", "ED2": "-", "RD/统一申请": "01/15", "本页备注": "加州大学系统：11/30统一申请截止，不设EA或ED。 佐治亚理工学院：EA1限符合条件的佐治亚学生；EA2适用非佐治亚学生（含国际生）。 *维克森林EA仅面向第一代大学生。"}, {"页码": "44", "学校": "伊利诺伊大学厄巴纳一香槟分校", "ED1": "-", "EA": "11/01", "REA/SCEA": "-", "ED2": "-", "RD/统一申请": "01/05", "本页备注": "加州大学系统：11/30统一申请截止，不设EA或ED。 佐治亚理工学院：EA1限符合条件的佐治亚学生；EA2适用非佐治亚学生（含国际生）。 *维克森林EA仅面向第一代大学生。"}, {"页码": "44", "学校": "波士顿大学", "ED1": "11/02", "EA": "-", "REA/SCEA": "-", "ED2": "01/05", "RD/统一申请": "01/05", "本页备注": "加州大学系统：11/30统一申请截止，不设EA或ED。 佐治亚理工学院：EA1限符合条件的佐治亚学生；EA2适用非佐治亚学生（含国际生）。 *维克森林EA仅面向第一代大学生。"}, {"页码": "44", "学校": "维克森林大学", "ED1": "11/15", "EA": "11/15*", "REA/SCEA": "-", "ED2": "01/01", "RD/统一申请": "01/01", "本页备注": "加州大学系统：11/30统一申请截止，不设EA或ED。 佐治亚理工学院：EA1限符合条件的佐治亚学生；EA2适用非佐治亚学生（含国际生）。 *维克森林EA仅面向第一代大学生。"}];
+
+let currentCat = 'all';
+let currentRank = 'all';
+let currentEarly = 'all';
+let searchQuery = '';
+let allExpanded = false;
+
+function formatBullets(text) {
+    if (!text) return '';
+    const parts = text.split('；').map(s => s.trim()).filter(Boolean);
+    if (parts.length <= 1) return `<p>${text}</p>`;
+    return `<ul>` + parts.map(p => `<li>${p}</li>`).join('') + `</ul>`;
+}
+
+function getBindClass(bindText) {
+    if (!bindText) return 'bind-no';
+    if (bindText.includes('非绑定')) return 'bind-no';
+    if (bindText.includes('限制')) return 'bind-res';
+    if (bindText.includes('绑定')) return 'bind-yes';
+    return 'bind-no';
+}
+
+function renderSchools() {
+    const container = document.getElementById('schoolListContainer');
+    const emptyState = document.getElementById('emptyState');
+    const q = searchQuery.trim().toLowerCase();
+
+    const filtered = SCHOOLS.filter(s => {
+        if (currentCat !== 'all' && s['院校类别'] !== currentCat) return false;
+        if (currentRank !== 'all' && s['rank_bucket'] !== currentRank) return false;
+        if (currentEarly !== 'all') {
+            const e = s['早申轮次'] || '';
+            if (currentEarly === 'ED' && !e.includes('ED')) return false;
+            if (currentEarly === 'EA' && !(e === 'EA' || e.includes('+EA') || e.includes('/EA') || e.includes('EA+') || e.includes('EA1'))) return false;
+            if (currentEarly === 'REA' && !(e.includes('REA') || e.includes('SCEA'))) return false;
+        }
+        if (q) {
+            const hay = [
+                s['中文校名'], s['英文校名'], s['abbr'], s['地点'], s['地点说明'],
+                s['学校定位与特色'], s['本科专业概览_领域'], s['本科专业概览_代表项目'],
+                s['早申轮次'], s['排名']
+            ].join(' ').toLowerCase();
+            if (!hay.includes(q)) return false;
+        }
+        return true;
+    });
+
+    document.getElementById('statsSummary').innerHTML =
+        `当前显示 <strong>${filtered.length}</strong> / ${SCHOOLS.length} 所院校（点击任意学校行可展开/收起详细手卡内容）`;
+
+    if (filtered.length === 0) {
+        container.innerHTML = '';
+        emptyState.style.display = 'block';
+        return;
+    }
+    emptyState.style.display = 'none';
+
+    container.innerHTML = filtered.map(s => {
+        const isTop10 = s.rank_int <= 10;
+        const catClass = s['院校类别'] === '文理学院' ? 'cat-lac' : 'cat-univ';
+        const roundsHtml = (s.rounds_parsed || []).map(r => `
+            <div class="round-chip">
+                <div class="round-chip-top">
+                    <span>${r.name}</span>
+                    <span class="round-type-tag ${getBindClass(r.binding)}">${r.binding || ''}</span>
+                </div>
+                <div class="round-ddl">${r.ddl} 截止</div>
+                <div class="round-rel">${r.release || ''}</div>
+            </div>
+        `).join('');
+
+        // Split academic calendar main and sub
+        const calMatch = s['学制'].match(/^([^(]+)\((.+)\)$/);
+        const calMain = calMatch ? calMatch[1].trim() : s['学制'];
+        const calSub = calMatch ? calMatch[2].trim() : '';
+
+        // Split entry main and sub
+        const entMatch = s['本科入口'].match(/^([^(]+)\((.+)\)$/);
+        const entMain = entMatch ? entMatch[1].trim() : s['本科入口'];
+        const entSub = entMatch ? entMatch[2].trim() : '';
+
+        return `
+        <div class="school-card ${allExpanded ? 'expanded' : ''}" id="card-${s['页码']}">
+            <div class="card-summary" onclick="toggleCard(${s['页码']})">
+                <div>
+                    <span class="rank-badge ${isTop10 ? 'top10' : ''}">${s['排名']}</span>
+                </div>
+                <div>
+                    <span class="cat-badge ${catClass}">${s['院校类别']}</span>
+                </div>
+                <div>
+                    <div class="univ-name-zh">${s['中文校名']}</div>
+                    <div class="univ-name-en">${s['英文校名']}</div>
+                    <div class="univ-tagline">${s['学校定位与特色']}</div>
+                </div>
+                <div>
+                    <div class="cell-main">${s['地点']}</div>
+                    <div class="cell-sub">${s['学校性质']}</div>
+                </div>
+                <div>
+                    <div class="cell-main">${calMain}</div>
+                    <div class="cell-sub">${calSub}</div>
+                </div>
+                <div>
+                    <div class="cell-main">${entMain}</div>
+                    <div class="cell-sub">${entSub}</div>
+                </div>
+                <div>
+                    <span class="early-pill">${s['早申轮次']}</span>
+                </div>
+                <div>
+                    <div class="cell-main">${s['年学费_美元']}</div>
+                    <div class="cell-sub">${s['学费说明']}</div>
+                </div>
+                <div class="rounds-container">
+                    ${roundsHtml}
+                </div>
+                <div style="text-align:center;">
+                    <span class="expand-btn">
+                        <span class="expand-label">${allExpanded ? '收起' : '详情'}</span>
+                        <span class="chevron">▼</span>
+                    </span>
+                </div>
+            </div>
+
+            <div class="card-details">
+                <div class="details-grid">
+                    <div class="detail-box">
+                        <h4><span>本科专业概览</span><span>专业选择与本科体验</span></h4>
+                        <div class="detail-kv"><strong>本科体系：</strong>${s['本科专业概览_体系']}</div>
+                        <div class="detail-kv"><strong>覆盖领域：</strong>${s['本科专业概览_领域']}</div>
+                        <div class="detail-kv"><strong>代表项目：</strong>${s['本科专业概览_代表项目']}</div>
+                    </div>
+
+                    <div class="detail-box">
+                        <h4><span>专业选择与转换</span><span>本科教学与学习机会</span></h4>
+                        <div class="detail-kv"><strong>专业选择与转换：</strong>${s['专业选择与转换']}</div>
+                        <div class="detail-kv" style="margin-top:8px;"><strong>教学与学习机会：</strong>${s['本科教学与学习机会']}</div>
+                    </div>
+
+                    <div class="detail-box">
+                        <h4><span>校园生活 & 申请材料</span><span>${s['申请信息_概览']}</span></h4>
+                        <div class="detail-kv"><strong>校园生活：</strong></div>
+                        ${formatBullets(s['校园生活'])}
+                        <div class="detail-kv" style="margin-top:8px;"><strong>申请材料清单：</strong></div>
+                        ${formatBullets(s['申请材料'])}
+                    </div>
+
+                    <div class="detail-box">
+                        <h4><span>标化考试 & 申请特别提醒</span><span>PDF 第 ${s['页码']} 页</span></h4>
+                        <div class="detail-kv"><strong>标化考试政策与参考：</strong></div>
+                        ${formatBullets(s['标化考试要求与数据'])}
+                        <div class="detail-kv" style="margin-top:8px;"><strong>申请特别提醒：</strong></div>
+                        ${formatBullets(s['申请特别提醒'])}
+                    </div>
+                </div>
+            </div>
+        </div>
+        `;
+    }).join('');
+}
+
+function toggleCard(pageId) {
+    const card = document.getElementById(`card-${pageId}`);
+    if (!card) return;
+    card.classList.toggle('expanded');
+    const lbl = card.querySelector('.expand-label');
+    if (lbl) {
+        lbl.textContent = card.classList.contains('expanded') ? '收起' : '详情';
+    }
+}
+
+function toggleExpandAll() {
+    allExpanded = !allExpanded;
+    const btn = document.getElementById('expandAllBtn');
+    btn.textContent = allExpanded ? '收起全部详情' : '展开全部详情';
+    document.querySelectorAll('.school-card').forEach(card => {
+        if (allExpanded) {
+            card.classList.add('expanded');
+        } else {
+            card.classList.remove('expanded');
+        }
+        const lbl = card.querySelector('.expand-label');
+        if (lbl) lbl.textContent = allExpanded ? '收起' : '详情';
+    });
+}
+
+function setCatFilter(val) {
+    currentCat = val;
+    document.querySelectorAll('#catFilterGroup .chip').forEach(c => {
+        c.classList.toggle('active', c.dataset.cat === val);
+    });
+    renderSchools();
+}
+
+function setRankFilter(val) {
+    currentRank = val;
+    document.querySelectorAll('#rankFilterGroup .chip').forEach(c => {
+        c.classList.toggle('active', c.dataset.rank === val);
+    });
+    renderSchools();
+}
+
+function setEarlyFilter(val) {
+    currentEarly = val;
+    document.querySelectorAll('#earlyFilterGroup .chip').forEach(c => {
+        c.classList.toggle('active', c.dataset.early === val);
+    });
+    renderSchools();
+}
+
+function handleSearch() {
+    const input = document.getElementById('searchInput');
+    searchQuery = input.value;
+    document.getElementById('clearSearchBtn').style.display = searchQuery ? 'block' : 'none';
+    renderSchools();
+}
+
+function clearSearch() {
+    const input = document.getElementById('searchInput');
+    input.value = '';
+    searchQuery = '';
+    document.getElementById('clearSearchBtn').style.display = 'none';
+    renderSchools();
+}
+
+function renderDDLTable() {
+    const tbody = document.getElementById('ddlTableBody');
+    tbody.innerHTML = DDL_ROWS.map(r => `
+        <tr>
+            <td style="font-weight:700;">${r['学校']}</td>
+            <td>${r['ED1']}</td>
+            <td>${r['EA']}</td>
+            <td>${r['REA/SCEA']}</td>
+            <td>${r['ED2']}</td>
+            <td style="font-weight:600; color:var(--accent-blue);">${r['RD/统一申请']}</td>
+            <td style="font-size:12px; color:var(--text-muted);">${r['本页备注']}</td>
+        </tr>
+    `).join('');
+}
+
+function toggleDDLSection() {
+    const ddlSec = document.getElementById('ddlSection');
+    const cardsView = document.getElementById('cardsView');
+    const btn = document.getElementById('toggleViewBtn');
+    const isShowingDDL = ddlSec.classList.toggle('visible');
+    cardsView.style.display = isShowingDDL ? 'none' : 'block';
+    btn.textContent = isShowingDDL ? '返回学校介绍手卡列表 (41校)' : '查看 2027 Fall 申请季 DDL 速查总表 (含UC系)';
+}
+
+renderSchools();
+renderDDLTable();
+</script>
+</body>
+</html>

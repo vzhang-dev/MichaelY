@@ -60,6 +60,25 @@
             padding-left: 5px;
         }
 
+        /* Reminder Styles */
+        .reminder-card {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+            border-left: 4px solid var(--warning-orange);
+            padding: 16px 24px;
+        }
+
+        .reminder-list {
+            list-style-position: inside;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
         /* Card Styles */
         .card {
             background: var(--card-bg);
@@ -195,6 +214,10 @@
             border: 1px solid rgba(255, 255, 255, 0.4);
         }
         
+        .calendar-card + .calendar-card {
+            margin-top: 24px;
+        }
+        
         .cal-header {
             font-size: 20px;
             font-weight: 600;
@@ -289,6 +312,18 @@
         <h1>Activities Overview</h1>
     </header>
 
+    <!-- Section 0: Reminder -->
+    <section>
+        <h2>Reminder</h2>
+        <div class="reminder-card">
+            <ol class="reminder-list">
+                <li>Tell James to reschedule 12.6 class</li>
+                <li>SAT class</li>
+                <li>报名哥大英才计划，写文书</li>
+            </ol>
+        </div>
+    </section>
+
     <!-- Section 1: Classes -->
     <section>
         <h2>学业</h2>
@@ -373,6 +408,12 @@
                             <a href="https://rwz06e4m52t.feishu.cn/share/base/form/shrcnhDuQFwWEvee2963JT5nhrg" target="_blank" class="link-text" style="margin-top: 4px; display: inline-block;">推荐信链接</a>
                         </td>
                     </tr>
+                    <tr>
+                        <td>哥伦比亚大学全球中心2027英才计划</td>
+                        <td><span class="badge no">否 (No)</span></td>
+                        <td>2027年1月10日截止</td>
+                        <td><a href="https://qicenter.jinshuju.com/f/OXGOTk" target="_blank" class="link-text">报名链接</a></td>
+                    </tr>
                 </tbody>
             </table>
             </div>
@@ -407,7 +448,7 @@
                 <!-- Week 1 -->
                 <div class="cal-day">
                     <div class="cal-date">1</div>
-                    <div class="cal-event course">9:00 James课</div>
+                    <div class="cal-event course">10:00 James课</div>
                 </div>
                 <div class="cal-day"><div class="cal-date">2</div></div>
                 <div class="cal-day">
@@ -460,7 +501,7 @@
                 <!-- Week 3 -->
                 <div class="cal-day">
                     <div class="cal-date">15</div>
-                    <div class="cal-event course">9:00 James课</div>
+                    <div class="cal-event course">10:00 James课</div>
                 </div>
                 <div class="cal-day"><div class="cal-date">16</div></div>
                 <div class="cal-day"><div class="cal-date">17</div></div>
@@ -475,24 +516,104 @@
                 <!-- Week 4 -->
                 <div class="cal-day">
                     <div class="cal-date">22</div>
-                    <div class="cal-event course">9:00 James课</div>
+                    <div class="cal-event course">10:00 James课</div>
                 </div>
                 <div class="cal-day"><div class="cal-date">23</div></div>
                 <div class="cal-day"><div class="cal-date">24</div></div>
                 <div class="cal-day"><div class="cal-date">25</div></div>
                 <div class="cal-day"><div class="cal-date">26</div></div>
                 <div class="cal-day"><div class="cal-date">27</div></div>
-                <div class="cal-day"><div class="cal-date">28</div></div>
+                <div class="cal-day">
+                    <div class="cal-date">28</div>
+                    <div class="cal-event course">10:00 腾老师数学</div>
+                </div>
 
                 <!-- Week 5 -->
                 <div class="cal-day">
                     <div class="cal-date">29</div>
-                    <div class="cal-event course">9:00 James课</div>
+                    <div class="cal-event course">10:00 James课</div>
                 </div>
                 <div class="cal-day"><div class="cal-date">30</div></div>
                 <div class="cal-day empty"></div>
                 <div class="cal-day empty"></div>
                 <div class="cal-day empty"></div>
+                <div class="cal-day empty"></div>
+                <div class="cal-day empty"></div>
+            </div>
+        </div>
+
+        <div class="calendar-card">
+            <div class="cal-header">12月 (December)</div>
+            <div class="cal-grid">
+                <!-- Weekdays -->
+                <div class="cal-weekday">日 (Sun)</div>
+                <div class="cal-weekday">一 (Mon)</div>
+                <div class="cal-weekday">二 (Tue)</div>
+                <div class="cal-weekday">三 (Wed)</div>
+                <div class="cal-weekday">四 (Thu)</div>
+                <div class="cal-weekday">五 (Fri)</div>
+                <div class="cal-weekday">六 (Sat)</div>
+
+                <!-- Week 1 -->
+                <div class="cal-day empty"></div>
+                <div class="cal-day empty"></div>
+                <div class="cal-day"><div class="cal-date">1</div></div>
+                <div class="cal-day"><div class="cal-date">2</div></div>
+                <div class="cal-day"><div class="cal-date">3</div></div>
+                <div class="cal-day"><div class="cal-date">4</div></div>
+                <div class="cal-day"><div class="cal-date">5</div></div>
+
+                <!-- Week 2 -->
+                <div class="cal-day">
+                    <div class="cal-date">6</div>
+                    <div class="cal-event exam">8:00 TOEFL Test</div>
+                    <div class="cal-event course">10:00 James课</div>
+                    <div class="cal-event monthly">14:00 老查开会</div>
+                </div>
+                <div class="cal-day"><div class="cal-date">7</div></div>
+                <div class="cal-day"><div class="cal-date">8</div></div>
+                <div class="cal-day"><div class="cal-date">9</div></div>
+                <div class="cal-day"><div class="cal-date">10</div></div>
+                <div class="cal-day"><div class="cal-date">11</div></div>
+                <div class="cal-day"><div class="cal-date">12</div></div>
+
+                <!-- Week 3 -->
+                <div class="cal-day">
+                    <div class="cal-date">13</div>
+                    <div class="cal-event course">10:00 James课</div>
+                </div>
+                <div class="cal-day"><div class="cal-date">14</div></div>
+                <div class="cal-day"><div class="cal-date">15</div></div>
+                <div class="cal-day"><div class="cal-date">16</div></div>
+                <div class="cal-day"><div class="cal-date">17</div></div>
+                <div class="cal-day"><div class="cal-date">18</div></div>
+                <div class="cal-day">
+                    <div class="cal-date">19</div>
+                    <div class="cal-event course">13:30 晶磊SAT试课</div>
+                </div>
+
+                <!-- Week 4 -->
+                <div class="cal-day">
+                    <div class="cal-date">20</div>
+                    <div class="cal-event course">10:00 James课</div>
+                    <div class="cal-event amc">IEO</div>
+                </div>
+                <div class="cal-day"><div class="cal-date">21</div></div>
+                <div class="cal-day"><div class="cal-date">22</div></div>
+                <div class="cal-day"><div class="cal-date">23</div></div>
+                <div class="cal-day"><div class="cal-date">24</div></div>
+                <div class="cal-day"><div class="cal-date">25</div></div>
+                <div class="cal-day"><div class="cal-date">26</div></div>
+
+                <!-- Week 5 -->
+                <div class="cal-day">
+                    <div class="cal-date">27</div>
+                    <div class="cal-event course">10:00 James课</div>
+                </div>
+                <div class="cal-day"><div class="cal-date">28</div></div>
+                <div class="cal-day"><div class="cal-date">29</div></div>
+                <div class="cal-day"><div class="cal-date">30</div></div>
+                <div class="cal-day"><div class="cal-date">31</div></div>
                 <div class="cal-day empty"></div>
                 <div class="cal-day empty"></div>
             </div>
